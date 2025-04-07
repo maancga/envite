@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1fp4h51aw8vp"]
+
+[ext_resource type="Script" uid="uid://bxf77mecmb1cp" path="res://utils/card-sprites/CardCutter.gd" id="1_cm2bl"]
+
+[node name="CardCutter" type="Node2D"]
+script = ExtResource("1_cm2bl")
+
+[node name="Node2D" type="Node2D" parent="."]
