@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://ctjy3u3ibtlhy"]
+[gd_scene load_steps=7 format=3 uid="uid://ctjy3u3ibtlhy"]
 
 [ext_resource type="Script" uid="uid://dlbmqr6vfm5y3" path="res://scenes/main.gd" id="1_0bbpv"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://scenes/unknown-cards/UnknownHand.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://scenes/player-cards/MyHand.tscn" id="2_uu6xs"]
+[ext_resource type="PackedScene" uid="uid://cwag0nvl8uayr" path="res://scenes/CardShuffler.tscn" id="4_rarhs"]
+[ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://scenes/player-cards/Card.tscn" id="5_c01mt"]
+[ext_resource type="Texture2D" uid="uid://bm5oysr70mgs3" path="res://images/deck.png" id="5_vcsgt"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0bbpv")
@@ -33,11 +36,30 @@ offset_right = 1050.0
 offset_bottom = 625.0
 text = "JUGAR CARTA"
 
-[node name="Label" type="Label" parent="."]
+[node name="Virado" type="Label" parent="."]
+offset_left = 474.0
+offset_top = 166.0
+offset_right = 624.0
+offset_bottom = 215.0
+text = "Virado:
+"
+
+[node name="Carta seleccionada" type="Label" parent="."]
 offset_left = 428.0
 offset_top = 448.0
 offset_right = 578.0
 offset_bottom = 471.0
 text = "Carta seleccionada:"
+
+[node name="CardShuffler" parent="." instance=ExtResource("4_rarhs")]
+
+[node name="LastCard" parent="." instance=ExtResource("5_c01mt")]
+position = Vector2(611, 359)
+rotation = 1.97048
+
+[node name="Deck" type="Sprite2D" parent="."]
+position = Vector2(537, 316)
+scale = Vector2(0.205078, 0.205078)
+texture = ExtResource("5_vcsgt")
 
 [connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]

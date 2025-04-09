@@ -16,6 +16,7 @@ func _process(_delta: float) -> void:
 	if card_being_dragged:
 		var mouse_pos = get_global_mouse_position()
 		card_being_dragged.global_position = mouse_pos
+		
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -39,3 +40,36 @@ func raycast_check_for_card():
 	if result.size() > 0:
 		return result[0].collider.get_parent()
 	return null
+	
+func setInitialCards(initialCard1: CardData, initialCard2: CardData,initialCard3: CardData,):
+	var cardPreload = preload("res://scenes/player-cards/Card.tscn")
+	var newCard1 = cardPreload.instantiate()
+	var newCard2 = cardPreload.instantiate()
+	var newCard3 = cardPreload.instantiate()
+
+	var card1Position = card1.position
+	var card2Position = card2.position
+	var card3Position = card3.position
+	var card1Rotation = card1.rotation
+	var card2Rotation = card2.rotation
+	var card3Rotation = card3.rotation
+	
+	if card1: card1.queue_free()
+	if card2: card2.queue_free()
+	if card3: card3.queue_free()
+
+	# Add new cards to the scene
+	add_child(newCard1)
+	add_child(newCard2)
+	add_child(newCard3)
+	
+	newCard1.set_card_data(initialCard1.value,initialCard1.suit, card1Position)
+	newCard2.set_card_data(initialCard2.value,initialCard2.suit, card2Position)
+	newCard3.set_card_data(initialCard3.value,initialCard3.suit, card3Position)
+	newCard1.rotation = card1Rotation
+	newCard2.rotation = card2Rotation
+	newCard3.rotation = card3Rotation
+	
+	card1 = newCard1
+	card2 = newCard2
+	card3 = newCard3

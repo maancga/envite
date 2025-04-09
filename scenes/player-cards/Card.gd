@@ -13,7 +13,7 @@ signal clickedCard
 @onready var card_image: Sprite2D = $CardImage
 
 func _ready():
-	update_texture()
+	call_deferred("update_texture")
 
 func set_card_data(newValue: Values.Value, givenSuit: Suits.Suit, givenPosition: Vector2):
 	suit = givenSuit
@@ -28,11 +28,14 @@ func update_texture():
 	card_image.texture = tex
 
 
+
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		clickedCard.emit(self)
 		
 func getCardName():
-	return  ValueEnum.VALUES_TRANSLATIONS[value] + " de " + SuitEnum.SUIT_NAMES[suit]
+	return  ValueEnum.VALUES_TRANSLATIONS[value] + " de " + getSuitName()
 	
-		
+func getSuitName():
+	return str(SuitEnum.SUIT_NAMES[suit])
+	
