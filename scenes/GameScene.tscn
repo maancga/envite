@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://ctjy3u3ibtlhy"]
+
+[ext_resource type="Script" uid="uid://dpmbsgths4ity" path="res://scenes/GameScene.gd" id="1_xs4ih"]
+[ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://hands/MyHand.tscn" id="2_6ytau"]
+[ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://hands/UnknownHand.tscn" id="3_vijgj"]
+[ext_resource type="PackedScene" uid="uid://cwag0nvl8uayr" path="res://decks/Deck.tscn" id="4_pynjx"]
+[ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://cards/Card.tscn" id="5_yrli1"]
+[ext_resource type="Texture2D" uid="uid://bm5oysr70mgs3" path="res://cards/images/deck.png" id="6_j40tv"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_xs4ih")
+
+[node name="MyHand" parent="." instance=ExtResource("2_6ytau")]
+position = Vector2(447, 517)
+scale = Vector2(0.73, 0.73)
+
+[node name="UnknownHand" parent="." instance=ExtResource("3_vijgj")]
+position = Vector2(683, 147)
+rotation = 3.18872
+scale = Vector2(0.73, 0.73)
+
+[node name="UnknownHand2" parent="." instance=ExtResource("3_vijgj")]
+position = Vector2(134, 212)
+rotation = 1.56032
+scale = Vector2(0.73, 0.73)
+
+[node name="UnknownHand3" parent="." instance=ExtResource("3_vijgj")]
+position = Vector2(1005, 435)
+rotation = 4.66701
+scale = Vector2(0.73, 0.73)
+
+[node name="PlayCardButton" type="Button" parent="."]
+offset_left = 897.0
+offset_top = 541.0
+offset_right = 1050.0
+offset_bottom = 625.0
+text = "JUGAR CARTA"
+
+[node name="Virado" type="Label" parent="."]
+offset_left = 474.0
+offset_top = 166.0
+offset_right = 624.0
+offset_bottom = 215.0
+text = "Virado:
+"
+
+[node name="Carta seleccionada" type="Label" parent="."]
+offset_left = 428.0
+offset_top = 448.0
+offset_right = 578.0
+offset_bottom = 471.0
+text = "Carta seleccionada:"
+
+[node name="CardShuffler" parent="." instance=ExtResource("4_pynjx")]
+
+[node name="LastCard" parent="." instance=ExtResource("5_yrli1")]
+position = Vector2(611, 359)
+rotation = 1.97048
+
+[node name="Deck" type="Sprite2D" parent="."]
+position = Vector2(537, 316)
+scale = Vector2(0.205078, 0.205078)
+texture = ExtResource("6_j40tv")
+
+[node name="PlayerName" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "FOO"
+
+[connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]

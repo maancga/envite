@@ -1,45 +1,79 @@
-extends Node2D
+extends Node
 
-@onready var hand = $MyHand
-@onready var selectedCardLabel = $"Carta seleccionada"
-@onready var cardShuffler=$CardShuffler
-@onready var lastCard= $LastCard
-@onready var viradoLabel = $Virado
-var selectedCard: Card = null
-
-func _ready() -> void:
-	setup_cards()
-	hand.card1.clickedCard.connect(_on_card_clicked)
-	hand.card2.clickedCard.connect(_on_card_clicked)
-	hand.card3.clickedCard.connect(_on_card_clicked)
-	
-func setup_cards():
-	hand.setInitialCards(cardShuffler.getTopCard(), cardShuffler.getTopCard(), cardShuffler.getTopCard())
-	var lastCardData = cardShuffler.getTopCard()
-	var cardPreload = preload("res://scenes/player-cards/Card.tscn")
-	var newLastCard = cardPreload.instantiate()
-
-	var card1Position = lastCard.position
-	var card1Rotation = lastCard.rotation
-	
-	if lastCard: lastCard.queue_free()
-
-	# Add new cards to the scene
-	add_child(newLastCard)
-	move_child(newLastCard, 1)
-	
-	newLastCard.set_card_data(lastCardData.value,lastCardData.suit, card1Position)
-	newLastCard.rotation = card1Rotation
-	lastCard = newLastCard
-	viradoLabel.text =  "Virado: %s" % [lastCard.getSuitName() ]
+var currentScene: Node = null
+var hasChosenName = false
+var isClientConnected = false
+var chosenName = ''
+var receivedCards = []
+var virado = null
+var serverManagerScript = preload("res://shared/ServerManager.gd")
 
 
-func _on_card_clicked(clickedCard: Card):
-	selectedCard = clickedCard
-	selectedCardLabel.text =  "Carta seleccionada: %s" % [selectedCard.getCardName() ]
+func _ready():
+	var args = OS.get_cmdline_args()
+	if "--server" in args:
+		print("🧠 Starting in SERVER mode")
+		start_headless_server()
+	else:
+		print("🎮 Starting in CLIENT mode")
+		loadChangeNameScene()
+		loadConnectionScene()
 
+func start_headless_server():
+	var server = serverManagerScript.new()
+	server.name = "ServerManager"
+	add_child(server)
+	server.start_server()
 
-func _on_play_card_button_pressed() -> void:
-	if !selectedCard: return
-	print("played card! " + selectedCard.getCardName())
-	selectedCard = null
+func loadChangeNameScene():
+	var chooseNameScene = preload("res://scenes/ChooseNameScene.tscn").instantiate()
+	add_child(chooseNameScene)
+	chooseNameScene.connect("nameChosenSignal", Callable(self, "onNameChosen"))
+
+	currentScene = chooseNameScene
+
+func loadConnectionScene():
+	var serverManager = serverManagerScript.new()
+	serverManager.name = "ServerManager"
+	add_child(serverManager)
+	serverManager.connect("clientConnectedSignal", Callable(self, "onClientConnected"))
+	serverManager.connect("cardsReceivedSignal", Callable(self, "onReceivedCards"))
+	serverManager.connect("viradoReceivedSignal", Callable(self, "onReceivedVirado"))
+	serverManager.start_client()
+
+func onNameChosen(userName):
+	print("Name received!", userName)
+	hasChosenName = true
+	chosenName = userName
+	tryLoadGameScene()
+
+func onClientConnected():
+	print("Connected to server!", )
+	isClientConnected = true
+	tryLoadGameScene()
+
+func onReceivedCards(cards):
+	print("Received cards!", cards )
+	receivedCards = cards 
+
+func onReceivedVirado(receivedVirado):
+	print("Received virado!", receivedVirado )
+	virado = receivedVirado 
+
+func tryLoadGameScene():
+	if (hasChosenName && isClientConnected):
+		loadGameScene()
+
+func loadGameScene():
+	currentScene.queue_free()
+	currentScene = null
+
+	var gameScene = preload("res://scenes/GameScene.tscn").instantiate()
+	add_child(gameScene)
+	currentScene = gameScene
+	gameScene.setUpScene(chosenName, 
+	CardData.new(receivedCards[1].value, receivedCards[1].suit), 
+	CardData.new(receivedCards[2].value, receivedCards[2].suit), 
+	CardData.new(receivedCards[3].value, receivedCards[3].suit), 
+	CardData.new(virado.value, virado.suit)
+	)

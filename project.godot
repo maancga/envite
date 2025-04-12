@@ -11,9 +11,8 @@ config_version=5
 [application]
 
 config/name="envite"
-run/main_scene="uid://ctjy3u3ibtlhy"
+run/main_scene="uid://b75metx5vn0ix"
 config/features=PackedStringArray("4.4", "Mobile")
-config/icon="res://images/icon.svg"
 
 [editor_plugins]
 

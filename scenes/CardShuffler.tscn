@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwag0nvl8uayr"]
-
-[ext_resource type="Script" uid="uid://dwqcc4eurv6x8" path="res://scenes/CardShuffler.gd" id="1_01j5x"]
-
-[node name="CardShuffler" type="Node2D"]
-script = ExtResource("1_01j5x")

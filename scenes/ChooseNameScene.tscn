@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0y0tpccjj6dk"]
+
+[ext_resource type="Script" uid="uid://khtgq4nphumj" path="res://scenes/ChooseNameScene.gd" id="1_si5mc"]
+
+[node name="ChooseNameScene" type="Node2D"]
+script = ExtResource("1_si5mc")
+
+[node name="ChooseNameLabel" type="Label" parent="."]
+offset_left = 436.0
+offset_top = 129.0
+offset_right = 759.0
+offset_bottom = 233.0
+text = "ELIGE TU NOMBRE MAQUINON:"
+
+[node name="UserInput" type="TextEdit" parent="."]
+offset_left = 454.0
+offset_top = 176.0
+offset_right = 652.0
+offset_bottom = 220.0
+
+[node name="ReadyButton" type="Button" parent="."]
+offset_left = 519.0
+offset_top = 233.0
+offset_right = 569.0
+offset_bottom = 264.0
+text = "Listo!"
+
+[connection signal="pressed" from="ReadyButton" to="." method="_on_ready_button_pressed"]

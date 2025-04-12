@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://qutkjd1k6mlo"]
+
+[ext_resource type="Script" uid="uid://bfc3vv3ayy720" path="res://hands/MyHandManager.gd" id="1_y4tjv"]
+[ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://cards/Card.tscn" id="2_vnd3e"]
+
+[node name="MyHand" type="Node2D" node_paths=PackedStringArray("card1", "card2", "card3")]
+script = ExtResource("1_y4tjv")
+card1 = NodePath("Card1")
+card2 = NodePath("Card2")
+card3 = NodePath("Card3")
+
+[node name="Card1" parent="." instance=ExtResource("2_vnd3e")]
+position = Vector2(58, 87)
+rotation = -0.164061
+value = 2
+
+[node name="Card2" parent="." instance=ExtResource("2_vnd3e")]
+position = Vector2(171, 80)
+value = null
+
+[node name="Card3" parent="." instance=ExtResource("2_vnd3e")]
+position = Vector2(277, 85)
+rotation = 0.0820305
+value = 5
