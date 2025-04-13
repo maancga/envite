@@ -12,3 +12,9 @@ func to_dict():
 		"value": value,
 		"suit": suit
 	}
+
+func getCardName():
+	return  ValueEnum.VALUES_TRANSLATIONS[value] + " de " + getSuitName()
+	
+func getSuitName():
+	return str(SuitEnum.SUIT_NAMES[suit])

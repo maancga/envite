@@ -12,7 +12,6 @@ var client
 func _ready() -> void:
 	print("ServerManager path:", get_path())
 
-
 func start_server():
 	server = preload("res://shared/Server.gd").new()
 	server.dealHandToPlayer = func(player_id, hand):
@@ -33,9 +32,17 @@ func startGame():
 	
 @rpc("authority")
 func receive_hand(cards):
-	client.receive_hand(cards)
 	emit_signal("cardsReceivedSignal", cards)
 
 @rpc("authority")
 func receiveVirado(virado):
 	emit_signal("viradoReceivedSignal", virado)
+	
+@rpc("any_peer")
+func onClientPlayedCard(cardData):
+	var sender = multiplayer.get_remote_sender_id()
+	var card = CardData.new(cardData.value, cardData.suit)
+	server.onClientPlayedCard(sender,card)
+	
+func playCard(cardData: CardData):
+	rpc_id(1, "onClientPlayedCard", cardData.to_dict())

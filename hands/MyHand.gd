@@ -29,6 +29,15 @@ func _input(event):
 			if card_being_dragged:
 				card_being_dragged.global_position = initial_card_position
 				card_being_dragged = null
+				
+func playCard(card: Card):
+	if(card1 == card):
+		card1.queue_free()
+	if(card2 == card):
+		card2.queue_free()
+	if(card3 == card):
+		card3.queue_free()
+	return
 
 func raycast_check_for_card():
 	var space_state = get_world_2d().direct_space_state

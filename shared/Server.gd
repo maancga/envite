@@ -49,3 +49,6 @@ func startGame():
 	deck = DeckScript.new()
 	deck.createAndShuffle()
 	deal()
+	
+func onClientPlayedCard(sender, cardData: CardData):
+	print("el jugador ", playersIdsMap[sender], " jugó la carta: " , cardData.getCardName())

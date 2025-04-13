@@ -13,7 +13,7 @@ const card_height = 95
 func _ready():
 	for suit in Suits.Suit.values():
 		for value in Values.Value.values():
-			var card = preload("res://scenes/player-cards/Card.tscn").instantiate()
+			var card = preload("res://cards/Card.tscn").instantiate()
 			var xAxis = (int(value) * card_height) + xOffset
 			var yAxis = (int(suit) * card_width) + yOffset
 			card.scale = Vector2(0.7, 0.7)

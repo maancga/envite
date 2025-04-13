@@ -14,8 +14,3 @@ func connectClient(ip = "127.0.0.1", port = 9000):
 	multiplayer.multiplayer_peer = peer
 	print("🟡 Connecting to server at", ip, ":", port)
 	
-func receive_hand(cards):
-	print("recibido!")
-	print(cards)
-	for card_data in cards.values():
-		print(card_data)

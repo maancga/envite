@@ -7,6 +7,7 @@ var chosenName = ''
 var receivedCards = []
 var virado = null
 var serverManagerScript = preload("res://shared/ServerManager.gd")
+var serverManager
 
 
 func _ready():
@@ -33,7 +34,7 @@ func loadChangeNameScene():
 	currentScene = chooseNameScene
 
 func loadConnectionScene():
-	var serverManager = serverManagerScript.new()
+	serverManager = serverManagerScript.new()
 	serverManager.name = "ServerManager"
 	add_child(serverManager)
 	serverManager.connect("clientConnectedSignal", Callable(self, "onClientConnected"))
@@ -70,6 +71,7 @@ func loadGameScene():
 
 	var gameScene = preload("res://scenes/GameScene.tscn").instantiate()
 	add_child(gameScene)
+	gameScene.connect("playedCard", Callable(self, "onPlayedCard"))
 	currentScene = gameScene
 	gameScene.setUpScene(chosenName, 
 	CardData.new(receivedCards[1].value, receivedCards[1].suit), 
@@ -77,3 +79,9 @@ func loadGameScene():
 	CardData.new(receivedCards[3].value, receivedCards[3].suit), 
 	CardData.new(virado.value, virado.suit)
 	)
+
+func onPlayedCard(card):
+	var convertedCard = CardData.new(card.value, card.suit)
+	print("received card!!:", convertedCard)
+	serverManager.playCard(convertedCard)
+	
