@@ -3,6 +3,7 @@ extends Node
 var currentScene: Node = null
 var hasChosenName = false
 var isClientConnected = false
+var hasGameStarted = false
 var chosenName = ''
 var receivedCards = []
 var virado = null
@@ -24,7 +25,7 @@ func start_headless_server():
 	var server = serverManagerScript.new()
 	server.name = "ServerManager"
 	add_child(server)
-	server.start_server()
+	server.startServer()
 
 func loadChangeNameScene():
 	var chooseNameScene = preload("res://scenes/ChooseNameScene.tscn").instantiate()
@@ -40,7 +41,8 @@ func loadConnectionScene():
 	serverManager.connect("clientConnectedSignal", Callable(self, "onClientConnected"))
 	serverManager.connect("cardsReceivedSignal", Callable(self, "onReceivedCards"))
 	serverManager.connect("viradoReceivedSignal", Callable(self, "onReceivedVirado"))
-	serverManager.start_client()
+	serverManager.connect("gameStartedSignal", Callable(self, "onGameHasStarted"))
+	serverManager.connectClient()
 
 func onNameChosen(userName):
 	print("Name received!", userName)
@@ -53,6 +55,11 @@ func onClientConnected():
 	isClientConnected = true
 	tryLoadGameScene()
 
+func onGameHasStarted():
+	print("Game has started!", )
+	hasGameStarted = true
+	tryLoadGameScene()
+
 func onReceivedCards(cards):
 	print("Received cards!", cards )
 	receivedCards = cards 
@@ -62,7 +69,7 @@ func onReceivedVirado(receivedVirado):
 	virado = receivedVirado 
 
 func tryLoadGameScene():
-	if (hasChosenName && isClientConnected):
+	if (hasChosenName && isClientConnected && hasGameStarted):
 		loadGameScene()
 
 func loadGameScene():
@@ -73,12 +80,12 @@ func loadGameScene():
 	add_child(gameScene)
 	gameScene.connect("playedCard", Callable(self, "onPlayedCard"))
 	currentScene = gameScene
-	gameScene.setUpScene(chosenName, 
-	CardData.new(receivedCards[1].value, receivedCards[1].suit), 
-	CardData.new(receivedCards[2].value, receivedCards[2].suit), 
-	CardData.new(receivedCards[3].value, receivedCards[3].suit), 
-	CardData.new(virado.value, virado.suit)
-	)
+#	gameScene.setUpScene(chosenName, 
+#	CardData.new(receivedCards[1].value, receivedCards[1].suit), 
+#	CardData.new(receivedCards[2].value, receivedCards[2].suit), 
+#	CardData.new(receivedCards[3].value, receivedCards[3].suit), 
+#	CardData.new(virado.value, virado.suit)
+#	)
 
 func onPlayedCard(card):
 	var convertedCard = CardData.new(card.value, card.suit)

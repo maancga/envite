@@ -3,7 +3,10 @@ class_name PreGame
 var isGameStartable = false
 var gamePlayers = GamePlayers.new()
 
-func addPlayer(id:String ):
+func _ready():
+	print("Pregame created!")
+
+func addPlayer(id: String ):
 	gamePlayers.addPlayer(id)
 	if gamePlayers.amountOfPlayers() >= 4 : isGameStartable = true
 
@@ -11,8 +14,7 @@ func start():
 	if not isGameStartable :
 		print("game can not start since there is not the minimal amount of players")
 		return 
-	var game = Game.new()
-	game.setPlayers(gamePlayers)
+	var game = Game.new(gamePlayers, PlayerInteractor.new(), NormalDeck.new())
 	return game
 
 func amountOfPlayers():

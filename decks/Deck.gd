@@ -1,30 +1,14 @@
 extends Node2D
 
+class_name Deck
+
 const Suits = preload("res://cards/SuitEnum.gd")
 const Values = preload("res://cards/ValueEnum.gd")
 
-var cards = []
+var cards : Array[ServerCard]
 
-func _ready():
-	for suit in Suits.Suit.values():
-		for value in Values.Value.values():
-			cards.push_back(CardData.new(value, suit))
-	shuffle()
-
-func createAndShuffle():
-	for suit in Suits.Suit.values():
-		for value in Values.Value.values():
-			cards.push_back(CardData.new(value, suit))
-	shuffle()
-
-	
-func shuffle():
-	var n = cards.size()
-	for i in range(n - 1, 0, -1):
-		var j = randi() % (i + 1)
-		var temp = cards[i]
-		cards[i] = cards[j]
-		cards[j] = temp
-		
 func getTopCard():
 	return cards.pop_front()
+
+func createAndShuffle():
+	push_error("⚠️ createAndShuffle() must be implemented by subclass")
