@@ -14,3 +14,10 @@ func play():
 
 func isSuit(comparingSuit: SuitEnum.Suit):
 	return comparingSuit == suit
+
+func getCardName():
+	return  ValueEnum.VALUES_TRANSLATIONS[value] + " de " + getSuitName()
+	
+func getSuitName():
+	return str(SuitEnum.SUIT_NAMES[suit])
+	

@@ -25,8 +25,12 @@ func addPlayer(id: String ):
 
 func assignTeam(id: String):
 	var comparisonIndex = players.size() -1
-	if (comparisonIndex % 2 == 0): team1.addPlayer(id)
-	if (comparisonIndex % 2 == 1): team2.addPlayer(id)
+	if (comparisonIndex % 2 == 0): 
+		team1.addPlayer(id)
+		return
+	if (comparisonIndex % 2 == 1): 
+		team2.addPlayer(id)
+		return
 
 func amountOfPlayers():
 	return players.size()
@@ -38,3 +42,8 @@ func getNext(currentPlayer: String):
 	var currentPlayerIndex = playersIdsMap[currentPlayer]
 	if (currentPlayerIndex == players.size() -1): return players[0]
 	return players[currentPlayerIndex + 1]
+
+func getTeam(id: String):
+	if team1.players.find(id) > -1: return "team1"
+	if team2.players.find(id) > -1: return "team2"
+	return "none"

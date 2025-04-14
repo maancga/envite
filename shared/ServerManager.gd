@@ -28,6 +28,8 @@ func onClientConnected(id):
 	var game = preGame.start()
 	if game is Game:
 		for player in game.gamePlayers.players:
+			game.newGame()
+			get_tree().get_root().print_tree_pretty()
 			rpc_id(player, "gameStarted")
 
 @rpc("any_peer")
@@ -52,7 +54,7 @@ func connectClient(ip = "127.0.0.1", port = 9000):
 	clientConnectedSignal.emit()
 	
 @rpc("authority")
-func receive_hand(cards):
+func receiveHand(cards):
 	cardsReceivedSignal.emit(cards)
 
 @rpc("authority")
@@ -61,6 +63,7 @@ func receiveVirado(virado):
 
 @rpc("authority")
 func gameStarted():
+	print("✅ gameStarted() was called")
 	gameStartedSignal.emit()
 
 func playCard(cardData: CardData):

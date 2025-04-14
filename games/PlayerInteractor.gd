@@ -1,3 +1,5 @@
+extends Node
+
 class_name PlayerInteractor
 
 func dealHandToPlayer(_player: String, _hand: ServerHand) -> void:

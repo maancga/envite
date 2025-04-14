@@ -80,12 +80,12 @@ func loadGameScene():
 	add_child(gameScene)
 	gameScene.connect("playedCard", Callable(self, "onPlayedCard"))
 	currentScene = gameScene
-#	gameScene.setUpScene(chosenName, 
-#	CardData.new(receivedCards[1].value, receivedCards[1].suit), 
-#	CardData.new(receivedCards[2].value, receivedCards[2].suit), 
-#	CardData.new(receivedCards[3].value, receivedCards[3].suit), 
-#	CardData.new(virado.value, virado.suit)
-#	)
+	gameScene.setUpScene(chosenName, 
+	CardData.new(receivedCards[1].value, receivedCards[1].suit), 
+	CardData.new(receivedCards[2].value, receivedCards[2].suit), 
+	CardData.new(receivedCards[3].value, receivedCards[3].suit), 
+	CardData.new(virado.value, virado.suit)
+	)
 
 func onPlayedCard(card):
 	var convertedCard = CardData.new(card.value, card.suit)

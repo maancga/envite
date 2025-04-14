@@ -14,7 +14,7 @@ func start():
 	if not isGameStartable :
 		print("game can not start since there is not the minimal amount of players")
 		return 
-	var game = Game.new(gamePlayers, PlayerInteractor.new(), NormalDeck.new())
+	var game = Game.new(gamePlayers, RealPlayerInteractor.new(), NormalDeck.new())
 	return game
 
 func amountOfPlayers():

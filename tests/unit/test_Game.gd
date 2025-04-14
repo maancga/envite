@@ -78,7 +78,7 @@ func test_current_player_plays_its_first_card():
 	assert_eq(game.currentHands["721778859"].thirdCard.played, false)
 	assert_true(game.currentPlayerTurn == "136122084")
 
-func test_all_players_play_a_turn_so_its_first_player_turn_again():
+func all_players_play_a_card_and_since_first_player_wins_it_is_his_turn_again():
 	var players = GamePlayers.new()
 	players.addPlayer("721778859")
 	players.addPlayer("136122084")
@@ -87,6 +87,10 @@ func test_all_players_play_a_turn_so_its_first_player_turn_again():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
+	var tresDeBastos = ServerCard.new(ValueEnum.Value._3, SuitEnum.Suit.BASTOS)
+
+	deck.setTopCards([tresDeBastos])
+
 	var game = Game.new(players, spy, deck)
 
 	game.newGame()
@@ -174,13 +178,12 @@ func test_gives_score_to_winning_team_after_every_player_has_played_a_card():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
+	var tresDeBastos = ServerCard.new(ValueEnum.Value._3, SuitEnum.Suit.BASTOS)
+
+	deck.setTopCards([tresDeBastos])
+
 	var game = Game.new(players, spy, deck)
 
-	var tresDeBastos = ServerCard.new(ValueEnum.Value._3, SuitEnum.Suit.BASTOS)
-	var onceDeBastos = ServerCard.new(ValueEnum.Value.CABALLO, SuitEnum.Suit.BASTOS)
-	var diezDeOros = ServerCard.new(ValueEnum.Value.SOTA, SuitEnum.Suit.OROS)
-	var dosDeCopas = ServerCard.new(ValueEnum.Value._2, SuitEnum.Suit.COPAS)
-	deck.setTopCards([tresDeBastos, onceDeBastos, diezDeOros, dosDeCopas])
 	game.newGame()
 
 	game.playFirstCard("721778859")

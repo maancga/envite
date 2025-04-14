@@ -53,15 +53,14 @@ func isBiggerTriumph(firstCard: ServerCard, secondCard: ServerCard):
 			return false
 	return false
 
-
 func isBiggerVirado(firstCard: ServerCard, secondCard: ServerCard):
-	return viradoValuesHierarchy.find(firstCard) < viradoValuesHierarchy.find(secondCard)
+	return viradoValuesHierarchy.find(firstCard.value) < viradoValuesHierarchy.find(secondCard.value)
 
 func isBiggerFirstCardSuit(firstCard: ServerCard, secondCard: ServerCard):
-	return firstCardValuesHierarchy.find(firstCard) < firstCardValuesHierarchy.find(secondCard)
+	return firstCardValuesHierarchy.find(firstCard.value) < firstCardValuesHierarchy.find(secondCard.value)
 
 func isBiggerCardNoSuit(firstCard: ServerCard, secondCard: ServerCard):
-	return firstCardValuesHierarchy.find(firstCard) < firstCardValuesHierarchy.find(secondCard)
+	return firstCardValuesHierarchy.find(firstCard.value) < firstCardValuesHierarchy.find(secondCard.value)
 
 func isBetterThan(firstCard: ServerCard, secondCard: ServerCard) -> bool:
 	var bothAreTriumphs = isTriumph(firstCard) && isTriumph(secondCard)
