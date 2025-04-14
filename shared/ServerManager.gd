@@ -8,6 +8,8 @@ signal viradoReceivedSignal(virado)
 signal gameStartedSignal()
 
 var preGame: PreGame
+var playerInteractor: PlayerInteractor
+var hasGameStarted = false
 
 ############## SERVER
 
@@ -20,17 +22,31 @@ func startServer(port = 9000):
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(onClientConnected)
 	print("🟢 Server running on port", port)
-	preGame = PreGame.new()
+	playerInteractor = RealPlayerInteractor.new()
+	playerInteractor.connect("dealHandToPlayerSignal", Callable(self, "onDealtHand", ))
+	playerInteractor.connect("dealViradoToPlayerSignal", Callable(self, "onDealtVirado", ))
+	playerInteractor.name = "Interactor"
+	add_child(playerInteractor)
+	preGame = PreGame.new(playerInteractor)
+	preGame.name = "Pregame"
+	add_child(preGame)
+
 
 
 func onClientConnected(id):
 	preGame.addPlayer(str(id))
 	var game = preGame.start()
 	if game is Game:
+		game.newGame()
 		for player in game.gamePlayers.players:
-			game.newGame()
-			get_tree().get_root().print_tree_pretty()
-			rpc_id(player, "gameStarted")
+			rpc_id(int(player), "gameStarted")
+
+func onDealtHand(player: String, hand: ServerHand):
+	rpc_id(int(player),"receiveHand", hand.to_dict())
+
+func onDealtVirado(player: String, card: ServerCard):
+	rpc_id(int(player),"receiveVirado", card.to_dict())
+
 
 @rpc("any_peer")
 func onClientPlayedCard(cardData):
@@ -54,8 +70,8 @@ func connectClient(ip = "127.0.0.1", port = 9000):
 	clientConnectedSignal.emit()
 	
 @rpc("authority")
-func receiveHand(cards):
-	cardsReceivedSignal.emit(cards)
+func receiveHand(hand):
+	cardsReceivedSignal.emit(hand)
 
 @rpc("authority")
 func receiveVirado(virado):
@@ -63,7 +79,6 @@ func receiveVirado(virado):
 
 @rpc("authority")
 func gameStarted():
-	print("✅ gameStarted() was called")
 	gameStartedSignal.emit()
 
 func playCard(cardData: CardData):

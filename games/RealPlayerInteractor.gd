@@ -1,8 +1,11 @@
 class_name RealPlayerInteractor extends PlayerInteractor
 
+signal dealHandToPlayerSignal(player: String, hand: ServerHand)
+signal dealViradoToPlayerSignal(player: String, card: ServerCard)
+
 func dealHandToPlayer(player: String, hand: ServerHand) -> void:
-	print("Player:", player, "→ int?", typeof(player), "→", int(player))
-	rpc_id(int(player), "receiveHand", hand)
+	dealHandToPlayerSignal.emit(player, hand)
+
 
 func informViradoToPlayer(player: String, card: ServerCard) -> void:
-	rpc_id(int(player), "receiveVirado", card)
+	dealViradoToPlayerSignal.emit(player, card)

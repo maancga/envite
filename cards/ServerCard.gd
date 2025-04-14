@@ -21,3 +21,9 @@ func getCardName():
 func getSuitName():
 	return str(SuitEnum.SUIT_NAMES[suit])
 	
+func to_dict() -> Dictionary:
+	return {
+		"value": value,
+		"suit": suit
+	}
+	

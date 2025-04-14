@@ -35,4 +35,3 @@ func getCardName():
 	
 func getSuitName():
 	return str(SuitEnum.SUIT_NAMES[suit])
-	

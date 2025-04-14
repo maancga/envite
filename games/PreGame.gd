@@ -1,9 +1,14 @@
+extends Node
+
 class_name PreGame
 
 var isGameStartable = false
-var gamePlayers = GamePlayers.new()
+var gamePlayers: GamePlayers
+var interactor: PlayerInteractor
 
-func _ready():
+func _init(newInteractor: PlayerInteractor):
+	gamePlayers = GamePlayers.new()
+	interactor = newInteractor
 	print("Pregame created!")
 
 func addPlayer(id: String ):
@@ -14,7 +19,8 @@ func start():
 	if not isGameStartable :
 		print("game can not start since there is not the minimal amount of players")
 		return 
-	var game = Game.new(gamePlayers, RealPlayerInteractor.new(), NormalDeck.new())
+
+	var game = Game.new(gamePlayers, interactor, NormalDeck.new())
 	return game
 
 func amountOfPlayers():

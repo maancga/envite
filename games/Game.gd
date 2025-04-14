@@ -35,6 +35,7 @@ func hasPlayers(amount: int):
 	return gamePlayers.hasPlayers(amount)
 
 func newGame():
+	print("new game called!")
 	chico = 1
 	chicoRound = 1
 	currentPlayerTurn = gamePlayers.players[0]

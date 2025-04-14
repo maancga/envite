@@ -15,13 +15,13 @@ func _ready():
 	var args = OS.get_cmdline_args()
 	if "--server" in args:
 		print("🧠 Starting in SERVER mode")
-		start_headless_server()
+		startServer()
 	else:
 		print("🎮 Starting in CLIENT mode")
-		loadChangeNameScene()
 		loadConnectionScene()
+		loadChangeNameScene()
 
-func start_headless_server():
+func startServer():
 	var server = serverManagerScript.new()
 	server.name = "ServerManager"
 	add_child(server)
@@ -56,7 +56,7 @@ func onClientConnected():
 	tryLoadGameScene()
 
 func onGameHasStarted():
-	print("Game has started!", )
+	print("onGameHasStarted triggered on instance", self.get_instance_id())
 	hasGameStarted = true
 	tryLoadGameScene()
 
@@ -80,10 +80,11 @@ func loadGameScene():
 	add_child(gameScene)
 	gameScene.connect("playedCard", Callable(self, "onPlayedCard"))
 	currentScene = gameScene
+
 	gameScene.setUpScene(chosenName, 
-	CardData.new(receivedCards[1].value, receivedCards[1].suit), 
-	CardData.new(receivedCards[2].value, receivedCards[2].suit), 
-	CardData.new(receivedCards[3].value, receivedCards[3].suit), 
+	CardData.new(receivedCards.firstCard.value, receivedCards.firstCard.suit), 
+	CardData.new(receivedCards.secondCard.value, receivedCards.secondCard.suit), 
+	CardData.new(receivedCards.thirdCard.value, receivedCards.thirdCard.suit), 
 	CardData.new(virado.value, virado.suit)
 	)
 

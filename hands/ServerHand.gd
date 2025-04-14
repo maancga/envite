@@ -20,3 +20,10 @@ func playSecondCard():
 
 func playThirdCard():
 	thirdCard.play()
+
+func to_dict() -> Dictionary:
+	return {
+		"firstCard": firstCard.to_dict(),
+		"secondCard": secondCard.to_dict(),
+		"thirdCard": thirdCard.to_dict()
+	}
