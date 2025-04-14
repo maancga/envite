@@ -8,8 +8,6 @@ var currentPlayerTurn: String
 
 var currentDeck
 var currentHands: Dictionary[String, ServerHand] = {}
-var dealHandToPlayer
-var informViradoToPlayer
 var roundPlayedCards: Dictionary[String, ServerCard] = {}
 var virado: ServerCard
 var firstPlayerPlayedCard: ServerCard
@@ -39,6 +37,7 @@ func newGame():
 	chico = 1
 	chicoRound = 1
 	currentPlayerTurn = gamePlayers.players[0]
+	playerInteractor.informPlayerTurn(currentPlayerTurn)
 	currentRoundTurn = 1
 	startRound()
 
@@ -46,7 +45,6 @@ func startRound():
 	currentDeck.createAndShuffle()
 	currentHands = {}
 	deal()
-
 
 func deal():
 	var players = gamePlayers.players
@@ -56,12 +54,13 @@ func deal():
 		playerInteractor.dealHandToPlayer(player, playerHand)
 	virado = currentDeck.getTopCard()
 	for player in players:
-		playerInteractor.informViradoToPlayer(player, virado)
+		playerInteractor.informViradoToPlayer(virado)
 
 func nextTurn():
 	if(currentRoundTurn == gamePlayers.amountOfPlayers()): return finishRound()
 	currentRoundTurn += 1
 	currentPlayerTurn = gamePlayers.getNext(currentPlayerTurn)
+	playerInteractor.informPlayerTurn(currentPlayerTurn)
 
 func finishRound():
 	var roundWinner = calculateRoundWinner()
@@ -105,22 +104,31 @@ func team2Wins():
 	print("team 2 won!")
 
 func playFirstCard(id: String):
-	if(currentPlayerTurn != id): return
+	print("player ", gamePlayers.playersIdsMap[id], " attempted to play its first card")
+	if(currentPlayerTurn != id): 
+		print("can not play since its not its turn")
+		return
 	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard =  currentHands[id].firstCard
 	roundPlayedCards[id] = currentHands[id].firstCard
 	currentHands[id].playFirstCard()
 	nextTurn()
 	
 func playSecondCard(id: String):
-	if(currentPlayerTurn != id): return
-	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard =  currentHands[id].firstCard
+	print("player ", gamePlayers.playersIdsMap[id], " attempted to play its second card")
+	if(currentPlayerTurn != id): 
+		print("can not play since its not its turn")
+		return
+	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard =  currentHands[id].secondCard
 	roundPlayedCards[id] = currentHands[id].secondCard
 	currentHands[id].playSecondCard()
 	nextTurn()
 	
 func playThirdCard(id: String):
-	if(currentPlayerTurn != id): return
-	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard =  currentHands[id].firstCard
+	print("player ", gamePlayers.playersIdsMap[id], " attempted to play its third card")
+	if(currentPlayerTurn != id): 
+		print("can not play since its not its turn")
+		return
+	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard =  currentHands[id].thirdCard
 	roundPlayedCards[id] = currentHands[id].thirdCard
 	currentHands[id].playThirdCard()
 	nextTurn()

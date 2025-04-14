@@ -9,9 +9,8 @@ func dealHandToPlayer(player: String, _hand: ServerHand) -> void:
     amountOfCallsFunction1+=1
     idCallsFunction1.append(player)
 
-func informViradoToPlayer(player: String, _card: ServerCard) -> void:
+func informViradoToPlayer(_card: ServerCard) -> void:
     amountOfCallsFunction2+=1
-    idCallsFunction2.append(player)
 
 func dealHandToPlayersBeenCalled(amount: int):
     return amount == amountOfCallsFunction1

@@ -68,4 +68,10 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "FOO"
 
+[node name="TurnLabel" type="Label" parent="."]
+offset_left = 897.0
+offset_right = 982.0
+offset_bottom = 23.0
+text = "Es tu turno"
+
 [connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]

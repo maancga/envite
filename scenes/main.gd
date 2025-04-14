@@ -9,6 +9,8 @@ var receivedCards = []
 var virado = null
 var serverManagerScript = preload("res://shared/ServerManager.gd")
 var serverManager
+var gameScene = null
+var currentPlayerTurnId
 
 
 func _ready():
@@ -42,10 +44,10 @@ func loadConnectionScene():
 	serverManager.connect("cardsReceivedSignal", Callable(self, "onReceivedCards"))
 	serverManager.connect("viradoReceivedSignal", Callable(self, "onReceivedVirado"))
 	serverManager.connect("gameStartedSignal", Callable(self, "onGameHasStarted"))
+	serverManager.connect("receivedPlayedTurn", Callable(self, "onReceivedPlayedTurn"))
 	serverManager.connectClient()
 
 func onNameChosen(userName):
-	print("Name received!", userName)
 	hasChosenName = true
 	chosenName = userName
 	tryLoadGameScene()
@@ -56,16 +58,13 @@ func onClientConnected():
 	tryLoadGameScene()
 
 func onGameHasStarted():
-	print("onGameHasStarted triggered on instance", self.get_instance_id())
 	hasGameStarted = true
 	tryLoadGameScene()
 
 func onReceivedCards(cards):
-	print("Received cards!", cards )
 	receivedCards = cards 
 
 func onReceivedVirado(receivedVirado):
-	print("Received virado!", receivedVirado )
 	virado = receivedVirado 
 
 func tryLoadGameScene():
@@ -76,20 +75,31 @@ func loadGameScene():
 	currentScene.queue_free()
 	currentScene = null
 
-	var gameScene = preload("res://scenes/GameScene.tscn").instantiate()
+	gameScene = preload("res://scenes/GameScene.tscn").instantiate()
 	add_child(gameScene)
 	gameScene.connect("playedCard", Callable(self, "onPlayedCard"))
 	currentScene = gameScene
 
+	var playerId = multiplayer.get_unique_id()
 	gameScene.setUpScene(chosenName, 
-	CardData.new(receivedCards.firstCard.value, receivedCards.firstCard.suit), 
-	CardData.new(receivedCards.secondCard.value, receivedCards.secondCard.suit), 
-	CardData.new(receivedCards.thirdCard.value, receivedCards.thirdCard.suit), 
-	CardData.new(virado.value, virado.suit)
+		CardData.new(receivedCards.firstCard.value, receivedCards.firstCard.suit), 
+		CardData.new(receivedCards.secondCard.value, receivedCards.secondCard.suit), 
+		CardData.new(receivedCards.thirdCard.value, receivedCards.thirdCard.suit), 
+		CardData.new(virado.value, virado.suit),
+		str(playerId)
 	)
+	setFirstTurnPlayer()
 
-func onPlayedCard(card):
-	var convertedCard = CardData.new(card.value, card.suit)
-	print("received card!!:", convertedCard)
-	serverManager.playCard(convertedCard)
+
+func onPlayedCard(cardIndex: String):
+	serverManager.playCard(cardIndex)
+	
+func onReceivedPlayedTurn(playerId: String):
+	currentPlayerTurnId = playerId
+	if !gameScene: return
+	gameScene.setPlayerTurn(playerId)
+
+func setFirstTurnPlayer():
+	gameScene.setPlayerTurn(currentPlayerTurnId)
+
 	

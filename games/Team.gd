@@ -11,7 +11,7 @@ func addPlayer(id: String ):
 	var playerIndex = players.size() - 1
 	playersIdsMap[id] = playerIndex 
 	print("🎮 Player with id: ", id, " added to team ", teamName)
-	print("Current Team players players:", amountOfPlayers())
+	print("Current Team players amount:", amountOfPlayers())
 
 func amountOfPlayers():
 	return players.size()
