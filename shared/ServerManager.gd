@@ -12,7 +12,8 @@ signal clientConnectedSignal
 signal cardsReceivedSignal(cards)
 signal viradoReceivedSignal(virado)
 signal gameStartedSignal()
-signal receivedPlayedTurn(playerId)
+signal receivedPlayedTurnSignal(playerId)
+signal receiveCardPlayedSignal(playerId, card, playedOrder)
 
 var preGame: PreGame
 var game: Game
@@ -34,6 +35,9 @@ func startServer(port = 9000):
 	playerInteractor.connect("dealHandToPlayerSignal", Callable(self, "onDealtHand", ))
 	playerInteractor.connect("dealViradoToPlayerSignal", Callable(self, "onDealtVirado", ))
 	playerInteractor.connect("sendCurrentPlayerTurnSignal", Callable(self, "onPlayerTurn"))
+	playerInteractor.connect("sendPlayerPlayedCardSignal", Callable(self, "onPlayedCard"))
+
+	
 	playerInteractor.name = "Interactor"
 	add_child(playerInteractor)
 	preGame = PreGame.new(playerInteractor)
@@ -45,7 +49,7 @@ func onClientConnected(id):
 	game = preGame.start()
 	if game is Game:
 		game.newGame()
-		for player in game.gamePlayers.players:
+		for player in game.gamePlayers.playerIds:
 			rpc_id(int(player), "gameStarted")
 
 func onDealtHand(player: String, hand: ServerHand):
@@ -57,6 +61,9 @@ func onDealtVirado(card: ServerCard):
 func onPlayerTurn(player: String):
 	rpc("receivePlayerTurn", player)
 
+func onPlayedCard(player: Dictionary, card: ServerCard, playedOrder: int):
+	rpc("receiveCardPlayed", player, card.to_dict(), playedOrder)
+
 
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
@@ -64,6 +71,16 @@ func onClientPlayedCard(cardIndex):
 	if cardIndex == "1": game.playFirstCard(str(sender))
 	if cardIndex == "2": game.playSecondCard(str(sender))
 	if cardIndex == "3": game.playThirdCard(str(sender))
+
+@rpc("any_peer")
+func onClientChoosesName(chosenName: String):
+	var sender = multiplayer.get_remote_sender_id()
+	preGame.setPlayerName(str(sender), chosenName)
+	game = preGame.start()
+	if game is Game:
+		game.newGame()
+		for player in game.gamePlayers.playerIds:
+			rpc_id(int(player), "gameStarted")
 
 ################ CLIENT
 
@@ -80,11 +97,11 @@ func connectClient(ip = "127.0.0.1", port = 9000):
 	clientConnectedSignal.emit()
 	
 @rpc("authority")
-func receiveHand(hand):
+func receiveHand(hand: Dictionary):
 	cardsReceivedSignal.emit(hand)
 
 @rpc("authority")
-func receiveVirado(virado):
+func receiveVirado(virado: Dictionary):
 	viradoReceivedSignal.emit(virado)
 
 @rpc("authority")
@@ -93,7 +110,15 @@ func gameStarted():
 
 @rpc("authority")
 func receivePlayerTurn(player: String):
-	receivedPlayedTurn.emit(player)
+	receivedPlayedTurnSignal.emit(player)
+
+@rpc("authority")
+func receiveCardPlayed(player: Dictionary, card: Dictionary, playedOrder: int):
+	print("Received card played signal")
+	print("player: ", player)
+	print("card: ", card)
+	print("playedOrder: ", playedOrder)
+	receiveCardPlayedSignal.emit(player, card, playedOrder)
 
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():
@@ -101,3 +126,6 @@ func playCard(cardIndex: String) -> void:
 		return
 
 	rpc_id(1, "onClientPlayedCard", cardIndex)
+
+func chooseName(playerName: String) -> void:
+	rpc_id(1, "onClientChoosesName", playerName)

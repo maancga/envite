@@ -30,13 +30,14 @@ func _init(newGamePlayers:GamePlayers, newPlayerInteractor: PlayerInteractor, de
 
 	
 func hasPlayers(amount: int):
+	print("aaaa")
 	return gamePlayers.hasPlayers(amount)
 
 func newGame():
 	print("new game called!")
 	chico = 1
 	chicoRound = 1
-	currentPlayerTurn = gamePlayers.players[0]
+	currentPlayerTurn = gamePlayers.playerIds[0]
 	playerInteractor.informPlayerTurn(currentPlayerTurn)
 	currentRoundTurn = 1
 	startRound()
@@ -47,7 +48,7 @@ func startRound():
 	deal()
 
 func deal():
-	var players = gamePlayers.players
+	var players = gamePlayers.playerIds
 	for player in players:
 		var playerHand = ServerHand.new(currentDeck.getTopCard(), currentDeck.getTopCard(), currentDeck.getTopCard())
 		currentHands[player] = playerHand
@@ -108,9 +109,11 @@ func playFirstCard(id: String):
 	if(currentPlayerTurn != id): 
 		print("can not play since its not its turn")
 		return
-	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard =  currentHands[id].firstCard
-	roundPlayedCards[id] = currentHands[id].firstCard
+	var playedCard = currentHands[id].firstCard
+	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard = playedCard
+	roundPlayedCards[id] = playedCard
 	currentHands[id].playFirstCard()
+	playerInteractor.informPlayerPlayedCard(gamePlayers.playerInstances[id].toDictionary(), playedCard, currentRoundTurn)
 	nextTurn()
 	
 func playSecondCard(id: String):
@@ -118,9 +121,11 @@ func playSecondCard(id: String):
 	if(currentPlayerTurn != id): 
 		print("can not play since its not its turn")
 		return
-	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard =  currentHands[id].secondCard
-	roundPlayedCards[id] = currentHands[id].secondCard
+	var playedCard = currentHands[id].secondCard
+	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard = playedCard
+	roundPlayedCards[id] = playedCard
 	currentHands[id].playSecondCard()
+	playerInteractor.informPlayerPlayedCard(gamePlayers.playerInstances[id].toDictionary(), playedCard, currentRoundTurn)
 	nextTurn()
 	
 func playThirdCard(id: String):
@@ -128,12 +133,12 @@ func playThirdCard(id: String):
 	if(currentPlayerTurn != id): 
 		print("can not play since its not its turn")
 		return
-	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard =  currentHands[id].thirdCard
-	roundPlayedCards[id] = currentHands[id].thirdCard
+	var playedCard = currentHands[id].thirdCard
+	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard = playedCard
+	roundPlayedCards[id] = playedCard
 	currentHands[id].playThirdCard()
+	playerInteractor.informPlayerPlayedCard(gamePlayers.playerInstances[id].toDictionary(), playedCard, currentRoundTurn)
 	nextTurn()
 
 func calculateRoundWinner():
 	return RoundWinnerCalculator.new(virado, firstPlayerPlayedCard).calculateWinner(roundPlayedCards)
-
-	

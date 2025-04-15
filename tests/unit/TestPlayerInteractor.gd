@@ -12,6 +12,12 @@ func dealHandToPlayer(player: String, _hand: ServerHand) -> void:
 func informViradoToPlayer(_card: ServerCard) -> void:
     amountOfCallsFunction2+=1
 
+func informPlayerTurn(_player: String) -> void:
+    pass 
+    
+func informPlayerPlayedCard(_player: Dictionary, _card: ServerCard, _playedOrder: int) -> void:
+    pass
+
 func dealHandToPlayersBeenCalled(amount: int):
     return amount == amountOfCallsFunction1
 

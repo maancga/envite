@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://hands/MyHand.tscn" id="2_6ytau"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://hands/UnknownHand.tscn" id="3_vijgj"]
 [ext_resource type="PackedScene" uid="uid://dgkd0y78x6rf1" path="res://decks/Deck.tscn" id="4_pynjx"]
-[ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://cards/Card.tscn" id="5_yrli1"]
-[ext_resource type="Texture2D" uid="uid://bm5oysr70mgs3" path="res://cards/images/deck.png" id="6_j40tv"]
+[ext_resource type="PackedScene" uid="uid://3kovmxon4oix" path="res://cards/4PlayersPlayedCards.tscn" id="5_xs4ih"]
+[ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://cards/Virado.tscn" id="6_6ytau"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_xs4ih")
@@ -36,32 +36,14 @@ offset_right = 1050.0
 offset_bottom = 625.0
 text = "JUGAR CARTA"
 
-[node name="Virado" type="Label" parent="."]
-offset_left = 474.0
-offset_top = 166.0
-offset_right = 624.0
-offset_bottom = 215.0
-text = "Virado:
-"
-
 [node name="Carta seleccionada" type="Label" parent="."]
-offset_left = 428.0
-offset_top = 448.0
-offset_right = 578.0
-offset_bottom = 471.0
+offset_left = 432.0
+offset_top = 471.0
+offset_right = 582.0
+offset_bottom = 494.0
 text = "Carta seleccionada:"
 
 [node name="CardShuffler" parent="." instance=ExtResource("4_pynjx")]
-
-[node name="LastCard" parent="." instance=ExtResource("5_yrli1")]
-position = Vector2(611, 359)
-rotation = 1.97048
-value = 0
-
-[node name="Deck" type="Sprite2D" parent="."]
-position = Vector2(537, 316)
-scale = Vector2(0.205078, 0.205078)
-texture = ExtResource("6_j40tv")
 
 [node name="PlayerName" type="Label" parent="."]
 offset_right = 40.0
@@ -73,5 +55,13 @@ offset_left = 897.0
 offset_right = 982.0
 offset_bottom = 23.0
 text = "Es tu turno"
+
+[node name="Virado" parent="." instance=ExtResource("6_6ytau")]
+position = Vector2(181, 23)
+scale = Vector2(0.7, 0.7)
+
+[node name="4PlayersPlayedCards" parent="." instance=ExtResource("5_xs4ih")]
+position = Vector2(407, 412)
+scale = Vector2(0.6, 0.6)
 
 [connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]

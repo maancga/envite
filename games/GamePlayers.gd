@@ -1,30 +1,43 @@
 class_name GamePlayers
 
-var players = []
+var playerIds = []
 var playersIdsMap = {}
+var playerInstances = {}
 var team1: Team
 var team2: Team
 
 func _init():
-	team1= Team.new()
-	team2= Team.new()
+	team1 = Team.new()
+	team2 = Team.new()
 	team1.teamName = "Equipo 1"
 	team2.teamName = "Equipo 2"
 
-func addPlayer(id: String ):
+func addPlayer(id: String, name: String =  ""):
 	var maxPlayersReached = amountOfPlayers() == 6
 	if maxPlayersReached: return
-	var playerExists = players.find(id) > -1
+	var playerExists = playerIds.find(id) > -1
 	if playerExists: return 
-	players.append(id)
-	var playerIndex = players.size() - 1
+
+
+	playerIds.append(id)
+	var playerIndex = playerIds.size() - 1
 	playersIdsMap[id] = playerIndex 
+
+	var player = ServerPlayer.new(id, name)
+	playerInstances[id] = player
+
 	print("🎮 Player connected with id: ", id, " as player ", playerIndex)
-	print("Current Connected players:", amountOfPlayers())
+	print("Current Connected playerIds:", amountOfPlayers())
 	assignTeam(id)
 
+func setPlayerName(id: String, name: String):
+	var player = playerInstances[id]
+	if player == null: return
+	player.changeName(name)
+	print("Player ", id, " changed its name to ", name)
+
 func assignTeam(id: String):
-	var comparisonIndex = players.size() -1
+	var comparisonIndex = playerIds.size() -1
 	if (comparisonIndex % 2 == 0): 
 		team1.addPlayer(id)
 		return
@@ -33,17 +46,24 @@ func assignTeam(id: String):
 		return
 
 func amountOfPlayers():
-	return players.size()
+	return playerIds.size()
 
 func hasPlayers(amount: int):
+	print(amountOfPlayers(), " == ", amount)
 	return amountOfPlayers() == amount
 
 func getNext(currentPlayer: String):
 	var currentPlayerIndex = playersIdsMap[currentPlayer]
-	if (currentPlayerIndex == players.size() -1): return players[0]
-	return players[currentPlayerIndex + 1]
+	if (currentPlayerIndex == playerIds.size() -1): return playerIds[0]
+	return playerIds[currentPlayerIndex + 1]
 
 func getTeam(id: String):
 	if team1.players.find(id) > -1: return "team1"
 	if team2.players.find(id) > -1: return "team2"
 	return "none"
+
+func everyPlayerIsReady():
+	for playerId in playerIds:
+		var player = playerInstances[playerId]
+		if not player.isReady(): return false
+	return true

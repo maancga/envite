@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://3kovmxon4oix"]
+
+[ext_resource type="Script" uid="uid://ch8c2ks4w74tb" path="res://cards/4PlayersPlayedCards.gd" id="1_7lu17"]
+[ext_resource type="PackedScene" uid="uid://bwmrvqgd5vn4w" path="res://cards/PlayedCard.tscn" id="1_snsne"]
+
+[node name="4PlayersPlayedCards" type="Node2D"]
+script = ExtResource("1_7lu17")
+
+[node name="firstCard" parent="." instance=ExtResource("1_snsne")]
+
+[node name="secondCard" parent="." instance=ExtResource("1_snsne")]
+position = Vector2(167, 1)
+
+[node name="thirdCard" parent="." instance=ExtResource("1_snsne")]
+position = Vector2(328, 2)
+
+[node name="fourthCard" parent="." instance=ExtResource("1_snsne")]
+position = Vector2(499, 3)

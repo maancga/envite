@@ -1,12 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgac4qkncf57l"]
+[gd_scene load_steps=3 format=3 uid="uid://bwmrvqgd5vn4w"]
 
-[ext_resource type="Script" uid="uid://iam43jnqqvja" path="res://cards/Card.gd" id="1_tgmmg"]
+[ext_resource type="Script" uid="uid://iam43jnqqvja" path="res://cards/Card.gd" id="1_5lbe2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hael8"]
 size = Vector2(116, 177)
 
 [node name="Card" type="Node2D"]
-script = ExtResource("1_tgmmg")
+script = ExtResource("1_5lbe2")
 
 [node name="CardImage" type="Sprite2D" parent="."]
 region_rect = Rect2(351, 38, 115, 177)
@@ -16,5 +16,12 @@ region_rect = Rect2(351, 38, 115, 177)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_hael8")
+
+[node name="PlayerNameLabel" type="Label" parent="."]
+offset_left = -35.0
+offset_top = -144.0
+offset_right = 34.0
+offset_bottom = -121.0
+text = "Jugador1"
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

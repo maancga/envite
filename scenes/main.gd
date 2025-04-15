@@ -44,12 +44,15 @@ func loadConnectionScene():
 	serverManager.connect("cardsReceivedSignal", Callable(self, "onReceivedCards"))
 	serverManager.connect("viradoReceivedSignal", Callable(self, "onReceivedVirado"))
 	serverManager.connect("gameStartedSignal", Callable(self, "onGameHasStarted"))
-	serverManager.connect("receivedPlayedTurn", Callable(self, "onReceivedPlayedTurn"))
+	serverManager.connect("receivedPlayedTurnSignal", Callable(self, "onReceivedPlayedTurn"))
+	serverManager.connect("receiveCardPlayedSignal", Callable(self, "onReceivedPlayedCard"))
+
 	serverManager.connectClient()
 
 func onNameChosen(userName):
 	hasChosenName = true
 	chosenName = userName
+	serverManager.chooseName(userName)
 	tryLoadGameScene()
 
 func onClientConnected():
@@ -102,4 +105,6 @@ func onReceivedPlayedTurn(playerId: String):
 func setFirstTurnPlayer():
 	gameScene.setPlayerTurn(currentPlayerTurnId)
 
+func onReceivedPlayedCard(player: Dictionary, card: Dictionary, playedOrder: int):
+	gameScene.addPlayedCard(player, card, playedOrder)
 	

@@ -10,3 +10,6 @@ func informViradoToPlayer(_card: ServerCard) -> void:
 
 func informPlayerTurn(_player: String) -> void:
 	push_error("⚠️ informPlayerTurn() must be implemented by subclass")
+
+func informPlayerPlayedCard(_player: Dictionary, _card: ServerCard, _playedOrder: int) -> void:
+	push_error("⚠️ informPlayerPlayedCard() must be implemented by subclass")

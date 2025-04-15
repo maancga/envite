@@ -12,9 +12,6 @@ signal clickedCard
 @export var value : Values.Value
 @onready var card_image: Sprite2D = $CardImage
 
-func _ready():
-	call_deferred("update_texture")
-
 func set_card_data(newValue: Values.Value, givenSuit: Suits.Suit, givenPosition: Vector2):
 	suit = givenSuit
 	value = newValue
@@ -25,6 +22,7 @@ func update_texture():
 	var path = pathResolver.new().resolve(suit, value)
 	var tex = load(path)
 	card_image.texture = tex
+
 
 func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:

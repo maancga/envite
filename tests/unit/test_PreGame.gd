@@ -40,6 +40,11 @@ func test_returns_a_game():
 	preGame.addPlayer("552119499")
 	preGame.addPlayer("780900127")
 
+	preGame.setPlayerName("721778859", "Chico")
+	preGame.setPlayerName("136122084", "Pablo")
+	preGame.setPlayerName("552119499", "Javier")
+	preGame.setPlayerName("780900127", "Javi")
+
 	var game = preGame.start()
 
 	assert_not_null(game)
@@ -64,6 +69,11 @@ func test_returns_a_game_with_4_players():
 	preGame.addPlayer("552119499")
 	preGame.addPlayer("780900127")
 
+	preGame.setPlayerName("721778859", "Chico")
+	preGame.setPlayerName("136122084", "Pablo")
+	preGame.setPlayerName("552119499", "Javier")
+	preGame.setPlayerName("780900127", "Javi")
+
 	var game = preGame.start()
 
 	assert_true(game.hasPlayers(4))
@@ -76,6 +86,12 @@ func test_returns_a_game_with_5_players():
 	preGame.addPlayer("552119499")
 	preGame.addPlayer("780900127")
 	preGame.addPlayer("2035371348")
+
+	preGame.setPlayerName("721778859", "Chico")
+	preGame.setPlayerName("136122084", "Pablo")
+	preGame.setPlayerName("552119499", "Javier")
+	preGame.setPlayerName("780900127", "Javi")
+	preGame.setPlayerName("2035371348", "Javi")
 
 	var game = preGame.start()
 
@@ -90,6 +106,12 @@ func test_returns_a_game_with_6_players():
 	preGame.addPlayer("780900127")
 	preGame.addPlayer("2035371348")
 	preGame.addPlayer("111111111")
+	preGame.setPlayerName("721778859", "Chico")
+	preGame.setPlayerName("136122084", "Pablo")
+	preGame.setPlayerName("552119499", "Javier")
+	preGame.setPlayerName("780900127", "Javi")
+	preGame.setPlayerName("2035371348", "Javi")
+	preGame.setPlayerName("111111111", "Javi")
 
 	var game = preGame.start()
 
