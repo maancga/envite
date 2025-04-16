@@ -1,15 +1,16 @@
 [gd_scene load_steps=3 format=3 uid="uid://cb6nhtncq4cae"]
 
-[ext_resource type="Texture2D" uid="uid://cyx632afcd7ow" path="res://cards/images/cards/card_unknown.jpg" id="1_57hyq"]
+[ext_resource type="Texture2D" uid="uid://c8qaul7cny0xg" path="res://cards/images/carta_desconocida_1.png" id="1_57hyq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hael8"]
 size = Vector2(116, 177)
 
 [node name="Card" type="Node2D"]
+metadata/_edit_horizontal_guides_ = [-144.0]
 
 [node name="CardImage" type="Sprite2D" parent="."]
-position = Vector2(0.499998, 0.532568)
-scale = Vector2(0.220307, 0.282644)
+position = Vector2(0, 0.999996)
+scale = Vector2(0.163719, 0.197354)
 texture = ExtResource("1_57hyq")
 region_rect = Rect2(351, 38, 115, 177)
 

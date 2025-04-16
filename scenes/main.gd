@@ -11,6 +11,9 @@ var serverManagerScript = preload("res://shared/ServerManager.gd")
 var serverManager
 var gameScene = null
 var currentPlayerTurnId
+var players = {}
+var team1 = []
+var team2 = []
 
 
 func _ready():
@@ -41,12 +44,16 @@ func loadConnectionScene():
 	serverManager.name = "ServerManager"
 	add_child(serverManager)
 	serverManager.connect("clientConnectedSignal", Callable(self, "onClientConnected"))
-	serverManager.connect("cardsReceivedSignal", Callable(self, "onReceivedCards"))
-	serverManager.connect("viradoReceivedSignal", Callable(self, "onReceivedVirado"))
+	serverManager.connect("receivedPlayersAndTeamsSignal", Callable(self, "onReceivedPlayersAndTeams"))
+	serverManager.connect("cardsReceivedSignal", Callable(self, "onFirstReceivedCards"))
+	serverManager.connect("viradoReceivedSignal", Callable(self, "onFirstReceivedVirado"))
 	serverManager.connect("gameStartedSignal", Callable(self, "onGameHasStarted"))
 	serverManager.connect("receivedPlayedTurnSignal", Callable(self, "onReceivedPlayedTurn"))
 	serverManager.connect("receiveCardPlayedSignal", Callable(self, "onReceivedPlayedCard"))
-
+	serverManager.connect("receivePlayerRoundWinnerSignal", Callable(self, "onReceivedRoundWinner"))
+	serverManager.connect("receiveTeamWonChicoPointsSignal", Callable(self, "onReceivedTeamWonChicoPoints"))
+	serverManager.connect("receiveTeamWonChicoSignal", Callable(self, "onReceivedTeamWonChico"))
+	serverManager.connect("receiveTeamWonSignal", Callable(self, "onReceivedTeamWon"))
 	serverManager.connectClient()
 
 func onNameChosen(userName):
@@ -64,11 +71,16 @@ func onGameHasStarted():
 	hasGameStarted = true
 	tryLoadGameScene()
 
-func onReceivedCards(cards):
+func onFirstReceivedCards(cards):
 	receivedCards = cards 
 
-func onReceivedVirado(receivedVirado):
+func onFirstReceivedVirado(receivedVirado):
 	virado = receivedVirado 
+
+func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2):
+	players = newPlayers
+	team1 = newTeam1
+	team2 = newTeam2
 
 func tryLoadGameScene():
 	if (hasChosenName && isClientConnected && hasGameStarted):
@@ -84,14 +96,30 @@ func loadGameScene():
 	currentScene = gameScene
 
 	var playerId = multiplayer.get_unique_id()
-	gameScene.setUpScene(chosenName, 
+	gameScene.setUpScene(chosenName, str(playerId), players, team1, team2 )
+	gameScene.setInitialCards(
 		CardData.new(receivedCards.firstCard.value, receivedCards.firstCard.suit), 
 		CardData.new(receivedCards.secondCard.value, receivedCards.secondCard.suit), 
 		CardData.new(receivedCards.thirdCard.value, receivedCards.thirdCard.suit), 
-		CardData.new(virado.value, virado.suit),
-		str(playerId)
+		CardData.new(virado.value, virado.suit)
 	)
 	setFirstTurnPlayer()
+	serverManager.connect("cardsReceivedSignal", Callable(self, "onReceivedCards"))
+	serverManager.connect("viradoReceivedSignal", Callable(self, "onReceivedVirado"))
+
+func onReceivedCards(cards):
+	print("new hand received!", cards)
+	gameScene.setCards(
+		CardData.new(cards.firstCard.value, cards.firstCard.suit), 
+		CardData.new(cards.secondCard.value, cards.secondCard.suit), 
+		CardData.new(cards.thirdCard.value, cards.thirdCard.suit), 
+	)
+
+func onReceivedVirado(newVirado):
+	print("new hand received!", newVirado)
+	gameScene.setVirado(
+		CardData.new(newVirado.value, newVirado.suit)
+	)
 
 
 func onPlayedCard(cardIndex: String):
@@ -108,3 +136,14 @@ func setFirstTurnPlayer():
 func onReceivedPlayedCard(player: Dictionary, card: Dictionary, playedOrder: int):
 	gameScene.addPlayedCard(player, card, playedOrder)
 	
+func onReceivedRoundWinner(player: String, roundScore: int):
+	gameScene.playerWonRound(player, roundScore)
+
+func onReceivedTeamWonChicoPoints(teamName: String, chicoPoints: int):
+	gameScene.teamWonChicoPoints(teamName, chicoPoints)
+
+func onReceivedTeamWonChico(teamName: String, chicos: int):
+	gameScene.teamWonChico(teamName, chicos)
+
+func onReceivedTeamWon(teamName: String):
+	gameScene.teamWon(teamName)

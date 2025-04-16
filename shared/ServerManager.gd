@@ -14,6 +14,11 @@ signal viradoReceivedSignal(virado)
 signal gameStartedSignal()
 signal receivedPlayedTurnSignal(playerId)
 signal receiveCardPlayedSignal(playerId, card, playedOrder)
+signal receivePlayerRoundWinnerSignal(playerId, card, playedOrder)
+signal receivedPlayersAndTeamsSignal(players, team1, team2)
+signal receiveTeamWonChicoPointsSignal(teamName, chicoPoints)
+signal receiveTeamWonChicoSignal(teamName, chicos)
+signal receiveTeamWonSignal(teamName)
 
 var preGame: PreGame
 var game: Game
@@ -32,12 +37,16 @@ func startServer(port = 9000):
 	multiplayer.peer_connected.connect(onClientConnected)
 	print("🟢 Server running on port", port)
 	playerInteractor = RealPlayerInteractor.new()
+	playerInteractor.connect("sendPlayersAndTeamsSignal", Callable(self, "onReceivedPlayersAndTeams", ))
 	playerInteractor.connect("dealHandToPlayerSignal", Callable(self, "onDealtHand", ))
 	playerInteractor.connect("dealViradoToPlayerSignal", Callable(self, "onDealtVirado", ))
 	playerInteractor.connect("sendCurrentPlayerTurnSignal", Callable(self, "onPlayerTurn"))
 	playerInteractor.connect("sendPlayerPlayedCardSignal", Callable(self, "onPlayedCard"))
+	playerInteractor.connect("sendPlayerRoundWinnerSignal", Callable(self, "onPlayerRoundWinner"))
+	playerInteractor.connect("sendTeamWonChicoPointsSignal", Callable(self, "onTeamWonChicoPoints"))
+	playerInteractor.connect("sendTeamWonChicoSignal", Callable(self, "onTeamWonChico"))
+	playerInteractor.connect("sendTeamWonSignal", Callable(self, "onTeamWon"))
 
-	
 	playerInteractor.name = "Interactor"
 	add_child(playerInteractor)
 	preGame = PreGame.new(playerInteractor)
@@ -52,6 +61,9 @@ func onClientConnected(id):
 		for player in game.gamePlayers.playerIds:
 			rpc_id(int(player), "gameStarted")
 
+func onReceivedPlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String]):
+	rpc("receivePlayersAndTeams", players, team1, team2)
+
 func onDealtHand(player: String, hand: ServerHand):
 	rpc_id(int(player),"receiveHand", hand.to_dict())
 
@@ -63,6 +75,18 @@ func onPlayerTurn(player: String):
 
 func onPlayedCard(player: Dictionary, card: ServerCard, playedOrder: int):
 	rpc("receiveCardPlayed", player, card.to_dict(), playedOrder)
+
+func onPlayerRoundWinner(player: String, roundScore: int):
+	rpc("receivePlayerRoundWinner", player, roundScore)
+
+func onTeamWonChicoPoints(teamName: String, chicoPoints: int):
+	rpc("receiveTeamWonChicoPoints", teamName, chicoPoints)
+
+func onTeamWonChico(teamName: String, chicos: int):
+	rpc("receiveTeamWonChico", teamName, chicos)
+
+func onTeamWon(teamName: String):
+	rpc("receiveTeamWon", teamName)
 
 
 @rpc("any_peer")
@@ -95,6 +119,10 @@ func connectClient(ip = "127.0.0.1", port = 9000):
 		return
 	multiplayer.multiplayer_peer = peer
 	clientConnectedSignal.emit()
+
+@rpc("authority")
+func receivePlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String]):
+	receivedPlayersAndTeamsSignal.emit(players, team1, team2)
 	
 @rpc("authority")
 func receiveHand(hand: Dictionary):
@@ -114,11 +142,23 @@ func receivePlayerTurn(player: String):
 
 @rpc("authority")
 func receiveCardPlayed(player: Dictionary, card: Dictionary, playedOrder: int):
-	print("Received card played signal")
-	print("player: ", player)
-	print("card: ", card)
-	print("playedOrder: ", playedOrder)
 	receiveCardPlayedSignal.emit(player, card, playedOrder)
+
+@rpc("authority")
+func receivePlayerRoundWinner(player: String, roundScore: int):
+	receivePlayerRoundWinnerSignal.emit(player, roundScore)
+
+@rpc("authority")
+func receiveTeamWonChicoPoints(teamName: String, chicoPoints: int):
+	receiveTeamWonChicoPointsSignal.emit(teamName, chicoPoints)
+
+@rpc("authority")
+func receiveTeamWonChico(teamName: String, chicos: int):
+	receiveTeamWonChicoSignal.emit(teamName, chicos)
+
+@rpc("authority")
+func receiveTeamWon(teamName: String):
+	receiveTeamWonSignal.emit(teamName)
 
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():

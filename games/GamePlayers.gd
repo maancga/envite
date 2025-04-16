@@ -18,7 +18,6 @@ func addPlayer(id: String, name: String =  ""):
 	var playerExists = playerIds.find(id) > -1
 	if playerExists: return 
 
-
 	playerIds.append(id)
 	var playerIndex = playerIds.size() - 1
 	playersIdsMap[id] = playerIndex 
@@ -54,7 +53,7 @@ func hasPlayers(amount: int):
 
 func getNext(currentPlayer: String):
 	var currentPlayerIndex = playersIdsMap[currentPlayer]
-	if (currentPlayerIndex == playerIds.size() -1): return playerIds[0]
+	if (currentPlayerIndex == playerIds.size() - 1): return playerIds[0]
 	return playerIds[currentPlayerIndex + 1]
 
 func getTeam(id: String):
@@ -67,3 +66,10 @@ func everyPlayerIsReady():
 		var player = playerInstances[playerId]
 		if not player.isReady(): return false
 	return true
+
+func toDictionary():
+	var players = {}
+	for playerId in playerIds:
+		var player = playerInstances[playerId]
+		players[playerId] = player.toDictionary()
+	return players

@@ -1,9 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://b0y0tpccjj6dk"]
+[gd_scene load_steps=3 format=3 uid="uid://b0y0tpccjj6dk"]
 
 [ext_resource type="Script" uid="uid://khtgq4nphumj" path="res://scenes/ChooseNameScene.gd" id="1_si5mc"]
+[ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://shared/mesa_fondo.png" id="2_e8d1n"]
 
 [node name="ChooseNameScene" type="Node2D"]
 script = ExtResource("1_si5mc")
+
+[node name="MesaFondo" type="Sprite2D" parent="."]
+position = Vector2(575, 322.5)
+scale = Vector2(0.748698, 0.635742)
+texture = ExtResource("2_e8d1n")
 
 [node name="ChooseNameLabel" type="Label" parent="."]
 offset_left = 436.0

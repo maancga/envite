@@ -5,6 +5,7 @@ var playerInteractor: PlayerInteractor
 var chico: int
 var chicoRound: int
 var currentPlayerTurn: String
+var currentRoundDealer: String
 
 var currentDeck
 var currentHands: Dictionary[String, ServerHand] = {}
@@ -22,22 +23,32 @@ var team2ScoreInChico = 0
 var team1WonChicos = 0
 var team2WonChicos = 0
 
+const DEFAULT_PIEDRAS_WINS = 2
 
-func _init(newGamePlayers:GamePlayers, newPlayerInteractor: PlayerInteractor, deck: Deck):
+
+func _init(newGamePlayers: GamePlayers, newPlayerInteractor: PlayerInteractor, deck: Deck):
 	gamePlayers = newGamePlayers
 	playerInteractor = newPlayerInteractor
 	currentDeck = deck
 
 	
 func hasPlayers(amount: int):
-	print("aaaa")
 	return gamePlayers.hasPlayers(amount)
 
 func newGame():
 	print("new game called!")
 	chico = 1
 	chicoRound = 1
-	currentPlayerTurn = gamePlayers.playerIds[0]
+	var team1: Array[String] = []
+	for id in gamePlayers.team1.players:
+		team1.append(str(id))
+
+	var team2: Array[String] = []
+	for id in gamePlayers.team2.players:
+		team2.append(str(id))
+	playerInteractor.informPlayersAndTeams(gamePlayers.toDictionary(), team1, team2)
+	currentRoundDealer = gamePlayers.playerIds[0]
+	currentPlayerTurn = gamePlayers.getNext(currentRoundDealer)
 	playerInteractor.informPlayerTurn(currentPlayerTurn)
 	currentRoundTurn = 1
 	startRound()
@@ -49,10 +60,12 @@ func startRound():
 
 func deal():
 	var players = gamePlayers.playerIds
+	var dealingTo = currentPlayerTurn
 	for player in players:
 		var playerHand = ServerHand.new(currentDeck.getTopCard(), currentDeck.getTopCard(), currentDeck.getTopCard())
-		currentHands[player] = playerHand
-		playerInteractor.dealHandToPlayer(player, playerHand)
+		currentHands[dealingTo] = playerHand
+		playerInteractor.dealHandToPlayer(dealingTo, playerHand)
+		dealingTo = gamePlayers.getNext(dealingTo)
 	virado = currentDeck.getTopCard()
 	for player in players:
 		playerInteractor.informViradoToPlayer(virado)
@@ -66,43 +79,72 @@ func nextTurn():
 func finishRound():
 	var roundWinner = calculateRoundWinner()
 	var winnerTeam = gamePlayers.getTeam(roundWinner)
-	if winnerTeam == "team1": team1ScoreInRound +=1
-	if winnerTeam == "team2": team2ScoreInRound +=1
-	if team1ScoreInRound == 2: teamOneWinsRound()
-	if team2ScoreInRound == 2: teamTwoWinsRound()
+	if winnerTeam == "team1": 
+		team1ScoreInRound +=1
+		playerInteractor.informPlayerRoundWinner(roundWinner, team1ScoreInRound)
+	if winnerTeam == "team2": 
+		team2ScoreInRound +=1
+		playerInteractor.informPlayerRoundWinner(roundWinner, team2ScoreInRound)
+	if team1ScoreInRound == 2: 
+		teamOneWinsRound()
+		return 
+	if team2ScoreInRound == 2: 
+		teamTwoWinsRound()
+		return 
 	currentRoundTurn = 1
 	currentPlayerTurn = roundWinner
+	playerInteractor.informPlayerTurn(currentPlayerTurn)
+
+func getNextDealer():
+	return gamePlayers.getNext(currentRoundDealer)
 
 func teamOneWinsRound():
-	if team1IsOnTumbo(): team1WinsChico()
+	currentRoundDealer = getNextDealer()
+	currentPlayerTurn = gamePlayers.getNext(currentRoundDealer)
+	if team1IsOnTumbo(): 
+		team1WinsChico()
+		return
 	else: 
-		team1ScoreInChico += 1
+		team1ScoreInChico += DEFAULT_PIEDRAS_WINS
+		playerInteractor.informTeamWonChicoPoints("team1", team1ScoreInChico)
+		deal()
+
+func teamTwoWinsRound():
+	currentRoundDealer = getNextDealer()
+	currentPlayerTurn = gamePlayers.getNext(currentRoundDealer)
+	if team2IsOnTumbo(): 
+		team2WinsChico()
+		return
+	else: 
+		team2ScoreInChico += DEFAULT_PIEDRAS_WINS
+		playerInteractor.informTeamWonChicoPoints("team2", team2ScoreInChico)
 		deal()
 
 func team1IsOnTumbo():
 	return false
 
-func team1WinsChico():
-	if (team1WonChicos == 3): team1Wins()
-	team1WonChicos +=1
-
-func team1Wins():
-	print("team 1 won!")
-
-func teamTwoWinsRound():
-	if team2IsOnTumbo(): team2WinsChico()
-	else: 
-		team2ScoreInChico += 1
-		deal()
 func team2IsOnTumbo():
 	return false
 
+func team1WinsChico():
+	team1WonChicos +=1
+	playerInteractor.informTeamWonChico("team1", team1WonChicos)
+	if (team1WonChicos == 3): team1Wins()
+
+
 func team2WinsChico():
-	if (team2WonChicos == 3): team2Wins()
 	team2WonChicos +=1
+	playerInteractor.informTeamWonChico("team1", team1WonChicos)
+	if (team2WonChicos == 3): team2Wins()
+
+
+func team1Wins():
+	print("team 1 won the game")
+	playerInteractor.informTeamWon("team1")
 
 func team2Wins():
-	print("team 2 won!")
+	playerInteractor.informTeamWon("team1")
+	print("team 2 won the game")
 
 func playFirstCard(id: String):
 	print("player ", gamePlayers.playersIdsMap[id], " attempted to play its first card")

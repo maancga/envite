@@ -32,11 +32,11 @@ func _input(event):
 				
 func playCard(card: Card):
 	if(card1 == card):
-		card1.queue_free()
+		card1.card_image.texture = null
 	if(card2 == card):
-		card2.queue_free()
+		card2.card_image.texture = null
 	if(card3 == card):
-		card3.queue_free()
+		card3.card_image.texture = null
 	return
 
 func raycast_check_for_card():
