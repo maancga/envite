@@ -99,22 +99,22 @@ func setPlayerTurn(newPlayerId: String):
 	if(isYourTurn()): turnLabel.text = "Es tu turno!" 
 	else: turnLabel.text = "No es tu turno =(" 
 
-func addPlayedCard(player: Dictionary, card: Dictionary, playedOrder: int):
+func addPlayedCard(player: String, card: Dictionary, playedOrder: int):
 	if (playedOrder == 1):
 		var node = playedCards.get_node("firstCard")
-		node.get_node("PlayerNameLabel").text = player["name"]
+		node.get_node("PlayerNameLabel").text = players[player]["name"]
 		node.set_card_data(card["value"], card["suit"], node.position )
 	if (playedOrder == 2): 
 		var node = playedCards.get_node("secondCard")
-		node.get_node("PlayerNameLabel").text = player["name"]
+		node.get_node("PlayerNameLabel").text = players[player]["name"]
 		node.set_card_data(card["value"], card["suit"], node.position )
 	if (playedOrder == 3):
 		var node = playedCards.get_node("thirdCard")
-		node.get_node("PlayerNameLabel").text = player["name"]
+		node.get_node("PlayerNameLabel").text = players[player]["name"]
 		node.set_card_data(card["value"], card["suit"], node.position )
 	if (playedOrder == 4):
 		var node = playedCards.get_node("fourthCard")
-		node.get_node("PlayerNameLabel").text = player["name"]
+		node.get_node("PlayerNameLabel").text = players[player]["name"]
 		node.set_card_data(card["value"], card["suit"], node.position )
 
 func getTeam(player: String) -> String:

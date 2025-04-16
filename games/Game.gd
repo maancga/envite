@@ -67,8 +67,7 @@ func deal():
 		playerInteractor.dealHandToPlayer(dealingTo, playerHand)
 		dealingTo = gamePlayers.getNext(dealingTo)
 	virado = currentDeck.getTopCard()
-	for player in players:
-		playerInteractor.informViradoToPlayer(virado)
+	playerInteractor.informVirado(virado)
 
 func nextTurn():
 	if(currentRoundTurn == gamePlayers.amountOfPlayers()): return finishRound()
@@ -155,7 +154,7 @@ func playFirstCard(id: String):
 	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard = playedCard
 	roundPlayedCards[id] = playedCard
 	currentHands[id].playFirstCard()
-	playerInteractor.informPlayerPlayedCard(gamePlayers.playerInstances[id].toDictionary(), playedCard, currentRoundTurn)
+	playerInteractor.informPlayerPlayedCard(id, playedCard, currentRoundTurn)
 	nextTurn()
 	
 func playSecondCard(id: String):
@@ -167,7 +166,7 @@ func playSecondCard(id: String):
 	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard = playedCard
 	roundPlayedCards[id] = playedCard
 	currentHands[id].playSecondCard()
-	playerInteractor.informPlayerPlayedCard(gamePlayers.playerInstances[id].toDictionary(), playedCard, currentRoundTurn)
+	playerInteractor.informPlayerPlayedCard(id, playedCard, currentRoundTurn)
 	nextTurn()
 	
 func playThirdCard(id: String):
@@ -179,7 +178,7 @@ func playThirdCard(id: String):
 	if(roundPlayedCards.size() == 0): firstPlayerPlayedCard = playedCard
 	roundPlayedCards[id] = playedCard
 	currentHands[id].playThirdCard()
-	playerInteractor.informPlayerPlayedCard(gamePlayers.playerInstances[id].toDictionary(), playedCard, currentRoundTurn)
+	playerInteractor.informPlayerPlayedCard(id, playedCard, currentRoundTurn)
 	nextTurn()
 
 func calculateRoundWinner():

@@ -39,7 +39,7 @@ func startServer(port = 9000):
 	playerInteractor = RealPlayerInteractor.new()
 	playerInteractor.connect("sendPlayersAndTeamsSignal", Callable(self, "onReceivedPlayersAndTeams", ))
 	playerInteractor.connect("dealHandToPlayerSignal", Callable(self, "onDealtHand", ))
-	playerInteractor.connect("dealViradoToPlayerSignal", Callable(self, "onDealtVirado", ))
+	playerInteractor.connect("dealVirado", Callable(self, "onDealtVirado", ))
 	playerInteractor.connect("sendCurrentPlayerTurnSignal", Callable(self, "onPlayerTurn"))
 	playerInteractor.connect("sendPlayerPlayedCardSignal", Callable(self, "onPlayedCard"))
 	playerInteractor.connect("sendPlayerRoundWinnerSignal", Callable(self, "onPlayerRoundWinner"))
@@ -73,7 +73,7 @@ func onDealtVirado(card: ServerCard):
 func onPlayerTurn(player: String):
 	rpc("receivePlayerTurn", player)
 
-func onPlayedCard(player: Dictionary, card: ServerCard, playedOrder: int):
+func onPlayedCard(player: String, card: ServerCard, playedOrder: int):
 	rpc("receiveCardPlayed", player, card.to_dict(), playedOrder)
 
 func onPlayerRoundWinner(player: String, roundScore: int):
@@ -141,7 +141,7 @@ func receivePlayerTurn(player: String):
 	receivedPlayedTurnSignal.emit(player)
 
 @rpc("authority")
-func receiveCardPlayed(player: Dictionary, card: Dictionary, playedOrder: int):
+func receiveCardPlayed(player: String, card: Dictionary, playedOrder: int):
 	receiveCardPlayedSignal.emit(player, card, playedOrder)
 
 @rpc("authority")
