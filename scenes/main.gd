@@ -4,7 +4,6 @@ var currentScene: Node = null
 var hasChosenName = false
 var isClientConnected = false
 var hasGameStarted = false
-var chosenName = ''
 var receivedCards = []
 var virado = null
 var serverManagerScript = preload("res://shared/ServerManager.gd")
@@ -65,11 +64,15 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receiveTeamWonSignal", Callable(self, "onReceivedTeamWon"))
 	serverManager.connect("informGotDealerSignal", Callable(self, "onGotDealer"))
 	serverManager.connect("receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsNotTurn"))
+	serverManager.connect("receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand"))
+	serverManager.connect("receivePlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsPlayedAlready"))
+
 	
 
 func onNameChosen(userName):
 	hasChosenName = true
 	serverManager.chooseName(userName)
+	
 	tryLoadGameScene()
 
 func onClientConnected():
@@ -82,7 +85,7 @@ func onGameHasStarted():
 
 func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2):
 	var playerId = multiplayer.get_unique_id()
-	gameScene.setUpScene(chosenName, str(playerId), newPlayers, newTeam1, newTeam2)
+	gameScene.setUpScene(str(playerId), newPlayers, newTeam1, newTeam2)
 
 func tryLoadGameScene():
 	if (hasChosenName && isClientConnected && hasGameStarted):
@@ -94,7 +97,6 @@ func showGameScene():
 
 
 func onReceivedCards(cards):
-	print("new hand received!", cards)
 	gameScene.setCards(
 		CardData.new(cards.firstCard.value, cards.firstCard.suit), 
 		CardData.new(cards.secondCard.value, cards.secondCard.suit), 
@@ -102,43 +104,40 @@ func onReceivedCards(cards):
 	)
 
 func onReceivedVirado(newVirado):
-	print("virado received!", newVirado)
 	gameScene.setVirado(
 		CardData.new(newVirado.value, newVirado.suit)
 	)
 
 
-func onPlayedCard(cardIndex: String):
-	print("player %s played card %s", [chosenName, cardIndex])
+func onPlayedCard(cardIndex: String):	
 	serverManager.playCard(cardIndex)
 	
 func onReceivedPlayedTurn(playerId: String):
-	print("player turn received!", playerId)
 	gameScene.setPlayerTurn(playerId)
 
-func onReceivedPlayedCard(player: String, card: Dictionary, playedOrder: int):
-	print("player %s played card %s", [player, card])
-	gameScene.addPlayedCard(player, card, playedOrder)
+func onReceivedPlayedCard(player: String, card: Dictionary, playedOrder: int, cardHandIndex: int):
+	gameScene.addPlayedCard(player, card, playedOrder, cardHandIndex)
 	
 func onReceivedRoundWinner(player: String, roundScore: int):
-	print("player %s won the round with %d points!", [player, roundScore])
 	gameScene.playerWonRound(player, roundScore)
 
 func onReceivedTeamWonChicoPoints(teamName: String, chicoPoints: int):
-	print("%s won %d chico points!", [teamName, chicoPoints])
 	gameScene.teamWonChicoPoints(teamName, chicoPoints)
 
 func onReceivedTeamWonChico(teamName: String, chicos: int):
-	print("team %s won %d chicos!", [teamName, chicos])
 	gameScene.teamWonChico(teamName, chicos)
 
 func onReceivedTeamWon(teamName: String):
-	print("%s won!", teamName)
 	gameScene.teamWon(teamName)
 
 func onGotDealer(dealer: String):
-	print("dealer is %s", [dealer])
 	gameScene.setDealer(dealer)
 
 func onPlayerCouldNotPlayCardBecauseItsNotTurn():
 	gameScene.notifyIsNotTurn()
+
+func onPlayerCouldNotPlayCardBecauseItsPlayedAlready():
+	gameScene.notifyCardPlayedAlready()
+
+func onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand():
+	gameScene.notifyHasPlayedAlreadyInHand()

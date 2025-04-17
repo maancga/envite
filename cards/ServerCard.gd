@@ -33,3 +33,5 @@ func to_dict() -> Dictionary:
 		"suit": suit
 	}
 	
+func isPlayed() -> bool:
+	return played

@@ -11,7 +11,7 @@ func getTopCard():
 	return cards.pop_front()
 
 func getAHand():
-	var hand = ServerHand.new(getTopCard(), getTopCard(), getTopCard())
+	var hand = ServerHand.new(ServerHandCard.new(getTopCard(), 1), ServerHandCard.new(getTopCard(), 2), ServerHandCard.new(getTopCard(), 3))
 	return hand
 
 func createAndShuffle():

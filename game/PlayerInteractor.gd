@@ -14,11 +14,17 @@ func informVirado(_card: ServerCard) -> void:
 func informPlayerTurn(_player: String) -> void:
 	push_error("⚠️ informPlayerTurn() must be implemented by subclass")
 
-func informPlayerPlayedCard(_player: String, _card: ServerCard, _playedOrder: int) -> void:
+func informPlayerPlayedCard(_player: String, _card: ServerHandCard, _playedOrder: int) -> void:
 	push_error("⚠️ informPlayerPlayedCard() must be implemented by subclass")
 
 func informPlayerCouldNotPlayCardBecauseItsNotTurn(_player: String) -> void:
 	push_error("⚠️ informPlayerCouldNotPlayCardBecauseItsNotTurn() must be implemented by subclass")
+
+func informPlayerCouldNotPlayCardBacauseHasPlayedAlreadyInCurrentHand(_player: String)-> void:
+	push_error("⚠️ informPlayerCouldNotPlayCardBacauseHasPlayedAlreadyInCurrentHand() must be implemented by subclass")
+
+func informPlayerCouldNotPlayCardBecauseItsPlayedAlready(_player: String)-> void:
+	push_error("⚠️ informPlayerCouldNotPlayCardBecauseItsPlayedAlready() must be implemented by subclass")
 	
 func informPlayerRoundWinner(_player: String, _roundScore: int)-> void:
 	push_error("⚠️ informPlayerRoundWinner() must be implemented by subclass")

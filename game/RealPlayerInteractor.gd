@@ -4,13 +4,15 @@ signal sendPlayersAndTeamsSignal(players: Dictionary, team1: String, team2: Stri
 signal dealHandToPlayerSignal(player: String, hand: ServerHand)
 signal dealVirado(player: String, card: ServerCard)
 signal sendCurrentPlayerTurnSignal(player: String)
-signal sendPlayerPlayedCardSignal(player: Dictionary, card: ServerCard, playedOrder: int)
+signal sendPlayerPlayedCardSignal(player: Dictionary, card: ServerCard, playedOrder: int, cardHandIndex: int)
 signal sendPlayerRoundWinnerSignal(player: String, roundScore: int)
 signal sendTeamWonChicoPointsSignal(team: String, chicoPoints: int)
 signal sendTeamWonChicoSignal(team: String, chicos: int)
 signal sendTeamWonSignal(team: String)
 signal informDealerSignal(dealer: String)
 signal sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal(player: String)
+signal sendPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal(player: String)
+signal sendPlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal(player: String)
 
 
 func informPlayersAndTeams(players: Dictionary) -> void:
@@ -32,11 +34,17 @@ func informVirado(card: ServerCard) -> void:
 func informPlayerTurn(player: String) -> void:
 	sendCurrentPlayerTurnSignal.emit(player)
 
-func informPlayerPlayedCard(player: String, card: ServerCard, playedOrder: int) -> void:
-	sendPlayerPlayedCardSignal.emit(player, card, playedOrder)
+func informPlayerPlayedCard(player: String, card: ServerHandCard, playedOrder: int) -> void:
+	sendPlayerPlayedCardSignal.emit(player, card.card, playedOrder, card.cardIndexHand)
 
 func informPlayerCouldNotPlayCardBecauseItsNotTurn(player: String) -> void:
 	sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal.emit(player)
+
+func informPlayerCouldNotPlayCardBacauseHasPlayedAlreadyInCurrentHand(player: String)-> void:
+	sendPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal.emit(player)
+
+func informPlayerCouldNotPlayCardBecauseItsPlayedAlready(player: String)-> void:
+	sendPlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal.emit(player)
 
 func informPlayerRoundWinner(player: String, roundScore: int) -> void:
 	sendPlayerRoundWinnerSignal.emit(player, roundScore)

@@ -43,7 +43,7 @@ func informPlayerTurn(_player: String) -> void:
 func getLastInformPlayerTurnCall() -> String:
 	return informPlayerTurnArgs[informPlayerTurnArgs.size() - 1]
 
-func informPlayerPlayedCard(_player: String, _card: ServerCard, _playedOrder: int) -> void:
+func informPlayerPlayedCard(_player: String, _card: ServerHandCard, _playedOrder: int) -> void:
 	playedCardsCalls += 1
 	playedCardsArgs.append({"player": _player, "card": _card, "playedOrder": _playedOrder})
 
@@ -76,4 +76,7 @@ func getLastDealer():
 	return informDealerArgs[informDealerArgs.size() - 1]
 
 func informPlayerCouldNotPlayCardBecauseItsNotTurn(_player: String) -> void:
+	pass
+
+func informPlayerCouldNotPlayCardBacauseHasPlayedAlreadyInCurrentHand(_player: String)-> void:
 	pass

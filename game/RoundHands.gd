@@ -16,15 +16,15 @@ func hasCard(playerId: String, value: ValueEnum.Value, suit: SuitEnum.Suit,) -> 
 			return true
 	return false
 
-func getFirstCard(playerId: String) -> ServerCard:
+func getFirstCard(playerId: String) -> ServerHandCard:
 	var playerHand = hands[playerId]
 	return playerHand.getFirstCard()
 
-func getSecondCard(playerId: String) -> ServerCard:
+func getSecondCard(playerId: String) -> ServerHandCard:
 	var playerHand = hands[playerId]
 	return playerHand.getSecondCard()
 
-func getThirdCard(playerId: String) -> ServerCard:
+func getThirdCard(playerId: String) -> ServerHandCard:
 	var playerHand = hands[playerId]
 	return playerHand.getThirdCard()
 

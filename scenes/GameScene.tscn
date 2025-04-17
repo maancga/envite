@@ -1,12 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://ctjy3u3ibtlhy"]
+[gd_scene load_steps=7 format=3 uid="uid://ctjy3u3ibtlhy"]
 
 [ext_resource type="Script" uid="uid://dpmbsgths4ity" path="res://scenes/GameScene.gd" id="1_xs4ih"]
-[ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://hands/MyHand.tscn" id="2_6ytau"]
 [ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://shared/mesa_fondo.png" id="2_vijgj"]
-[ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://hands/UnknownHand.tscn" id="3_vijgj"]
 [ext_resource type="PackedScene" uid="uid://dgkd0y78x6rf1" path="res://decks/Deck.tscn" id="4_pynjx"]
-[ext_resource type="PackedScene" uid="uid://3kovmxon4oix" path="res://cards/4PlayersPlayedCards.tscn" id="5_xs4ih"]
 [ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://cards/Virado.tscn" id="6_6ytau"]
+[ext_resource type="PackedScene" uid="uid://vs6t0jiloxra" path="res://scenes/FourPlayersHandsDisplay.tscn" id="6_xs4ih"]
 [ext_resource type="PackedScene" uid="uid://qabh3xjf55ow" path="res://ui/TeamScoreLabels.tscn" id="8_vijgj"]
 
 [node name="Main" type="Node2D"]
@@ -16,25 +14,6 @@ script = ExtResource("1_xs4ih")
 position = Vector2(575, 322.5)
 scale = Vector2(0.748698, 0.635742)
 texture = ExtResource("2_vijgj")
-
-[node name="MyHand" parent="." instance=ExtResource("2_6ytau")]
-position = Vector2(447, 517)
-scale = Vector2(0.73, 0.73)
-
-[node name="UnknownHand" parent="." instance=ExtResource("3_vijgj")]
-position = Vector2(683, 147)
-rotation = 3.18872
-scale = Vector2(0.73, 0.73)
-
-[node name="UnknownHand2" parent="." instance=ExtResource("3_vijgj")]
-position = Vector2(134, 212)
-rotation = 1.56032
-scale = Vector2(0.73, 0.73)
-
-[node name="UnknownHand3" parent="." instance=ExtResource("3_vijgj")]
-position = Vector2(1005, 435)
-rotation = 4.66701
-scale = Vector2(0.73, 0.73)
 
 [node name="PlayCardButton" type="Button" parent="."]
 offset_left = 897.0
@@ -67,10 +46,6 @@ text = "Es tu turno"
 position = Vector2(181, 23)
 scale = Vector2(0.7, 0.7)
 
-[node name="4PlayersPlayedCards" parent="." instance=ExtResource("5_xs4ih")]
-position = Vector2(407, 412)
-scale = Vector2(0.6, 0.6)
-
 [node name="Team1Score" parent="." instance=ExtResource("8_vijgj")]
 position = Vector2(181, 206)
 scale = Vector2(0.7, 0.7)
@@ -78,5 +53,7 @@ scale = Vector2(0.7, 0.7)
 [node name="Team2Score" parent="." instance=ExtResource("8_vijgj")]
 position = Vector2(663, 206)
 scale = Vector2(0.7, 0.7)
+
+[node name="FourPlayersHandsDisplay" parent="." instance=ExtResource("6_xs4ih")]
 
 [connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]

@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=3 uid="uid://vs6t0jiloxra"]
+
+[ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://hands/MyHand.tscn" id="1_cbxej"]
+[ext_resource type="Script" uid="uid://dkic0o5r4tkmy" path="res://scenes/FourPlayersHandsDisplay.gd" id="1_eh0v3"]
+[ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://hands/UnknownHand.tscn" id="2_eh0v3"]
+[ext_resource type="PackedScene" uid="uid://3kovmxon4oix" path="res://cards/4PlayersPlayedCards.tscn" id="3_njier"]
+
+[node name="FourPlayersHandsDisplay" type="Node2D"]
+script = ExtResource("1_eh0v3")
+
+[node name="MyHand" parent="." instance=ExtResource("1_cbxej")]
+position = Vector2(447, 517)
+rotation = 0.0041769
+scale = Vector2(0.73, 0.73)
+
+[node name="Player2Hand" parent="." instance=ExtResource("2_eh0v3")]
+position = Vector2(1005, 435)
+rotation = -1.61618
+scale = Vector2(0.73, 0.73)
+
+[node name="Player3Hand" parent="." instance=ExtResource("2_eh0v3")]
+position = Vector2(683, 147)
+rotation = 3.18872
+scale = Vector2(0.73, 0.73)
+
+[node name="Player4Hand" parent="." instance=ExtResource("2_eh0v3")]
+position = Vector2(134, 212)
+rotation = 1.55551
+scale = Vector2(0.73, 0.73)
+
+[node name="4PlayersPlayedCards" parent="." instance=ExtResource("3_njier")]
+position = Vector2(407, 412)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player2NameLabel" type="Label" parent="."]
+offset_left = 904.0
+offset_top = 326.0
+offset_right = 962.0
+offset_bottom = 349.0
+text = "Player2"
+
+[node name="Player3NameLabel" type="Label" parent="."]
+offset_left = 528.0
+offset_top = 169.0
+offset_right = 586.0
+offset_bottom = 192.0
+text = "Player3"
+
+[node name="Player4NameLabel" type="Label" parent="."]
+offset_left = 173.0
+offset_top = 326.0
+offset_right = 231.0
+offset_bottom = 349.0
+text = "Player4"

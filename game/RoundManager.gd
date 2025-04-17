@@ -32,20 +32,21 @@ func deal(dealerId: String):
 	virado = cardDealer.dealVirado() 
 
 func nextTurn():
-	if(turn == gamePlayers.amountOfPlayers()): return finishRound()
+	if(turn == gamePlayers.amountOfPlayers()): return finishHand()
 	turn += 1
 	currentPlayerTurn = gamePlayers.getNextPlayer(currentPlayerTurn)
 	playerInteractor.informPlayerTurn(currentPlayerTurn)
 
-func finishRound():
-	var roundWinner = calculateRoundWinner()
-	var winnerTeam = gamePlayers.getTeam(roundWinner)
-	if winnerTeam == "team1": 
+func finishHand():
+	var handWinner = calculateHandWinner()
+	var handWinnerTeam = gamePlayers.getTeam(handWinner)
+	playedCards.cleanCards()
+	if handWinnerTeam == "team1": 
 		team1ScoreInRound +=1
-		playerInteractor.informPlayerRoundWinner(roundWinner, team1ScoreInRound)
-	if winnerTeam == "team2": 
+		playerInteractor.informPlayerRoundWinner(handWinner, team1ScoreInRound)
+	if handWinnerTeam == "team2": 
 		team2ScoreInRound +=1
-		playerInteractor.informPlayerRoundWinner(roundWinner, team2ScoreInRound)
+		playerInteractor.informPlayerRoundWinner(handWinner, team2ScoreInRound)
 	if team1ScoreInRound == 2: 
 		informTeamOneWonRound()
 		return 
@@ -53,7 +54,7 @@ func finishRound():
 		informTeamTwoWonRound()
 		return
 	turn = 1
-	currentPlayerTurn = roundWinner
+	currentPlayerTurn = handWinner
 	playerInteractor.informPlayerTurn(currentPlayerTurn)
 
 	
@@ -63,32 +64,31 @@ func informTeamOneWonRound():
 func informTeamTwoWonRound():
 	team2WonRoundSignal.emit()
 
-func calculateRoundWinner():
+func calculateHandWinner():
 	return playedCards.calculateWinner(virado)
 
-func playFirstCard(id: String):
-	if(currentPlayerTurn != id): 
-		playerInteractor.informPlayerCouldNotPlayCardBecauseItsNotTurn(id)
+func playCard(playerId: String, card: ServerHandCard):
+	if(currentPlayerTurn != playerId): 
+		playerInteractor.informPlayerCouldNotPlayCardBecauseItsNotTurn(playerId)
 		return
-	var playedCard = hands.getFirstCard(id)
-	playedCard.play()
-	playedCards.addCard(id, playedCard, turn)
+	if playedCards.playerHasPlayedAlready(playerId): 
+		playerInteractor.informPlayerCouldNotPlayCardBacauseHasPlayedAlreadyInCurrentHand(playerId)
+		return
+	if card.isPlayed():
+		playerInteractor.informPlayerCouldNotPlayCardBecauseItsPlayedAlready(playerId)
+		return
+	card.play()
+	playedCards.addCard(playerId, card)
 	nextTurn()
+
+func playFirstCard(playerId: String):
+	var playedCard = hands.getFirstCard(playerId)
+	playCard(playerId, playedCard)
 	
-func playSecondCard(id: String):
-	if(currentPlayerTurn != id): 
-		playerInteractor.informPlayerCouldNotPlayCardBecauseItsNotTurn(id)
-		return
-	var playedCard = hands.getSecondCard(id)
-	playedCard.play()
-	playedCards.addCard(id, playedCard, turn)
-	nextTurn()
-	
-func playThirdCard(id: String):
-	if(currentPlayerTurn != id): 
-		playerInteractor.informPlayerCouldNotPlayCardBecauseItsNotTurn(id)
-		return
-	var playedCard = hands.getThirdCard(id)
-	playedCard.play()
-	playedCards.addCard(id, playedCard, turn)
-	nextTurn()
+func playSecondCard(playerId: String):
+	var playedCard = hands.getSecondCard(playerId)
+	playCard(playerId, playedCard)
+
+func playThirdCard(playerId: String):
+	var playedCard = hands.getThirdCard(playerId)
+	playCard(playerId, playedCard)

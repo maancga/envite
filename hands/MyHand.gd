@@ -1,16 +1,13 @@
 extends Node2D
 
+class_name MyHand
+
 var card_being_dragged
 var initial_card_position
 
 @export var card1: Card
 @export var card2: Card
 @export var card3: Card
-
-func _ready():
-	card1 = $Card1
-	card2 = $Card2
-	card3 = $Card3
 
 func _process(_delta: float) -> void:
 	if card_being_dragged:
@@ -30,14 +27,15 @@ func _input(event):
 				card_being_dragged.global_position = initial_card_position
 				card_being_dragged = null
 				
-func playCard(card: Card):
-	if(card1 == card):
-		card1.card_image.texture = null
-	if(card2 == card):
-		card2.card_image.texture = null
-	if(card3 == card):
-		card3.card_image.texture = null
-	return
+func playFirstCard():
+	card1.card_image.texture = null
+	
+func playSecondCard():
+	card2.card_image.texture = null
+
+func playThirdCard():
+	card3.card_image.texture = null
+
 
 func raycast_check_for_card():
 	var space_state = get_world_2d().direct_space_state
@@ -72,9 +70,13 @@ func setInitialCards(initialCard1: CardData, initialCard2: CardData,initialCard3
 	add_child(newCard2)
 	add_child(newCard3)
 	
-	newCard1.set_card_data(initialCard1.value,initialCard1.suit, card1Position)
-	newCard2.set_card_data(initialCard2.value,initialCard2.suit, card2Position)
-	newCard3.set_card_data(initialCard3.value,initialCard3.suit, card3Position)
+	newCard1.set_card_data(initialCard1.value,initialCard1.suit)
+	newCard2.set_card_data(initialCard2.value,initialCard2.suit)
+	newCard3.set_card_data(initialCard3.value,initialCard3.suit)
+	newCard1.setPosition(card1Position)
+	newCard2.setPosition(card2Position)
+	newCard3.setPosition(card3Position)
+	
 	newCard1.rotation = card1Rotation
 	newCard2.rotation = card2Rotation
 	newCard3.rotation = card3Rotation

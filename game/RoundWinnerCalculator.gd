@@ -35,9 +35,9 @@ var firstCardValuesHierarchy := [
 	ValueEnum.Value._2
 	]
 
-func _init(_viradoCard: ServerCard, _firstPlayedCard: ServerCard):
+func _init(_viradoCard: ServerCard, _firstPlayedCard: ServerHandCard):
 	viradoCard =_viradoCard
-	firstPlayedCard = _firstPlayedCard
+	firstPlayedCard = _firstPlayedCard.card
 
 func isTriumph(card: ServerCard) -> bool:
 	for triumph in triumphHierarchy:
@@ -90,13 +90,13 @@ func isBetterThan(firstCard: ServerCard, secondCard: ServerCard) -> bool:
 
 	return isBiggerCardNoSuit(firstCard, secondCard)
 
-func calculateWinner(cards: Dictionary) -> String:
+func calculateWinner(cards: Dictionary[String, ServerHandCard]) -> String:
 	var playerIds = cards.keys()
 	var winnerId = playerIds[0]
-	var winnerCard: ServerCard = cards[winnerId]
+	var winnerCard: ServerCard = cards[winnerId].card
 
 	for playerId in cards:
-		var currentComparingCard: ServerCard = cards[playerId]
+		var currentComparingCard: ServerCard = cards[playerId].card
 
 		if winnerCard == null or isBetterThan(currentComparingCard, winnerCard,):
 			winnerId = playerId

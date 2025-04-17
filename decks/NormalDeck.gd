@@ -19,5 +19,5 @@ func getTopCard():
 	return cards.pop_front()
 
 func getAHand():
-	var hand = ServerHand.new(cards.pop_front(), cards.pop_front(), cards.pop_front())
+	var hand = ServerHand.new(ServerHandCard.new(cards.pop_front(), 1), ServerHandCard.new(cards.pop_front(), 2), ServerHandCard.new(cards.pop_front(), 3))
 	return hand

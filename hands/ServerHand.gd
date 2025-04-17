@@ -1,13 +1,13 @@
 class_name ServerHand
 
-var firstCard: ServerCard
-var secondCard: ServerCard
-var thirdCard: ServerCard
+var firstCard: ServerHandCard
+var secondCard: ServerHandCard
+var thirdCard: ServerHandCard
 
 func _init(
-	newFirstCard: ServerCard,
-	newSecondCard: ServerCard,
-	newThirdCard: ServerCard):
+	newFirstCard: ServerHandCard,
+	newSecondCard: ServerHandCard,
+	newThirdCard: ServerHandCard):
 	firstCard = newFirstCard
 	secondCard = newSecondCard
 	thirdCard = newThirdCard
@@ -20,7 +20,7 @@ func to_dict() -> Dictionary:
 	}
 
 func hasCard(value: ValueEnum.Value, suit: SuitEnum.Suit,) -> bool:
-	var comparingCard = ServerCard.new(value, suit)
+	var comparingCard = ServerHandCard.new(ServerCard.new(value, suit), 0)
 	if firstCard.equals(comparingCard):
 		return true
 	if secondCard.equals(comparingCard):
@@ -29,11 +29,11 @@ func hasCard(value: ValueEnum.Value, suit: SuitEnum.Suit,) -> bool:
 		return true
 	return false
 
-func getFirstCard() -> ServerCard:
+func getFirstCard() -> ServerHandCard:
 	return firstCard
 
-func getSecondCard() -> ServerCard:
+func getSecondCard() -> ServerHandCard:
 	return secondCard
 
-func getThirdCard() -> ServerCard:
+func getThirdCard() -> ServerHandCard:
 	return thirdCard

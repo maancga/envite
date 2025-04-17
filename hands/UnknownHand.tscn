@@ -1,10 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://cjkt2y3wp6ky6"]
+[gd_scene load_steps=3 format=3 uid="uid://cjkt2y3wp6ky6"]
 
+[ext_resource type="Script" uid="uid://cci7geahrhwx6" path="res://hands/UnknownHand.gd" id="1_v0wtu"]
 [ext_resource type="PackedScene" uid="uid://cb6nhtncq4cae" path="res://cards/UnknownCard.tscn" id="3_ccwuf"]
 
 [node name="UnknownHand" type="Node2D"]
+script = ExtResource("1_v0wtu")
 
-[node name="Card" parent="." instance=ExtResource("3_ccwuf")]
+[node name="Card1" parent="." instance=ExtResource("3_ccwuf")]
 position = Vector2(58, 87)
 rotation = -0.164061
 
