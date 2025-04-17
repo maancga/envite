@@ -19,11 +19,17 @@ signal receivedPlayersAndTeamsSignal(players, team1, team2)
 signal receiveTeamWonChicoPointsSignal(teamName, chicoPoints)
 signal receiveTeamWonChicoSignal(teamName, chicos)
 signal receiveTeamWonSignal(teamName)
+signal informGotDealerSignal(dealer)
+signal receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal(playerId)
 
 var preGame: PreGame
 var game: Game
+var gamePlayers: GamePlayers
 var playerInteractor: PlayerInteractor
 var hasGameStarted = false
+
+func _init() -> void:
+	gamePlayers = GamePlayers.new()
 
 ############## SERVER
 
@@ -42,24 +48,21 @@ func startServer(port = 9000):
 	playerInteractor.connect("dealVirado", Callable(self, "onDealtVirado", ))
 	playerInteractor.connect("sendCurrentPlayerTurnSignal", Callable(self, "onPlayerTurn"))
 	playerInteractor.connect("sendPlayerPlayedCardSignal", Callable(self, "onPlayedCard"))
+	playerInteractor.connect("sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsNotTurn"))
 	playerInteractor.connect("sendPlayerRoundWinnerSignal", Callable(self, "onPlayerRoundWinner"))
 	playerInteractor.connect("sendTeamWonChicoPointsSignal", Callable(self, "onTeamWonChicoPoints"))
 	playerInteractor.connect("sendTeamWonChicoSignal", Callable(self, "onTeamWonChico"))
 	playerInteractor.connect("sendTeamWonSignal", Callable(self, "onTeamWon"))
+	playerInteractor.connect("informDealerSignal", Callable(self, "onGotDealer"))
 
 	playerInteractor.name = "Interactor"
 	add_child(playerInteractor)
-	preGame = PreGame.new(playerInteractor)
+	preGame = PreGame.new(playerInteractor, gamePlayers)
 	preGame.name = "Pregame"
 	add_child(preGame)
 
 func onClientConnected(id):
-	preGame.addPlayer(str(id))
-	game = preGame.start()
-	if game is Game:
-		game.newGame()
-		for player in game.gamePlayers.playerIds:
-			rpc_id(int(player), "gameStarted")
+	print("🟢 Client connected with id: ", id)
 
 func onReceivedPlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String]):
 	rpc("receivePlayersAndTeams", players, team1, team2)
@@ -72,6 +75,10 @@ func onDealtVirado(card: ServerCard):
 
 func onPlayerTurn(player: String):
 	rpc("receivePlayerTurn", player)
+
+func onPlayerCouldNotPlayCardBecauseItsNotTurn(player: String):	
+	print("can not play since its not its turn")
+	rpc_id(int(player), "receivePlayerCouldNotPlayCardBecauseItsNotTurn")
 
 func onPlayedCard(player: String, card: ServerCard, playedOrder: int):
 	rpc("receiveCardPlayed", player, card.to_dict(), playedOrder)
@@ -88,22 +95,27 @@ func onTeamWonChico(teamName: String, chicos: int):
 func onTeamWon(teamName: String):
 	rpc("receiveTeamWon", teamName)
 
+func onGotDealer(dealer: String):
+	rpc("receiveDealer", dealer)
+
 
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
 	var sender = multiplayer.get_remote_sender_id()
-	if cardIndex == "1": game.playFirstCard(str(sender))
-	if cardIndex == "2": game.playSecondCard(str(sender))
-	if cardIndex == "3": game.playThirdCard(str(sender))
+	var playerId = str(sender)
+	print("Player ", gamePlayers.getPlayerName(playerId), " attempted to play its ", cardIndex," card.")
+	if cardIndex == "1": game.playFirstCard(playerId)
+	if cardIndex == "2": game.playSecondCard(playerId)
+	if cardIndex == "3": game.playThirdCard(playerId)
 
 @rpc("any_peer")
 func onClientChoosesName(chosenName: String):
 	var sender = multiplayer.get_remote_sender_id()
-	preGame.setPlayerName(str(sender), chosenName)
+	preGame.addPlayer(str(sender), chosenName)
 	game = preGame.start()
 	if game is Game:
 		game.newGame()
-		for player in game.gamePlayers.playerIds:
+		for player in gamePlayers.playerIds:
 			rpc_id(int(player), "gameStarted")
 
 ################ CLIENT
@@ -159,6 +171,15 @@ func receiveTeamWonChico(teamName: String, chicos: int):
 @rpc("authority")
 func receiveTeamWon(teamName: String):
 	receiveTeamWonSignal.emit(teamName)
+
+@rpc("authority")
+func receiveDealer(dealer: String):
+	informGotDealerSignal.emit(dealer)
+
+@rpc("authority")
+func receivePlayerCouldNotPlayCardBecauseItsNotTurn(player: String):
+	print("Player ", gamePlayers.getPlayerName(player), " could not play card since it is not its turn.")
+	receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal.emit(player)
 
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():

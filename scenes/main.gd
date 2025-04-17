@@ -63,6 +63,8 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receiveTeamWonChicoPointsSignal", Callable(self, "onReceivedTeamWonChicoPoints"))
 	serverManager.connect("receiveTeamWonChicoSignal", Callable(self, "onReceivedTeamWonChico"))
 	serverManager.connect("receiveTeamWonSignal", Callable(self, "onReceivedTeamWon"))
+	serverManager.connect("informGotDealerSignal", Callable(self, "onGotDealer"))
+	serverManager.connect("receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsNotTurn"))
 	
 
 func onNameChosen(userName):
@@ -133,3 +135,10 @@ func onReceivedTeamWonChico(teamName: String, chicos: int):
 func onReceivedTeamWon(teamName: String):
 	print("%s won!", teamName)
 	gameScene.teamWon(teamName)
+
+func onGotDealer(dealer: String):
+	print("dealer is %s", [dealer])
+	gameScene.setDealer(dealer)
+
+func onPlayerCouldNotPlayCardBecauseItsNotTurn():
+	gameScene.notifyIsNotTurn()

@@ -1,9 +1,10 @@
 class_name TestDeck extends Deck
 
 var topCards : Array[ServerCard]
+var _amountOfDealtCards = 0
 		
 func getTopCard():
-	print(topCards)
+	_amountOfDealtCards += 1
 	if topCards.size() > 0: return topCards.pop_front()
 	return cards.pop_front()
 
@@ -14,3 +15,6 @@ func createAndShuffle():
 
 func setTopCards(newCards: Array[ServerCard]):
 	topCards = newCards
+
+func amountOfDealtCards():
+	return _amountOfDealtCards

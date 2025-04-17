@@ -12,8 +12,14 @@ func _init(newValue, newSuit):
 func play():
 	played = true
 
+func equals(card: ServerCard) -> bool:
+	return isValue(card.value) and isSuit(card.suit)
+
 func isSuit(comparingSuit: SuitEnum.Suit):
 	return comparingSuit == suit
+
+func isValue(comparingValue: ValueEnum.Value):
+	return comparingValue == value
 
 func getCardName():
 	return  ValueEnum.VALUES_TRANSLATIONS[value] + " de " + getSuitName()

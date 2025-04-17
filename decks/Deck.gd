@@ -10,5 +10,9 @@ var cards : Array[ServerCard]
 func getTopCard():
 	return cards.pop_front()
 
+func getAHand():
+	var hand = ServerHand.new(getTopCard(), getTopCard(), getTopCard())
+	return hand
+
 func createAndShuffle():
 	push_error("⚠️ createAndShuffle() must be implemented by subclass")

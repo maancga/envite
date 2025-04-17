@@ -9,11 +9,19 @@ signal sendPlayerRoundWinnerSignal(player: String, roundScore: int)
 signal sendTeamWonChicoPointsSignal(team: String, chicoPoints: int)
 signal sendTeamWonChicoSignal(team: String, chicos: int)
 signal sendTeamWonSignal(team: String)
+signal informDealerSignal(dealer: String)
+signal sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal(player: String)
 
 
+func informPlayersAndTeams(players: Dictionary) -> void:
+	var team1Array: Array[String] = []
+	for id in players.team1.players:
+		team1Array.append(str(id))
 
-func informPlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String]) -> void:
-	sendPlayersAndTeamsSignal.emit(players, team1, team2)
+	var team2Array: Array[String] = []
+	for id in players.team2.players:
+		team2Array.append(str(id))
+	sendPlayersAndTeamsSignal.emit(players.players, team1Array, team2Array)
 
 func dealHandToPlayer(player: String, hand: ServerHand) -> void:
 	dealHandToPlayerSignal.emit(player, hand)
@@ -27,6 +35,9 @@ func informPlayerTurn(player: String) -> void:
 func informPlayerPlayedCard(player: String, card: ServerCard, playedOrder: int) -> void:
 	sendPlayerPlayedCardSignal.emit(player, card, playedOrder)
 
+func informPlayerCouldNotPlayCardBecauseItsNotTurn(player: String) -> void:
+	sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal.emit(player)
+
 func informPlayerRoundWinner(player: String, roundScore: int) -> void:
 	sendPlayerRoundWinnerSignal.emit(player, roundScore)
 
@@ -37,4 +48,7 @@ func informTeamWonChico(teamName: String, chicos: int)-> void:
 	sendTeamWonChicoSignal.emit(teamName, chicos)
 
 func informTeamWon(teamName)-> void:
-	sendTeamWonSignal.emit(teamName,)
+	sendTeamWonSignal.emit(teamName)
+
+func informDealer(dealer: String)-> void:
+	informDealerSignal.emit(dealer)

@@ -29,6 +29,7 @@ signal playedCard(card)
 func _ready() -> void:
 	connectClickedCards()
 	cleanCards()
+	setTeamLabels()
 
 func cleanCards():
 	playedCards.get_node("firstCard/PlayerNameLabel").text = ""
@@ -41,7 +42,7 @@ func cleanCards():
 	playedCards.get_node("fourthCard/CardImage").texture = null
 
 
-func cleanTeamLabels():
+func setTeamLabels():
 	team1LabelTopLabel.text = "Equipo 1"
 	team2LabelTopLabel.text = "Equipo 2"
 
@@ -161,3 +162,11 @@ func teamWon(teamName: String):
 	if teamName == "team2": team2LabelTopLabel.text = "EQUIPO 2 GANADOR"
 	await get_tree().create_timer(2.0).timeout
 	cleanCards()
+
+func setDealer(dealer: String):
+	print(players)
+	print(players[dealer])
+	print("Dealer is %s" % [players[dealer]["name"]])
+
+func notifyIsNotTurn():
+	print("No es tu turno!")

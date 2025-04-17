@@ -17,3 +17,7 @@ func shuffle():
 		
 func getTopCard():
 	return cards.pop_front()
+
+func getAHand():
+	var hand = ServerHand.new(cards.pop_front(), cards.pop_front(), cards.pop_front())
+	return hand
