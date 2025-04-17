@@ -19,13 +19,18 @@ func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed():
 			var card = raycast_check_for_card()
-			if card && card is Card:
+			if card && isHandCard(card):
 				initial_card_position = card.global_position
 				card_being_dragged = card
 		else:
 			if card_being_dragged:
 				card_being_dragged.global_position = initial_card_position
 				card_being_dragged = null
+
+func isHandCard(card: Node) -> bool:
+	if card == card1 or card == card2 or card == card3:
+		return true
+	return false
 				
 func playFirstCard():
 	card1.card_image.texture = null
