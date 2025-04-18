@@ -7,6 +7,8 @@ const Values = preload("res://cards/ValueEnum.gd")
 const pathResolver = preload("res://cards/CardSpritePathResolver.gd")
 
 signal clickedCard
+signal hovered
+signal hoveredOff
 
 @export var suit : Suits.Suit
 @export var value : Values.Value
@@ -34,3 +36,11 @@ func getCardName():
 	
 func getSuitName():
 	return str(SuitEnum.SUIT_NAMES[suit])
+
+
+func _on_area_2d_mouse_entered() -> void:
+	hovered.emit(self)
+
+
+func _on_area_2d_mouse_exited() -> void:
+	hoveredOff.emit(self)

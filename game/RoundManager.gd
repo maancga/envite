@@ -79,6 +79,7 @@ func playCard(playerId: String, card: ServerHandCard):
 		return
 	card.play()
 	playedCards.addCard(playerId, card)
+	playerInteractor.informPlayerPlayedCard(playerId, card, playedCards.amountOfCards())
 	nextTurn()
 
 func playFirstCard(playerId: String):

@@ -9,6 +9,33 @@ var initial_card_position
 @export var card2: Card
 @export var card3: Card
 
+func _ready() -> void:
+	card1.update_texture()
+	card2.update_texture()
+	card3.update_texture()
+	connectHoverSignals()
+
+func connectHoverSignals() -> void:
+	card1.hovered.connect(onCardHovered)
+	card2.hovered.connect(onCardHovered)
+	card3.hovered.connect(onCardHovered)
+	card1.hoveredOff.connect(onCardHoveredOff)
+	card2.hoveredOff.connect(onCardHoveredOff)
+	card3.hoveredOff.connect(onCardHoveredOff)
+
+func hightlightCard(card: Card) -> void:
+	print("Highlighted card: ", card.getCardName())
+	card.card_image.scale = Vector2(1.1, 1.1)
+
+func unhightlightCard(card: Card) -> void:
+	card.card_image.scale = Vector2(1, 1)
+
+func onCardHovered(card: Card) -> void:
+	hightlightCard(card)
+
+func onCardHoveredOff(card: Card) -> void:
+	unhightlightCard(card)
+
 func _process(_delta: float) -> void:
 	if card_being_dragged:
 		var mouse_pos = get_global_mouse_position()

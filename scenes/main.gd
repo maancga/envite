@@ -36,9 +36,9 @@ func loadChangeNameScene():
 	var chooseNameScene = chooseNameSceneResource.instantiate()
 	add_child(chooseNameScene)
 	gameScene = gameSceneResource.instantiate()
-	gameScene.connect("playedCard", self.onPlayedCard)
 	gameScene.visible = false
 	add_child(gameScene)
+	gameScene.playersDisplay.connect("playedCard", self.onPlayedCard)
 	chooseNameScene.connect("nameChosenSignal", Callable(self, "onNameChosen"))
 	currentScene = chooseNameScene
 

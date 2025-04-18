@@ -15,7 +15,9 @@ func addCard(playerId: String, card: ServerHandCard):
 		firstCard = card
 
 	playedCards[playerId] = card
-	playerInteractor.informPlayerPlayedCard(playerId, card, playedCards.size())
+
+func amountOfCards() -> int:
+	return playedCards.size()
 
 func calculateWinner(virado: ServerCard) -> String:
 	return RoundWinnerCalculator.new(virado, firstCard).calculateWinner(playedCards)

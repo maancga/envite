@@ -15,6 +15,25 @@ var currentPlayerTurnId: String
 var players : Dictionary
 var yourId: String
 var playersArray: Array[String]
+var selectedCard: Card = null
+signal playedCard(card)
+
+
+func _ready() -> void:
+	connectClickedCards()
+
+func connectClickedCards() -> void:
+	myHand.card1.clickedCard.connect(onCardClicked)
+	myHand.card2.clickedCard.connect(onCardClicked)
+	myHand.card3.clickedCard.connect(onCardClicked)
+
+func onCardClicked(clickedCard: Card):
+	selectedCard = clickedCard
+
+func setHands(card1: CardData, card2: CardData, card3: CardData):
+	myHand.setInitialCards(card1, card2, card3)
+	connectClickedCards()
+	resetOtherPlayersCards()
 
 func setUp(_playerId: String, _playerTurnId: String, _players: Dictionary) -> void:
 	yourId = _playerId
@@ -87,3 +106,14 @@ func addPlayedCard(player: String, card: Dictionary, playedOrder: int, cardHandI
 		node.get_node("PlayerNameLabel").text = players[player]["name"]
 		node.set_card_data(card["value"], card["suit"])
 	playCard(player, cardHandIndex)
+
+func playCardButtonPressed():
+	if selectedCard == myHand.card1: playedCard.emit("1")
+	if selectedCard == myHand.card2: playedCard.emit("2")
+	if selectedCard == myHand.card3: playedCard.emit("3")
+
+
+func _on_play_card_button_pressed() -> void:
+	if !selectedCard: return
+	playCardButtonPressed()
+	selectedCard = null

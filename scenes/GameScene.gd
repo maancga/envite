@@ -1,11 +1,7 @@
 extends Node2D
 
 @onready var hand = $FourPlayersHandsDisplay/MyHand
-@onready var selectedCardLabel = $"Carta seleccionada"
-@onready var cardShuffler=$CardShuffler
-@onready var virado= $Virado/Card
-@onready var viradoLabel = $Virado/ViradoLabel
-@onready var playerNameLabel = $PlayerName
+@onready var virado = $Virado/Card
 @onready var turnLabel = $TurnLabel
 @onready var team1LabelTopLabel = $Team1Score/TopLabel
 @onready var team2LabelTopLabel = $Team2Score/TopLabel
@@ -24,11 +20,7 @@ var team1 : Array[String]
 var team2 : Array[String]
 var currentDealerId: String
 
-var selectedCard: Card = null
-signal playedCard(card)
-
 func _ready() -> void:
-	connectClickedCards()
 	playersDisplay.cleanPlayedCards()
 	setTeamLabels()
 
@@ -36,48 +28,22 @@ func setVirado(card: CardData):
 	virado.suit = card.suit
 	virado.value = card.value
 	virado.update_texture()
-	viradoLabel.text =  "Virado: %s" % [virado.getSuitName() ]
 
 func setCards(card1: CardData, card2: CardData, card3: CardData):
-	hand.setInitialCards(card1, card2, card3)
-	connectClickedCards()
-	playersDisplay.resetOtherPlayersCards()
+	playersDisplay.setHands(card1, card2, card3)
+
 
 func setTeamLabels():
 	team1LabelTopLabel.text = "Equipo 1"
 	team2LabelTopLabel.text = "Equipo 2"
 
-
-func connectClickedCards() -> void:
-	hand.card1.clickedCard.connect(onCardClicked)
-	hand.card2.clickedCard.connect(onCardClicked)
-	hand.card3.clickedCard.connect(onCardClicked)
-
 func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[String], newTeam2: Array[String]):
 	playersDisplay.setUp(newPlayerId, currentPlayerTurnId, newPlayers)
-	var playerName = newPlayers[newPlayerId]["name"]
-	playerNameLabel.text = playerName
 	playerId = newPlayerId
 	players = newPlayers
 	team1 = newTeam1
 	team2 = newTeam2
 
-func onCardClicked(clickedCard: Card):
-	selectedCard = clickedCard
-	selectedCardLabel.text =  "Carta seleccionada: %s" % [selectedCard.getCardName() ]
-
-func playCard():
-	if selectedCard == hand.card1: playedCard.emit("1")
-	if selectedCard == hand.card2: playedCard.emit("2")
-	if selectedCard == hand.card3: playedCard.emit("3")
-
-
-func _on_play_card_button_pressed() -> void:
-	if !selectedCard: return
-	if not isYourTurn(): return 
-	print("played card! " + selectedCard.getCardName())
-	playCard()
-	selectedCard = null
 
 func isYourTurn():
 	return currentPlayerTurnId == playerId

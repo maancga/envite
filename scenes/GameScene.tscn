@@ -15,45 +15,25 @@ position = Vector2(575, 322.5)
 scale = Vector2(0.748698, 0.635742)
 texture = ExtResource("2_vijgj")
 
-[node name="PlayCardButton" type="Button" parent="."]
-offset_left = 897.0
-offset_top = 541.0
-offset_right = 1050.0
-offset_bottom = 625.0
-text = "JUGAR CARTA"
-
-[node name="Carta seleccionada" type="Label" parent="."]
-offset_left = 432.0
-offset_top = 471.0
-offset_right = 582.0
-offset_bottom = 494.0
-text = "Carta seleccionada:"
-
 [node name="CardShuffler" parent="." instance=ExtResource("4_pynjx")]
 
-[node name="PlayerName" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
-text = "FOO"
-
 [node name="TurnLabel" type="Label" parent="."]
-offset_left = 897.0
-offset_right = 982.0
-offset_bottom = 23.0
+offset_left = 112.0
+offset_top = 596.0
+offset_right = 224.0
+offset_bottom = 648.0
 text = "Es tu turno"
 
 [node name="Virado" parent="." instance=ExtResource("6_6ytau")]
-position = Vector2(181, 23)
+position = Vector2(173, 44)
 scale = Vector2(0.7, 0.7)
 
 [node name="Team1Score" parent="." instance=ExtResource("8_vijgj")]
-position = Vector2(181, 206)
+position = Vector2(60, 44)
 scale = Vector2(0.7, 0.7)
 
 [node name="Team2Score" parent="." instance=ExtResource("8_vijgj")]
-position = Vector2(663, 206)
+position = Vector2(800, 44)
 scale = Vector2(0.7, 0.7)
 
 [node name="FourPlayersHandsDisplay" parent="." instance=ExtResource("6_xs4ih")]
-
-[connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]
