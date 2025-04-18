@@ -8,12 +8,40 @@ var initial_card_position
 @export var card1: Card
 @export var card2: Card
 @export var card3: Card
+@export var spacingCurve: Curve
+@export var rotationCurve: Curve
+@export var heightCurve: Curve
 
 func _ready() -> void:
 	card1.update_texture()
 	card2.update_texture()
 	card3.update_texture()
 	connectHoverSignals()
+	movePositions()
+
+
+func movePositions():
+	var cards = [card1, card2, card3]
+	var showingCards = cards.filter(func(card): return card.card_image.texture != null)
+
+	for card in showingCards:
+		var index = showingCards.find(card) + 1
+		var elementInDistribution: float = (float(index) / (showingCards.size() + 1))
+		var spacingResult = getRelativeX(elementInDistribution)
+		var heightResult = getRelativeHeight(elementInDistribution)
+		card.setPosition(Vector2(spacingResult, heightResult))
+		var new_rotation = getRelativeRotation(elementInDistribution)
+		card.setRotation(new_rotation)
+		print("element:", elementInDistribution, " spacing:", spacingResult, " height:", heightResult, " rotation:", new_rotation)
+
+func getRelativeHeight(elementInDistribution: float):
+	return heightCurve.sample_baked(elementInDistribution)
+
+func getRelativeRotation(elementInDistribution: float):
+	return rotationCurve.sample_baked(elementInDistribution)
+
+func getRelativeX(elementInDistribution: float):
+	return spacingCurve.sample_baked(elementInDistribution)
 
 func connectHoverSignals() -> void:
 	card1.hovered.connect(onCardHovered)
@@ -24,7 +52,6 @@ func connectHoverSignals() -> void:
 	card3.hoveredOff.connect(onCardHoveredOff)
 
 func hightlightCard(card: Card) -> void:
-	print("Highlighted card: ", card.getCardName())
 	card.card_image.scale = Vector2(1.1, 1.1)
 
 func unhightlightCard(card: Card) -> void:
@@ -61,13 +88,16 @@ func isHandCard(card: Node) -> bool:
 				
 func playFirstCard():
 	card1.card_image.texture = null
+	movePositions()
 	
 func playSecondCard():
 	card2.card_image.texture = null
+	movePositions()
+
 
 func playThirdCard():
 	card3.card_image.texture = null
-
+	movePositions()
 
 func raycast_check_for_card():
 	var space_state = get_world_2d().direct_space_state
@@ -81,38 +111,6 @@ func raycast_check_for_card():
 	return null
 	
 func setInitialCards(initialCard1: CardData, initialCard2: CardData,initialCard3: CardData,):
-	var cardPreload = preload("res://cards/Card.tscn")
-	var newCard1 = cardPreload.instantiate()
-	var newCard2 = cardPreload.instantiate()
-	var newCard3 = cardPreload.instantiate()
-
-	var card1Position = card1.position
-	var card2Position = card2.position
-	var card3Position = card3.position
-	var card1Rotation = card1.rotation
-	var card2Rotation = card2.rotation
-	var card3Rotation = card3.rotation
-	
-	if card1: card1.queue_free()
-	if card2: card2.queue_free()
-	if card3: card3.queue_free()
-
-	# Add new cards to the scene
-	add_child(newCard1)
-	add_child(newCard2)
-	add_child(newCard3)
-	
-	newCard1.set_card_data(initialCard1.value,initialCard1.suit)
-	newCard2.set_card_data(initialCard2.value,initialCard2.suit)
-	newCard3.set_card_data(initialCard3.value,initialCard3.suit)
-	newCard1.setPosition(card1Position)
-	newCard2.setPosition(card2Position)
-	newCard3.setPosition(card3Position)
-	
-	newCard1.rotation = card1Rotation
-	newCard2.rotation = card2Rotation
-	newCard3.rotation = card3Rotation
-	
-	card1 = newCard1
-	card2 = newCard2
-	card3 = newCard3
+	card1.set_card_data(initialCard1.value, initialCard1.suit)
+	card2.set_card_data(initialCard2.value, initialCard2.suit)
+	card3.set_card_data(initialCard3.value, initialCard3.suit)

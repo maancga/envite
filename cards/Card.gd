@@ -17,6 +17,9 @@ signal hoveredOff
 func setPosition(newPosition: Vector2):
 	position = newPosition
 
+func setRotation(newRotation: float):
+	rotation_degrees = newRotation
+
 func set_card_data(newValue: Values.Value, givenSuit: Suits.Suit):
 	suit = givenSuit
 	value = newValue

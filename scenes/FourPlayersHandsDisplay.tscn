@@ -9,7 +9,7 @@
 script = ExtResource("1_eh0v3")
 
 [node name="MyHand" parent="." instance=ExtResource("1_cbxej")]
-position = Vector2(447, 517)
+position = Vector2(386, 515)
 rotation = 0.0041769
 scale = Vector2(0.73, 0.73)
 
