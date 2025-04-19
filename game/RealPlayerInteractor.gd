@@ -13,6 +13,15 @@ signal informDealerSignal(dealer: String)
 signal sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal(player: String)
 signal sendPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal(player: String)
 signal sendPlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal(player: String)
+signal sendPlayerCouldNotPlayCardBecauseItsVidoSignal(player: String)
+signal sendPlayerRefusedVidoSignal(player: String)
+signal sendPlayerAcceptedVidoSignal(player: String)
+signal sendVidoRaisedFor7PiedrasSignal(player: String)
+signal sendVidoRaisedFor9PiedrasSignal(player: String)
+signal sendVidoRaisedForChicoSignal(player: String)
+signal sendVidoCannotBeAcceptedBecauseThereIsNoVidoCalledSignal(player: String)
+signal sendVidoCannotBeRefusedBecauseThereIsNoVidoCalledSignal(player: String)
+signal sendVidoCannotBeRaisedBecauseThereIsNoVidoCalledSignal(player: String)
 
 
 func informPlayersAndTeams(players: Dictionary) -> void:
@@ -60,3 +69,30 @@ func informTeamWon(teamName)-> void:
 
 func informDealer(dealer: String)-> void:
 	informDealerSignal.emit(dealer)
+
+func informPlayerCouldNotPlayCardBecauseItsVido(_player: String)-> void:
+	sendPlayerCouldNotPlayCardBecauseItsVidoSignal.emit(_player)
+	
+func informPlayerRefusedVido(_player: String) -> void:
+	sendPlayerRefusedVidoSignal.emit(_player)
+
+func informPlayerAcceptedVido(_player: String) -> void:
+	sendPlayerAcceptedVidoSignal.emit(_player)
+
+func informVidoRaisedFor7Piedras(_player: String) -> void:
+	sendVidoRaisedFor7PiedrasSignal.emit(_player)
+	
+func informVidoRaisedFor9Piedras(_player: String) -> void:
+	sendVidoRaisedFor9PiedrasSignal.emit(_player)
+
+func informVidoRaisedForChico(_player: String) -> void:
+	sendVidoRaisedForChicoSignal.emit(_player)
+
+func cannotRefuseVidoBecauseThereIsNoVidoCalled(_player: String):
+	sendVidoCannotBeRefusedBecauseThereIsNoVidoCalledSignal.emit(_player)
+
+func cannotAcceptVidoBecauseThereIsNoVidoCalled(_player: String):
+	sendVidoCannotBeAcceptedBecauseThereIsNoVidoCalledSignal.emit(_player)
+
+func cannotRaiseVidoBecauseThereIsNoVidoCalled(_player: String):
+	sendVidoCannotBeRaisedBecauseThereIsNoVidoCalledSignal.emit(_player)

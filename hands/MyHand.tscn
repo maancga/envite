@@ -1,31 +1,19 @@
 [gd_scene load_steps=6 format=3 uid="uid://qutkjd1k6mlo"]
 
 [ext_resource type="Script" uid="uid://bfc3vv3ayy720" path="res://hands/MyHand.gd" id="1_y4tjv"]
+[ext_resource type="Curve" uid="uid://dvah2nj4xfhol" path="res://hands/curves/MyHandSpacingCurve.tres" id="2_m447l"]
 [ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://cards/Card.tscn" id="2_vnd3e"]
-
-[sub_resource type="Curve" id="Curve_y4tjv"]
-_limits = [0.0, 500.0, 0.0, 1.0]
-_data = [Vector2(0, 0), 0.0, 463.822, 0, 1, Vector2(1, 463.822), 463.822, 0.0, 1, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_vnd3e"]
-_limits = [-10.0, 10.0, 0.0, 1.0]
-_data = [Vector2(0, -10), 0.0, 0.0, 0, 0, Vector2(0.184019, -8.93321), 0.0, 0.0, 0, 0, Vector2(0.520581, 1.92022), 23.5191, 23.5191, 0, 0, Vector2(0.581114, 2.282), 0.0, 0.0, 0, 0, Vector2(0.820823, 7.94991), 0.0, 0.0, 0, 0, Vector2(1, 10), 28.0, 0.0, 0, 0]
-point_count = 6
-
-[sub_resource type="Curve" id="Curve_th56v"]
-_limits = [85.0, 147.19, -0.2, 1.2]
-_data = [Vector2(0.21017, 102.194), 0.0, 0.0, 0, 0, Vector2(0.527845, 85), 0.0, 0.0, 0, 0, Vector2(0.905085, 102.557), 0.0, 0.0, 0, 0]
-point_count = 3
+[ext_resource type="Curve" uid="uid://b1ac0pvn2gaqc" path="res://hands/curves/MyHandRotationCurve.tres" id="3_uft5m"]
+[ext_resource type="Curve" uid="uid://ddsp7ivdlps6f" path="res://hands/curves/MyHandHeightCurve.tres" id="4_csxfp"]
 
 [node name="MyHand" type="Node2D" node_paths=PackedStringArray("card1", "card2", "card3")]
 script = ExtResource("1_y4tjv")
 card1 = NodePath("Card1")
 card2 = NodePath("Card2")
 card3 = NodePath("Card3")
-spacingCurve = SubResource("Curve_y4tjv")
-rotationCurve = SubResource("Curve_vnd3e")
-heightCurve = SubResource("Curve_th56v")
+spacingCurve = ExtResource("2_m447l")
+rotationCurve = ExtResource("3_uft5m")
+heightCurve = ExtResource("4_csxfp")
 
 [node name="Card1" parent="." instance=ExtResource("2_vnd3e")]
 position = Vector2(58, 87)

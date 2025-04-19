@@ -57,7 +57,6 @@ func finishHand():
 	currentPlayerTurn = handWinner
 	playerInteractor.informPlayerTurn(currentPlayerTurn)
 
-	
 func informTeamOneWonRound():
 	team1WonRoundSignal.emit()
 
@@ -93,3 +92,5 @@ func playSecondCard(playerId: String):
 func playThirdCard(playerId: String):
 	var playedCard = hands.getThirdCard(playerId)
 	playCard(playerId, playedCard)
+
+	

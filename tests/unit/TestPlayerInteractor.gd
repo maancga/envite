@@ -80,3 +80,28 @@ func informPlayerCouldNotPlayCardBecauseItsNotTurn(_player: String) -> void:
 
 func informPlayerCouldNotPlayCardBacauseHasPlayedAlreadyInCurrentHand(_player: String)-> void:
 	pass
+
+func informPlayerCouldNotPlayCardBecauseItsVido(_player: String)-> void:
+	pass
+
+func informPlayerRefusedVido(_player: String) -> void:
+	pass
+
+func informPlayerAcceptedVido(_player: String) -> void:
+	pass
+
+func informVidoRaisedFor7Piedras(_player: String) -> void:
+	pass
+	
+func informVidoRaisedFor9Piedras(_player: String) -> void:
+	pass
+
+func cannotRefuseVidoBecauseThereIsNoVidoCalled(_player: String):
+	pass
+
+func cannotAcceptVidoBecauseThereIsNoVidoCalled(_player: String):
+	pass
+
+func cannotRaiseVidoBecauseThereIsNoVidoCalled(_player: String):
+	pass
+

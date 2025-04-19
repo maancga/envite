@@ -25,6 +25,24 @@ func informPlayerCouldNotPlayCardBacauseHasPlayedAlreadyInCurrentHand(_player: S
 
 func informPlayerCouldNotPlayCardBecauseItsPlayedAlready(_player: String)-> void:
 	push_error("⚠️ informPlayerCouldNotPlayCardBecauseItsPlayedAlready() must be implemented by subclass")
+
+func informPlayerCouldNotPlayCardBecauseItsVido(_player: String)-> void:
+	push_error("⚠️ informPlayerCouldNotPlayCardBecauseItsVido() must be implemented by subclass")
+
+func informPlayerRefusedVido(_player: String) -> void:
+	push_error("⚠️ informPlayerRefusedVido() must be implemented by subclass")
+
+func informPlayerAcceptedVido(_player: String) -> void:
+	push_error("⚠️ informPlayerAcceptedVido() must be implemented by subclass")
+
+func informVidoRaisedFor7Piedras(_player: String) -> void:
+	push_error("⚠️ informVidoRaisedFor7Piedras() must be implemented by subclass")
+	
+func informVidoRaisedFor9Piedras(_player: String) -> void:
+	push_error("⚠️ informVidoRaisedFor7Piedras() must be implemented by subclass")
+
+func informVidoRaisedForChico(_player: String) -> void:
+	push_error("⚠️ informVidoRaisedFor7Piedras() must be implemented by subclass")
 	
 func informPlayerRoundWinner(_player: String, _roundScore: int)-> void:
 	push_error("⚠️ informPlayerRoundWinner() must be implemented by subclass")
@@ -40,3 +58,13 @@ func informTeamWon(_teamName: String)-> void:
 
 func informDealer(_dealer: String)-> void:
 	push_error("⚠️ informDealer() must be implemented by subclass")
+
+func cannotRefuseVidoBecauseThereIsNoVidoCalled(_playerId: String):
+	push_error("⚠️ cannotRefuseVidoBecauseThereIsNoVidoCalled() must be implemented by subclass")
+
+func cannotAcceptVidoBecauseThereIsNoVidoCalled(_playerId: String):
+	push_error("⚠️ cannotAcceptVidoBecauseThereIsNoVidoCalled() must be implemented by subclass")
+
+func cannotRaiseVidoBecauseThereIsNoVidoCalled(_playerId: String):
+	push_error("⚠️ cannotRaiseVidoBecauseThereIsNoVidoCalled() must be implemented by subclass")
+

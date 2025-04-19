@@ -20,7 +20,7 @@ func setPosition(newPosition: Vector2):
 func setRotation(newRotation: float):
 	rotation_degrees = newRotation
 
-func set_card_data(newValue: Values.Value, givenSuit: Suits.Suit):
+func setCardData(newValue: Values.Value, givenSuit: Suits.Suit):
 	suit = givenSuit
 	value = newValue
 	update_texture()

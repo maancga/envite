@@ -116,7 +116,8 @@ func onReceivedPlayedTurn(playerId: String):
 	gameScene.setPlayerTurn(playerId)
 
 func onReceivedPlayedCard(player: String, card: Dictionary, playedOrder: int, cardHandIndex: int):
-	gameScene.addPlayedCard(player, card, playedOrder, cardHandIndex)
+	print(playedOrder)
+	gameScene.addPlayedCard(player, card, cardHandIndex)
 	
 func onReceivedRoundWinner(player: String, roundScore: int):
 	gameScene.playerWonRound(player, roundScore)

@@ -6,10 +6,10 @@ class_name FourPlayersHandsDisplay
 @onready var secondHand: UnknownHand = $Player2Hand
 @onready var thirdHand: UnknownHand = $Player3Hand
 @onready var fourthHand: UnknownHand = $Player4Hand
-@onready var playedCards = $"4PlayersPlayedCards"
-@onready var player2NameLabel = $Player2NameLabel
-@onready var player3NameLabel = $Player3NameLabel
-@onready var player4NameLabel = $Player4NameLabel
+@onready var playedCards: UIPlayedCards = $PlayedCards
+@onready var player2NameLabel: Label = $Player2NameLabel
+@onready var player3NameLabel: Label = $Player3NameLabel
+@onready var player4NameLabel: Label = $Player4NameLabel
 
 var currentPlayerTurnId: String
 var players : Dictionary
@@ -17,10 +17,6 @@ var yourId: String
 var playersArray: Array[String]
 var selectedCard: Card = null
 signal playedCard(card)
-
-
-func _ready() -> void:
-	connectClickedCards()
 
 func connectClickedCards() -> void:
 	myHand.card1.clickedCard.connect(onCardClicked)
@@ -34,6 +30,7 @@ func setHands(card1: CardData, card2: CardData, card3: CardData):
 	myHand.setInitialCards(card1, card2, card3)
 	connectClickedCards()
 	resetOtherPlayersCards()
+	cleanPlayedCards()
 
 func setUp(_playerId: String, _playerTurnId: String, _players: Dictionary) -> void:
 	yourId = _playerId
@@ -70,41 +67,14 @@ func playCard(playerId: String, index: int):
 	if (index == 3):
 		chosenHand.playThirdCard()
 
-
-func cleanPlayedCards():
-	playedCards.get_node("firstCard/PlayerNameLabel").text = ""
-	playedCards.get_node("secondCard/PlayerNameLabel").text = ""
-	playedCards.get_node("thirdCard/PlayerNameLabel").text = ""
-	playedCards.get_node("fourthCard/PlayerNameLabel").text = ""
-	playedCards.get_node("firstCard/CardImage").texture = null
-	playedCards.get_node("secondCard/CardImage").texture = null
-	playedCards.get_node("thirdCard/CardImage").texture = null
-	playedCards.get_node("fourthCard/CardImage").texture = null
-
 func resetOtherPlayersCards():
 	secondHand.resetCardTextures()
 	thirdHand.resetCardTextures()
 	fourthHand.resetCardTextures()
 
 	
-func addPlayedCard(player: String, card: Dictionary, playedOrder: int, cardHandIndex: int):
-	print("Player %s played card its %s card %s" % [players[player]["name"], cardHandIndex, card, ])
-	if (playedOrder == 1):
-		var node = playedCards.get_node("firstCard")
-		node.get_node("PlayerNameLabel").text = players[player]["name"]
-		node.set_card_data(card["value"], card["suit"] )
-	if (playedOrder == 2): 
-		var node = playedCards.get_node("secondCard")
-		node.get_node("PlayerNameLabel").text = players[player]["name"]
-		node.set_card_data(card["value"], card["suit"] )
-	if (playedOrder == 3):
-		var node = playedCards.get_node("thirdCard")
-		node.get_node("PlayerNameLabel").text = players[player]["name"]
-		node.set_card_data(card["value"], card["suit"] )
-	if (playedOrder == 4):
-		var node = playedCards.get_node("fourthCard")
-		node.get_node("PlayerNameLabel").text = players[player]["name"]
-		node.set_card_data(card["value"], card["suit"])
+func addPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
+	playedCards.addCard(players[player]["name"], card["value"], card["suit"])
 	playCard(player, cardHandIndex)
 
 func playCardButtonPressed():
@@ -117,3 +87,7 @@ func _on_play_card_button_pressed() -> void:
 	if !selectedCard: return
 	playCardButtonPressed()
 	selectedCard = null
+
+func cleanPlayedCards():
+	playedCards.cleanPlayedCards()
+	playedCards.setAmountOfPlayers(playersArray.size())

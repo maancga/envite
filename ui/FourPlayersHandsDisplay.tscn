@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://vs6t0jiloxra"]
 
 [ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://hands/MyHand.tscn" id="1_cbxej"]
-[ext_resource type="Script" uid="uid://dkic0o5r4tkmy" path="res://scenes/FourPlayersHandsDisplay.gd" id="1_eh0v3"]
+[ext_resource type="Script" uid="uid://dkic0o5r4tkmy" path="res://ui/FourPlayersHandsDisplay.gd" id="1_eh0v3"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://hands/UnknownHand.tscn" id="2_eh0v3"]
-[ext_resource type="PackedScene" uid="uid://3kovmxon4oix" path="res://cards/4PlayersPlayedCards.tscn" id="3_njier"]
+[ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://ui/UIPlayedCards.tscn" id="4_21lry"]
 
 [node name="FourPlayersHandsDisplay" type="Node2D"]
 script = ExtResource("1_eh0v3")
@@ -27,10 +27,6 @@ scale = Vector2(0.73, 0.73)
 position = Vector2(134, 212)
 rotation = 1.55551
 scale = Vector2(0.73, 0.73)
-
-[node name="4PlayersPlayedCards" parent="." instance=ExtResource("3_njier")]
-position = Vector2(407, 412)
-scale = Vector2(0.6, 0.6)
 
 [node name="Player2NameLabel" type="Label" parent="."]
 offset_left = 904.0
@@ -59,5 +55,9 @@ offset_top = 541.0
 offset_right = 1050.0
 offset_bottom = 625.0
 text = "JUGAR CARTA"
+
+[node name="PlayedCards" parent="." instance=ExtResource("4_21lry")]
+position = Vector2(343, 349)
+scale = Vector2(0.4, 0.4)
 
 [connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]

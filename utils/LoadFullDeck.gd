@@ -18,6 +18,6 @@ func _ready():
 			var yAxis = (int(suit) * card_width) + yOffset
 			card.scale = Vector2(0.7, 0.7)
 			add_child(card)
-			card.set_card_data(value, suit,)
+			card.setCardData(value, suit,)
 			card.setPosition(Vector2(xAxis,yAxis))
 			cards.push_back(card)

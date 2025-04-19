@@ -21,7 +21,6 @@ var team2 : Array[String]
 var currentDealerId: String
 
 func _ready() -> void:
-	playersDisplay.cleanPlayedCards()
 	setTeamLabels()
 
 func setVirado(card: CardData):
@@ -53,8 +52,8 @@ func setPlayerTurn(newPlayerId: String):
 	if(isYourTurn()): turnLabel.text = "Es tu turno!" 
 	else: turnLabel.text = "No es tu turno =(" 
 
-func addPlayedCard(player: String, card: Dictionary, playedOrder: int, cardHandIndex: int):
-	playersDisplay.addPlayedCard(player, card, playedOrder, cardHandIndex)
+func addPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
+	playersDisplay.addPlayedCard(player, card, cardHandIndex)
 
 func getTeam(player: String) -> String:
 	if player in team1: return "team1"
@@ -73,7 +72,6 @@ func teamWonChicoPoints(teamName: String, chicoPoints: int):
 	if teamName == "team1": team1ChicoPointsScore.text = str(chicoPoints)
 	if teamName == "team2": team2ChicoPointsScore.text = str(chicoPoints)
 	await get_tree().create_timer(2.0).timeout
-	playersDisplay.cleanPlayedCards()
 	resetRoundScore()
 
 func resetRoundScore():
@@ -86,7 +84,6 @@ func teamWonChico(teamName: String, chicosScore: int):
 	if teamName == "team1": team1GameChicosScore.text = str(chicosScore)
 	if teamName == "team2": team2GameChicosScore.text = str(chicosScore)
 	await get_tree().create_timer(2.0).timeout
-	playersDisplay.cleanPlayedCards()
 	resetChicoPointsScore()
 
 func resetChicoPointsScore():
@@ -99,7 +96,6 @@ func teamWon(teamName: String):
 	if teamName == "team1": team1LabelTopLabel.text = "EQUIPO 1 GANÓ"
 	if teamName == "team2": team2LabelTopLabel.text = "EQUIPO 2 GANADOR"
 	await get_tree().create_timer(2.0).timeout
-	playersDisplay.cleanPlayedCards()
 
 func setDealer(dealer: String):
 	currentDealerId = dealer

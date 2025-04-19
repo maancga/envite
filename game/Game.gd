@@ -9,6 +9,7 @@ var gamePlayers: GamePlayers
 var playerInteractor: PlayerInteractor
 var cardDealer: CardDealer
 var dealerManager: DealerManager
+var gameState: RoundState
 
 var team1ScoreInChico = 0
 var team2ScoreInChico = 0
@@ -17,12 +18,17 @@ var team1WonChicos = 0
 var team2WonChicos = 0
 
 const DEFAULT_PIEDRAS_WINS = 2
+var piedrasOnPlay = 2
+var viradoForChico = false
 
 func _init(newGamePlayers: GamePlayers, newPlayerInteractor: PlayerInteractor, deck: Deck):
 	gamePlayers = newGamePlayers
 	playerInteractor = newPlayerInteractor
 	cardDealer = CardDealer.new(newPlayerInteractor, newGamePlayers, deck)
 	dealerManager = DealerManager.new(gamePlayers, playerInteractor)
+
+func changeState(newState: RoundState):
+	gameState = newState
 	
 func hasPlayers(amount: int):
 	return gamePlayers.hasPlayers(amount)
@@ -38,30 +44,49 @@ func newGame():
 	chicoRound = 1
 	playerInteractor.informPlayersAndTeams(gamePlayers.toDictionary())
 	setNewRound()
+	gameState = PlayerTurnState.new(self, gamePlayers.getFirstPlayer(), roundManager.hands, playerInteractor, roundManager.playedCards)
 
-func getFirstDealer():
-	return gamePlayers.playerIds[0]
+func setPiedrasOnPlay(piedras: int):
+	piedrasOnPlay = piedras
 
+func playingForChico():
+	viradoForChico = true
+
+func notPlayingForChico():
+	viradoForChico = false
 
 func teamOneWinsRound():
 	dealerManager.setNewDealer()
+	if (viradoForChico): 
+		team1WinsChico()
+		return 
 	if team1IsOnTumbo(): 
 		team1WinsChico()
 		return
 	else: 
-		team1ScoreInChico += DEFAULT_PIEDRAS_WINS
+		team1ScoreInChico += piedrasOnPlay
 		playerInteractor.informTeamWonChicoPoints("team1", team1ScoreInChico)
 		setNewRound()
 
 func teamTwoWinsRound():
 	dealerManager.setNewDealer()
+	if (viradoForChico): 
+		team1WinsChico()
+		return 
 	if team2IsOnTumbo(): 
 		team2WinsChico()
 		return
 	else: 
-		team2ScoreInChico += DEFAULT_PIEDRAS_WINS
+		team2ScoreInChico += piedrasOnPlay
 		playerInteractor.informTeamWonChicoPoints("team2", team2ScoreInChico)
 		setNewRound()
+
+func playerRefusedVido(playerId: String):
+	var playerTeam = gamePlayers.getPlayerTeam(playerId)
+	if playerTeam == "team1":
+		teamTwoWinsRound()
+	else:
+		teamOneWinsRound()
 
 func team1IsOnTumbo():
 	return false
@@ -90,10 +115,24 @@ func team2Wins():
 	print("team 2 won the game")
 
 func playFirstCard(id: String):
-	roundManager.playFirstCard(id)
+	gameState.playFirstCard(id)
 	
 func playSecondCard(id: String):
-	roundManager.playSecondCard(id)
+	gameState.playSecondCard(id)
 
 func playThirdCard(id: String):
-	roundManager.playThirdCard(id)
+	gameState.playThirdCard(id)
+
+func callVido(id: String):
+	gameState.callVido(id)
+
+func refuseVido(id: String):
+	gameState.refuseVido(id)
+
+func acceptVido(id: String):
+	gameState.acceptVido(id)
+
+func raiseVido(id: String):
+	gameState.raiseVido(id)
+
+	

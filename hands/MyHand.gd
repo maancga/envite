@@ -32,7 +32,6 @@ func movePositions():
 		card.setPosition(Vector2(spacingResult, heightResult))
 		var new_rotation = getRelativeRotation(elementInDistribution)
 		card.setRotation(new_rotation)
-		print("element:", elementInDistribution, " spacing:", spacingResult, " height:", heightResult, " rotation:", new_rotation)
 
 func getRelativeHeight(elementInDistribution: float):
 	return heightCurve.sample_baked(elementInDistribution)
@@ -111,6 +110,7 @@ func raycast_check_for_card():
 	return null
 	
 func setInitialCards(initialCard1: CardData, initialCard2: CardData,initialCard3: CardData,):
-	card1.set_card_data(initialCard1.value, initialCard1.suit)
-	card2.set_card_data(initialCard2.value, initialCard2.suit)
-	card3.set_card_data(initialCard3.value, initialCard3.suit)
+	card1.setCardData(initialCard1.value, initialCard1.suit)
+	card2.setCardData(initialCard2.value, initialCard2.suit)
+	card3.setCardData(initialCard3.value, initialCard3.suit)
+	movePositions()
