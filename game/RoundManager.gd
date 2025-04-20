@@ -5,6 +5,7 @@ var turn = 0
 var currentPlayerTurn: String
 var gamePlayers: GamePlayers
 var playerInteractor: PlayerInteractor
+var scoresManager: ScoresManager
 
 var team1ScoreInRound = 0
 var team2ScoreInRound = 0
@@ -15,13 +16,11 @@ var playedCards: PlayedCards
 
 var cardDealer: CardDealer
 
-signal team1WonRoundSignal()
-signal team2WonRoundSignal()
-
-func _init(_cardDealer: CardDealer, _gamePlayers: GamePlayers, _playerInteractor: PlayerInteractor):
+func _init(_cardDealer: CardDealer, _gamePlayers: GamePlayers, _playerInteractor: PlayerInteractor, _scoresManager: ScoresManager):
 	gamePlayers = _gamePlayers
 	playerInteractor = _playerInteractor
 	cardDealer = _cardDealer
+	scoresManager = _scoresManager
 	turn = 1
 
 func deal(dealerId: String):
@@ -47,21 +46,15 @@ func finishHand():
 	if handWinnerTeam == "team2": 
 		team2ScoreInRound +=1
 		playerInteractor.informPlayerRoundWinner(handWinner, team2ScoreInRound)
-	if team1ScoreInRound == 2: 
-		informTeamOneWonRound()
+	if team1ScoreInRound == 2:
+		scoresManager.teamOneWinsRound()
 		return 
 	if team2ScoreInRound == 2: 
-		informTeamTwoWonRound()
+		scoresManager.teamTwoWinsRound()
 		return
 	turn = 1
 	currentPlayerTurn = handWinner
 	playerInteractor.informPlayerTurn(currentPlayerTurn)
-
-func informTeamOneWonRound():
-	team1WonRoundSignal.emit()
-
-func informTeamTwoWonRound():
-	team2WonRoundSignal.emit()
 
 func calculateHandWinner():
 	return playedCards.calculateWinner(virado)

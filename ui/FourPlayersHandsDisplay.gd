@@ -10,6 +10,7 @@ class_name FourPlayersHandsDisplay
 @onready var player2NameLabel: Label = $Player2NameLabel
 @onready var player3NameLabel: Label = $Player3NameLabel
 @onready var player4NameLabel: Label = $Player4NameLabel
+signal vidoCalledSignal()
 
 var currentPlayerTurnId: String
 var players : Dictionary
@@ -91,3 +92,7 @@ func _on_play_card_button_pressed() -> void:
 func cleanPlayedCards():
 	playedCards.cleanPlayedCards()
 	playedCards.setAmountOfPlayers(playersArray.size())
+
+
+func _on_call_vido_button_pressed() -> void:
+	vidoCalledSignal.emit()

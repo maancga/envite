@@ -10,6 +10,12 @@ var countInformPlayerTurnCalls = 0
 var informPlayerTurnArgs: Array[String]
 var playedCardsCalls = 0
 var playedCardsArgs: Array[Dictionary]
+var vidoRefusedCalls = 0
+var vidoAcceptedCalls = 0
+var vidoRaisedTo7calls = 0
+var vidoRaisedTo9calls = 0
+var vidoRaisedToChicoCalls = 0
+var vidoRaisedToGameCalls = 0
 
 
 
@@ -85,16 +91,40 @@ func informPlayerCouldNotPlayCardBecauseItsVido(_player: String)-> void:
 	pass
 
 func informPlayerRefusedVido(_player: String) -> void:
-	pass
+	vidoRefusedCalls += 1
+
+func vidoRefusedCalledTimes(amount: int):
+	return amount == vidoRefusedCalls
 
 func informPlayerAcceptedVido(_player: String) -> void:
-	pass
+	vidoAcceptedCalls += 1
+
+func vidoAcceptedCalledTimes(amount: int):
+	return amount == vidoAcceptedCalls
 
 func informVidoRaisedFor7Piedras(_player: String) -> void:
-	pass
+	vidoRaisedTo7calls += 1
+
+func vidoRaisedFor7PiedrasCalledTimes(amount: int):
+	return amount == vidoRaisedTo7calls
 	
 func informVidoRaisedFor9Piedras(_player: String) -> void:
-	pass
+	vidoRaisedTo9calls += 1
+
+func vidoRaisedFor9PiedrasCalledTimes(amount: int):
+	return amount == vidoRaisedTo9calls
+
+func informVidoRaisedForChico(_player: String) -> void:
+	vidoRaisedToChicoCalls += 1
+
+func vidoRaisedForChicoCalledTimes(amount: int):
+	return amount == vidoRaisedToChicoCalls
+
+func informVidoRaisedForGame(_player: String) -> void:
+	vidoRaisedToGameCalls += 1
+
+func vidoRaisedForGameCalledTimes(amount: int):
+	return amount == vidoRaisedToGameCalls
 
 func cannotRefuseVidoBecauseThereIsNoVidoCalled(_player: String):
 	pass
@@ -104,4 +134,3 @@ func cannotAcceptVidoBecauseThereIsNoVidoCalled(_player: String):
 
 func cannotRaiseVidoBecauseThereIsNoVidoCalled(_player: String):
 	pass
-

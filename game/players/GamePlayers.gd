@@ -73,3 +73,6 @@ func toDictionary():
 func getPlayerName(id: String):
 	if playerExists(id): return playerInstances[id].name
 	return "Player not found"
+
+func getFirstPlayer():
+	if playerIds.size() > 0: return playerIds[0]

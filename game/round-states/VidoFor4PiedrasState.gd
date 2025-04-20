@@ -2,10 +2,12 @@ class_name VidoFor4PiedrasState extends RoundState
 
 var playerInteractor: PlayerInteractor
 var game: Game
+var scoresManager: ScoresManager
 
-func _init(_playerInteractor: PlayerInteractor, _game: Game) -> void:
+func _init(_playerInteractor: PlayerInteractor, _game: Game, _scoresManager: ScoresManager) -> void:
 	playerInteractor = _playerInteractor
 	game = _game 
+	scoresManager = _scoresManager
 
 func playFirstCard(playerId: String):
 	playerInteractor.informPlayerCouldNotPlayCardBecauseItsVido(playerId)
@@ -25,15 +27,15 @@ func callVido(playerId: String):
 
 func refuseVido(playerId: String):
 	playerInteractor.informPlayerRefusedVido(playerId)
+	scoresManager.playerRefusedVido(playerId)
 	return
 
 func acceptVido(playerId: String):
 	playerInteractor.informPlayerAcceptedVido(playerId)
-	game.setPiedrasOnPlay(4)
+	scoresManager.setPiedrasOnPlay(4)
 	return
 
 func raiseVido(playerId: String):
 	playerInteractor.informVidoRaisedFor7Piedras(playerId)
-	game.setPiedrasOnPlay(4)
-	game.changeState(VidoFor7PiedrasState.new(playerInteractor, game))
-
+	scoresManager.setPiedrasOnPlay(4)
+	game.changeState(VidoFor7PiedrasState.new(playerInteractor, game, scoresManager))

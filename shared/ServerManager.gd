@@ -23,6 +23,7 @@ signal informGotDealerSignal(dealer)
 signal receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal(playerId)
 signal receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal(playerId)
 signal receivePlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal(playerId)
+signal receivePlayerCalledVidoSignal(playerId)
 
 var preGame: PreGame
 var game: Game
@@ -58,6 +59,7 @@ func startServer(port = 9000):
 	playerInteractor.connect("sendTeamWonChicoSignal", Callable(self, "onTeamWonChico"))
 	playerInteractor.connect("sendTeamWonSignal", Callable(self, "onTeamWon"))
 	playerInteractor.connect("informDealerSignal", Callable(self, "onGotDealer"))
+	playerInteractor.connect("sendPlayerCalledVidoSignal", Callable(self, "onPlayerCalledVido"))
 
 	playerInteractor.name = "Interactor"
 	add_child(playerInteractor)
@@ -116,6 +118,9 @@ func onTeamWon(teamName: String):
 func onGotDealer(dealer: String):
 	rpc("receiveDealer", dealer)
 
+func onPlayerCalledVido(playerId: String):
+	rpc("receivePlayerCalledVido", playerId)
+
 
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
@@ -138,6 +143,12 @@ func onClientChoosesName(chosenName: String):
 		game.newGame()
 		for player in gamePlayers.playerIds:
 			rpc_id(int(player), "gameStarted")
+
+@rpc("any_peer")
+func onClientCalledVido():
+	var sender = multiplayer.get_remote_sender_id()
+	var playerId = str(sender)
+	game.callVido(playerId)
 
 ################ CLIENT
 
@@ -209,7 +220,9 @@ func receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand(player: String):
 func receivePlayerCouldNotPlayCardBecauseItsPlayedAlready(player: String):
 	receivePlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal.emit(player)
 
-
+@rpc("authority")
+func receivePlayerCalledVido(playerId: String):
+	receivePlayerCalledVidoSignal.emit(playerId)
 
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():
@@ -220,3 +233,6 @@ func playCard(cardIndex: String) -> void:
 
 func chooseName(playerName: String) -> void:
 	rpc_id(1, "onClientChoosesName", playerName)
+
+func callVido() -> void:
+	rpc_id(1, "onClientCalledVido")

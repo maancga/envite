@@ -19,9 +19,12 @@ signal sendPlayerAcceptedVidoSignal(player: String)
 signal sendVidoRaisedFor7PiedrasSignal(player: String)
 signal sendVidoRaisedFor9PiedrasSignal(player: String)
 signal sendVidoRaisedForChicoSignal(player: String)
+signal sendVidoRaisedForGameSignal(player: String)
+signal sendCanNotRaiseVidoMoreThanGameSignal(player: String)
 signal sendVidoCannotBeAcceptedBecauseThereIsNoVidoCalledSignal(player: String)
 signal sendVidoCannotBeRefusedBecauseThereIsNoVidoCalledSignal(player: String)
 signal sendVidoCannotBeRaisedBecauseThereIsNoVidoCalledSignal(player: String)
+signal sendPlayerCalledVidoSignal(playerId: String)
 
 
 func informPlayersAndTeams(players: Dictionary) -> void:
@@ -65,6 +68,7 @@ func informTeamWonChico(teamName: String, chicos: int)-> void:
 	sendTeamWonChicoSignal.emit(teamName, chicos)
 
 func informTeamWon(teamName)-> void:
+	print("%s won the game", [teamName])
 	sendTeamWonSignal.emit(teamName)
 
 func informDealer(dealer: String)-> void:
@@ -88,6 +92,12 @@ func informVidoRaisedFor9Piedras(_player: String) -> void:
 func informVidoRaisedForChico(_player: String) -> void:
 	sendVidoRaisedForChicoSignal.emit(_player)
 
+func informVidoRaisedForGame(_player: String) -> void:
+	sendVidoRaisedForGameSignal.emit(_player)
+
+func informCanNotRaiseVidoMoreThanGame(_player: String) -> void:
+	sendCanNotRaiseVidoMoreThanGameSignal.emit(_player)
+
 func cannotRefuseVidoBecauseThereIsNoVidoCalled(_player: String):
 	sendVidoCannotBeRefusedBecauseThereIsNoVidoCalledSignal.emit(_player)
 
@@ -96,3 +106,6 @@ func cannotAcceptVidoBecauseThereIsNoVidoCalled(_player: String):
 
 func cannotRaiseVidoBecauseThereIsNoVidoCalled(_player: String):
 	sendVidoCannotBeRaisedBecauseThereIsNoVidoCalledSignal.emit(_player)
+
+func informPlayerCalledVido(_playerId: String):
+	sendPlayerCalledVidoSignal.emit(_playerId)

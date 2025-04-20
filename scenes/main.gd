@@ -39,6 +39,7 @@ func loadChangeNameScene():
 	gameScene.visible = false
 	add_child(gameScene)
 	gameScene.playersDisplay.connect("playedCard", self.onPlayedCard)
+	gameScene.connect("vidoCalledSignal", Callable(self, 'onVidoCalled'))
 	chooseNameScene.connect("nameChosenSignal", Callable(self, "onNameChosen"))
 	currentScene = chooseNameScene
 
@@ -66,8 +67,7 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsNotTurn"))
 	serverManager.connect("receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand"))
 	serverManager.connect("receivePlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsPlayedAlready"))
-
-	
+	serverManager.connect("receivePlayerCalledVidoSignal", Callable(self, "onReceivedPlayerCalledVido"))
 
 func onNameChosen(userName):
 	hasChosenName = true
@@ -111,6 +111,12 @@ func onReceivedVirado(newVirado):
 
 func onPlayedCard(cardIndex: String):	
 	serverManager.playCard(cardIndex)
+
+func onVidoCalled():
+	serverManager.callVido()
+
+func onReceivedPlayerCalledVido(player: String):
+	gameScene.setPlayerCalledVido(player)
 	
 func onReceivedPlayedTurn(playerId: String):
 	gameScene.setPlayerTurn(playerId)

@@ -50,14 +50,22 @@ offset_bottom = 349.0
 text = "Player4"
 
 [node name="PlayCardButton" type="Button" parent="."]
-offset_left = 897.0
-offset_top = 541.0
-offset_right = 1050.0
-offset_bottom = 625.0
+offset_left = 942.0
+offset_top = 530.0
+offset_right = 1062.0
+offset_bottom = 587.0
 text = "JUGAR CARTA"
 
 [node name="PlayedCards" parent="." instance=ExtResource("4_21lry")]
 position = Vector2(343, 349)
 scale = Vector2(0.4, 0.4)
 
+[node name="CallVidoButton" type="Button" parent="."]
+offset_left = 798.0
+offset_top = 530.0
+offset_right = 918.0
+offset_bottom = 587.0
+text = "VIDO"
+
 [connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]
+[connection signal="pressed" from="CallVidoButton" to="." method="_on_call_vido_button_pressed"]

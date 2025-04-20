@@ -12,6 +12,9 @@ extends Node2D
 @onready var team1RoundScore = $Team1Score/RoundScore
 @onready var team2RoundScore = $Team2Score/RoundScore
 @onready var playersDisplay: FourPlayersHandsDisplay = $FourPlayersHandsDisplay
+@onready var playerCalledVidoLabel: Label = $PlayerCalledVidoLabel
+
+signal vidoCalledSignal()
 
 var playerId : String
 var currentPlayerTurnId: String
@@ -22,6 +25,7 @@ var currentDealerId: String
 
 func _ready() -> void:
 	setTeamLabels()
+	playersDisplay.connect("vidoCalledSignal", Callable(self, "onVidoCalled"))
 
 func setVirado(card: CardData):
 	virado.suit = card.suit
@@ -99,6 +103,12 @@ func teamWon(teamName: String):
 
 func setDealer(dealer: String):
 	currentDealerId = dealer
+
+func onVidoCalled():
+	vidoCalledSignal.emit()
+
+func setPlayerCalledVido(vidoPlayerId: String):
+	playerCalledVidoLabel.text = "JUGADOR USÓ VIDO " +  players[vidoPlayerId]["name"]
 
 func notifyIsNotTurn():
 	print("No es tu turno!")

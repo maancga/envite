@@ -39,10 +39,16 @@ func informVidoRaisedFor7Piedras(_player: String) -> void:
 	push_error("⚠️ informVidoRaisedFor7Piedras() must be implemented by subclass")
 	
 func informVidoRaisedFor9Piedras(_player: String) -> void:
-	push_error("⚠️ informVidoRaisedFor7Piedras() must be implemented by subclass")
+	push_error("⚠️ informVidoRaisedFor9Piedras() must be implemented by subclass")
 
 func informVidoRaisedForChico(_player: String) -> void:
-	push_error("⚠️ informVidoRaisedFor7Piedras() must be implemented by subclass")
+	push_error("⚠️ informVidoRaisedForChico() must be implemented by subclass")
+
+func informVidoRaisedForGame(_player: String) -> void:
+	push_error("⚠️ informVidoRaisedForGame() must be implemented by subclass")
+
+func informCanNotRaiseVidoMoreThanGame(_player: String) -> void:
+	push_error("⚠️ informCanNotRaiseVidoMoreThanGame() must be implemented by subclass")
 	
 func informPlayerRoundWinner(_player: String, _roundScore: int)-> void:
 	push_error("⚠️ informPlayerRoundWinner() must be implemented by subclass")
@@ -67,4 +73,7 @@ func cannotAcceptVidoBecauseThereIsNoVidoCalled(_playerId: String):
 
 func cannotRaiseVidoBecauseThereIsNoVidoCalled(_playerId: String):
 	push_error("⚠️ cannotRaiseVidoBecauseThereIsNoVidoCalled() must be implemented by subclass")
+
+func informPlayerCalledVido(_playerId: String):
+	push_error("⚠️ informPlayerCalledVido() must be implemented by subclass")
 
