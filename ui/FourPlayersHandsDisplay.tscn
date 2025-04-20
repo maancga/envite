@@ -1,15 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://vs6t0jiloxra"]
+[gd_scene load_steps=6 format=3 uid="uid://vs6t0jiloxra"]
 
 [ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://hands/MyHand.tscn" id="1_cbxej"]
 [ext_resource type="Script" uid="uid://dkic0o5r4tkmy" path="res://ui/FourPlayersHandsDisplay.gd" id="1_eh0v3"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://hands/UnknownHand.tscn" id="2_eh0v3"]
+[ext_resource type="PackedScene" uid="uid://btlubd0wqixut" path="res://scenes/PlayerNameDisplay.tscn" id="4_1pkko"]
 [ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://ui/UIPlayedCards.tscn" id="4_21lry"]
 
 [node name="FourPlayersHandsDisplay" type="Node2D"]
 script = ExtResource("1_eh0v3")
 
+[node name="MyName" parent="." instance=ExtResource("4_1pkko")]
+position = Vector2(235, 542)
+
 [node name="MyHand" parent="." instance=ExtResource("1_cbxej")]
-position = Vector2(386, 515)
+position = Vector2(426, 508)
 rotation = 0.0041769
 scale = Vector2(0.73, 0.73)
 
@@ -28,27 +32,6 @@ position = Vector2(134, 212)
 rotation = 1.55551
 scale = Vector2(0.73, 0.73)
 
-[node name="Player2NameLabel" type="Label" parent="."]
-offset_left = 904.0
-offset_top = 326.0
-offset_right = 962.0
-offset_bottom = 349.0
-text = "Player2"
-
-[node name="Player3NameLabel" type="Label" parent="."]
-offset_left = 528.0
-offset_top = 169.0
-offset_right = 586.0
-offset_bottom = 192.0
-text = "Player3"
-
-[node name="Player4NameLabel" type="Label" parent="."]
-offset_left = 173.0
-offset_top = 326.0
-offset_right = 231.0
-offset_bottom = 349.0
-text = "Player4"
-
 [node name="PlayCardButton" type="Button" parent="."]
 offset_left = 942.0
 offset_top = 530.0
@@ -57,8 +40,8 @@ offset_bottom = 587.0
 text = "JUGAR CARTA"
 
 [node name="PlayedCards" parent="." instance=ExtResource("4_21lry")]
-position = Vector2(343, 349)
-scale = Vector2(0.4, 0.4)
+position = Vector2(406, 372)
+scale = Vector2(0.3, 0.3)
 
 [node name="CallVidoButton" type="Button" parent="."]
 offset_left = 798.0
@@ -66,6 +49,15 @@ offset_top = 530.0
 offset_right = 918.0
 offset_bottom = 587.0
 text = "VIDO"
+
+[node name="Player2Name" parent="." instance=ExtResource("4_1pkko")]
+position = Vector2(153, 281)
+
+[node name="Player3Name" parent="." instance=ExtResource("4_1pkko")]
+position = Vector2(463, 155)
+
+[node name="Player4Name" parent="." instance=ExtResource("4_1pkko")]
+position = Vector2(819, 281)
 
 [connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]
 [connection signal="pressed" from="CallVidoButton" to="." method="_on_call_vido_button_pressed"]

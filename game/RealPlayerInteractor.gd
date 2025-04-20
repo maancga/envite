@@ -1,6 +1,6 @@
 class_name RealPlayerInteractor extends PlayerInteractor
 
-signal sendPlayersAndTeamsSignal(players: Dictionary, team1: String, team2: String)
+signal sendPlayersAndTeamsSignal(players: Dictionary, team1: String, team2: String, team1Leader: String, team2Leader: String)
 signal dealHandToPlayerSignal(player: String, hand: ServerHand)
 signal dealVirado(player: String, card: ServerCard)
 signal sendCurrentPlayerTurnSignal(player: String)
@@ -35,7 +35,7 @@ func informPlayersAndTeams(players: Dictionary) -> void:
 	var team2Array: Array[String] = []
 	for id in players.team2.players:
 		team2Array.append(str(id))
-	sendPlayersAndTeamsSignal.emit(players.players, team1Array, team2Array)
+	sendPlayersAndTeamsSignal.emit(players.players, team1Array, team2Array, players.team1.leader, players.team2.leader)
 
 func dealHandToPlayer(player: String, hand: ServerHand) -> void:
 	dealHandToPlayerSignal.emit(player, hand)

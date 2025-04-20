@@ -70,8 +70,14 @@ func startServer(port = 9000):
 func onClientConnected(id):
 	print("🟢 Client connected with id: ", id)
 
-func onReceivedPlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String]):
-	rpc("receivePlayersAndTeams", players, team1, team2)
+func onReceivedPlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
+	print("Sending players and teams...")
+	print("players: ", players)
+	print("team1: ", team1)
+	print("team2: ", team2)
+	print("teamLeader1: ", team1Leader)
+	print("teamLeader2: ", team2Leader )
+	rpc("receivePlayersAndTeams", players, team1, team2, team1Leader, team2Leader)
 
 func onDealtHand(player: String, hand: ServerHand):
 	print("Dealt hand to player ", gamePlayers.getPlayerName(player), " with cards: ", hand.to_dict())
@@ -99,7 +105,7 @@ func onPlayerCouldNotPlayCardBecauseItsPlayedAlready(player: String):
 
 func onPlayedCard(player: String, card: ServerCard, playedOrder: int, cardHandIndex: int):
 	print("Player ", gamePlayers.getPlayerName(player), " played its ", cardHandIndex, " card: ", card.getCardName(), " with order: ", playedOrder)
-	rpc("receiveCardPlayed", player, card.to_dict(), playedOrder, cardHandIndex)
+	rpc("receiveCardPlayed", player, card.to_dict(), cardHandIndex)
 
 func onPlayerRoundWinner(player: String, roundScore: int):
 	print("Hand winner is %s" % [gamePlayers.getPlayerName(player)])
@@ -165,8 +171,8 @@ func connectClient(ip = "127.0.0.1", port = 9000):
 	clientConnectedSignal.emit()
 
 @rpc("authority")
-func receivePlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String]):
-	receivedPlayersAndTeamsSignal.emit(players, team1, team2)
+func receivePlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
+	receivedPlayersAndTeamsSignal.emit(players, team1, team2, team1Leader, team2Leader)
 	
 @rpc("authority")
 func receiveHand(hand: Dictionary):
@@ -185,8 +191,8 @@ func receivePlayerTurn(player: String):
 	receivedPlayedTurnSignal.emit(player)
 
 @rpc("authority")
-func receiveCardPlayed(player: String, card: Dictionary, playedOrder: int, cardHandIndex: int):
-	receiveCardPlayedSignal.emit(player, card, playedOrder, cardHandIndex)
+func receiveCardPlayed(player: String, card: Dictionary, cardHandIndex: int):
+	receiveCardPlayedSignal.emit(player, card, cardHandIndex)
 
 @rpc("authority")
 func receivePlayerRoundWinner(player: String, roundScore: int):

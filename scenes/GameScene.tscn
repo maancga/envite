@@ -14,23 +14,16 @@ position = Vector2(575, 322.5)
 scale = Vector2(0.748698, 0.635742)
 texture = ExtResource("2_vijgj")
 
-[node name="TurnLabel" type="Label" parent="."]
-offset_left = 112.0
-offset_top = 596.0
-offset_right = 224.0
-offset_bottom = 648.0
-text = "Es tu turno"
-
 [node name="Virado" parent="." instance=ExtResource("6_6ytau")]
-position = Vector2(173, 44)
-scale = Vector2(0.7, 0.7)
+position = Vector2(218, 92)
+scale = Vector2(0.6, 0.6)
 
 [node name="Team1Score" parent="." instance=ExtResource("8_vijgj")]
 position = Vector2(60, 44)
 scale = Vector2(0.7, 0.7)
 
 [node name="Team2Score" parent="." instance=ExtResource("8_vijgj")]
-position = Vector2(800, 44)
+position = Vector2(798, 44)
 scale = Vector2(0.7, 0.7)
 
 [node name="FourPlayersHandsDisplay" parent="." instance=ExtResource("6_xs4ih")]

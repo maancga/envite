@@ -2,7 +2,6 @@ extends Node2D
 
 @onready var hand = $FourPlayersHandsDisplay/MyHand
 @onready var virado = $Virado/Card
-@onready var turnLabel = $TurnLabel
 @onready var team1LabelTopLabel = $Team1Score/TopLabel
 @onready var team2LabelTopLabel = $Team2Score/TopLabel
 @onready var team1GameChicosScore = $Team1Score/GameChicosScore
@@ -11,6 +10,8 @@ extends Node2D
 @onready var team2ChicoPointsScore = $Team2Score/ChicoPointsScore
 @onready var team1RoundScore = $Team1Score/RoundScore
 @onready var team2RoundScore = $Team2Score/RoundScore
+@onready var team1Score = $Team1Score
+@onready var team2Score = $Team2Score
 @onready var playersDisplay: FourPlayersHandsDisplay = $FourPlayersHandsDisplay
 @onready var playerCalledVidoLabel: Label = $PlayerCalledVidoLabel
 
@@ -35,26 +36,22 @@ func setVirado(card: CardData):
 func setCards(card1: CardData, card2: CardData, card3: CardData):
 	playersDisplay.setHands(card1, card2, card3)
 
-
 func setTeamLabels():
+	team1Score.setTeam1Color()
+	team2Score.setTeam2Color()
 	team1LabelTopLabel.text = "Equipo 1"
 	team2LabelTopLabel.text = "Equipo 2"
 
-func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[String], newTeam2: Array[String]):
-	playersDisplay.setUp(newPlayerId, currentPlayerTurnId, newPlayers)
+func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[String], newTeam2: Array[String], team1Leader: String, team2Leader: String):
+	playersDisplay.setUp(newPlayerId, currentPlayerTurnId, newPlayers, team1Leader, team2Leader, newTeam1, newTeam2)
 	playerId = newPlayerId
 	players = newPlayers
 	team1 = newTeam1
 	team2 = newTeam2
 
-
-func isYourTurn():
-	return currentPlayerTurnId == playerId
 	
 func setPlayerTurn(newPlayerId: String):
-	currentPlayerTurnId = newPlayerId
-	if(isYourTurn()): turnLabel.text = "Es tu turno!" 
-	else: turnLabel.text = "No es tu turno =(" 
+	playersDisplay.setTurnTo(newPlayerId)
 
 func addPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
 	playersDisplay.addPlayedCard(player, card, cardHandIndex)

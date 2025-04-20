@@ -83,9 +83,9 @@ func onGameHasStarted():
 	hasGameStarted = true
 	tryLoadGameScene()
 
-func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2):
+func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2, team1Leader, team2Leader):
 	var playerId = multiplayer.get_unique_id()
-	gameScene.setUpScene(str(playerId), newPlayers, newTeam1, newTeam2)
+	gameScene.setUpScene(str(playerId), newPlayers, newTeam1, newTeam2, team1Leader, team2Leader)
 
 func tryLoadGameScene():
 	if (hasChosenName && isClientConnected && hasGameStarted):
@@ -121,8 +121,7 @@ func onReceivedPlayerCalledVido(player: String):
 func onReceivedPlayedTurn(playerId: String):
 	gameScene.setPlayerTurn(playerId)
 
-func onReceivedPlayedCard(player: String, card: Dictionary, playedOrder: int, cardHandIndex: int):
-	print(playedOrder)
+func onReceivedPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
 	gameScene.addPlayedCard(player, card, cardHandIndex)
 	
 func onReceivedRoundWinner(player: String, roundScore: int):

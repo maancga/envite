@@ -3,6 +3,7 @@ class_name Team
 var players = []
 var playersIdsMap = {}
 var teamName = ""
+var leader: String
 
 func _init(_teamName: String):
 	players = []
@@ -10,11 +11,13 @@ func _init(_teamName: String):
 	teamName = _teamName
 
 func addPlayer(id: String ):
+	var isLeader = true if players.size() == 0 else false
 	var playerExists = players.find(id) > -1
 	if playerExists: return 
 	players.append(id)
 	var playerIndex = players.size() - 1
 	playersIdsMap[id] = playerIndex 
+	if (isLeader): leader = id
 
 func toDictionary():
 	var playersDict = {}
@@ -23,4 +26,5 @@ func toDictionary():
 	return {
 		"teamName": teamName,
 		"players": playersDict,
+		"leader": leader
 	}
