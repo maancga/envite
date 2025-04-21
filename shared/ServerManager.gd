@@ -16,6 +16,7 @@ signal receivedPlayedTurnSignal(playerId)
 signal receiveCardPlayedSignal(playerId, card, playedOrder)
 signal receivePlayerRoundWinnerSignal(playerId, card, playedOrder)
 signal receivedPlayersAndTeamsSignal(players, team1, team2)
+signal receivedPlayerAddedSignal(players, team1, team2)
 signal receiveTeamWonChicoPointsSignal(teamName, chicoPoints)
 signal receiveTeamWonChicoSignal(teamName, chicos)
 signal receiveTeamWonSignal(teamName)
@@ -33,6 +34,8 @@ signal receivePlayerRaisedVidoToChicoSignal(playerId)
 signal receivePlayerRaisedVidoToGameSignal(playerId)
 signal receivePlayerAcceptedVidoSignal(playerId)
 signal receiveVidoCanOnlyBeCalledOnYourTurnSignal()
+signal receivePlayerCantBeAddedSinceMaxIsReachedSignal()
+signal receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal()
 
 var preGame: PreGame
 var game: Game
@@ -55,7 +58,17 @@ func startServer(port = 9000):
 	multiplayer.peer_connected.connect(onClientConnected)
 	print("🟢 Server running on port", port)
 	playerInteractor = RealPlayerInteractor.new()
+	connectPlayerInteractorSignals()
+
+	playerInteractor.name = "Interactor"
+	add_child(playerInteractor)
+	preGame = PreGame.new(playerInteractor, gamePlayers)
+	preGame.name = "Pregame"
+	add_child(preGame)
+
+func connectPlayerInteractorSignals():
 	playerInteractor.connect("sendPlayersAndTeamsSignal", Callable(self, "onReceivedPlayersAndTeams", ))
+	playerInteractor.connect("sendPlayerAddedSignal", Callable(self, "onPlayerAdded", ))
 	playerInteractor.connect("dealHandToPlayerSignal", Callable(self, "onDealtHand", ))
 	playerInteractor.connect("dealVirado", Callable(self, "onDealtVirado", ))
 	playerInteractor.connect("sendCurrentPlayerTurnSignal", Callable(self, "onPlayerTurn"))
@@ -78,13 +91,9 @@ func startServer(port = 9000):
 	playerInteractor.connect("sendVidoRaisedForGameSignal", Callable(self, "onVidoRaisedForGame"))
 	playerInteractor.connect("informVidoCanOnlyBeCalledOnYourTurnSignal", Callable(self, "onVidoCanOnlyBeCalledOnYourTurn"))
 	playerInteractor.connect("sendPlayerAcceptedVidoSignal", Callable(self, "onPlayerAcceptedVido"))
-	playerInteractor.connect("sendPlayerRefusedVidoSignal", Callable(self, "onPlayerRefusedVido"))
+	playerInteractor.connect("informPlayerCantBeAddedSinceMaxIsReachedSignal", Callable(self, "onInformPlayerCantBeAddedSinceMaxIsReached"))
+	playerInteractor.connect("informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal", Callable(self, "onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached"))
 
-	playerInteractor.name = "Interactor"
-	add_child(playerInteractor)
-	preGame = PreGame.new(playerInteractor, gamePlayers)
-	preGame.name = "Pregame"
-	add_child(preGame)
 
 func onClientConnected(id):
 	print("🟢 Client connected with id: ", id)
@@ -97,6 +106,15 @@ func onReceivedPlayersAndTeams(players: Dictionary, team1: Array[String], team2:
 	print("teamLeader1: ", team1Leader)
 	print("teamLeader2: ", team2Leader )
 	rpc("receivePlayersAndTeams", players, team1, team2, team1Leader, team2Leader)
+
+func onPlayerAdded(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
+	print("Sending players and teams...")
+	print("players: ", players)
+	print("team1: ", team1)
+	print("team2: ", team2)
+	print("teamLeader1: ", team1Leader)
+	print("teamLeader2: ", team2Leader )
+	rpc("receivePlayerAdded", players, team1, team2, team1Leader, team2Leader)
 
 func onDealtHand(player: String, hand: ServerHand):
 	print("Dealt hand to player ", gamePlayers.getPlayerName(player), " with cards: ", hand.to_dict())
@@ -187,6 +205,15 @@ func onVidoCanOnlyBeCalledOnYourTurn(playerId: String):
 	print("Player %s can not call the vido since its not its turn" % playerId)
 	rpc_id(int(playerId), "receiveVidoCanOnlyBeCalledOnYourTurn")
 
+func onInformPlayerCantBeAddedSinceMaxIsReached(playerId: String):
+	print("Player %s can not be added since max players is reached" % playerId)
+	rpc_id(int(playerId), "receivePlayerCantBeAddedSinceMaxIsReached")
+
+func onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(playerId):
+	print("Game can not start since the minimum of players is not reached")
+	rpc_id(int(playerId), "receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached")
+
+
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
 	var sender = multiplayer.get_remote_sender_id()
@@ -203,11 +230,6 @@ func onClientChoosesName(chosenName: String):
 	if gamePlayers.playerExists(playerId): return
 	print("Player ", playerId, " chose name: ", chosenName)
 	preGame.addPlayer(str(sender), chosenName)
-	game = preGame.start()
-	if game is Game:
-		game.newGame()
-		for player in gamePlayers.playerIds:
-			rpc_id(int(player), "gameStarted")
 
 @rpc("any_peer")
 func onClientCalledVido():
@@ -237,6 +259,14 @@ func onClientRaisedVido():
 	print("player %s attempts to raise the vido" % [playerId])
 	game.raiseVido(playerId)
 
+@rpc("any_peer")
+func onClientStartedGame():
+	game = preGame.start()
+	if game is Game:
+		game.newGame()
+		for player in gamePlayers.playerIds:
+			rpc_id(int(player), "gameStarted")
+
 
 ################ CLIENT
 
@@ -255,6 +285,10 @@ func connectClient(ip = "127.0.0.1", port = 9000):
 @rpc("authority")
 func receivePlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
 	receivedPlayersAndTeamsSignal.emit(players, team1, team2, team1Leader, team2Leader)
+
+@rpc("authority")
+func receivePlayerAdded(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
+	receivedPlayerAddedSignal.emit(players, team1, team2, team1Leader, team2Leader)
 	
 @rpc("authority")
 func receiveHand(hand: Dictionary):
@@ -336,8 +370,6 @@ func receivePlayerRaisedVidoToChico(playerId: String):
 func receivePlayerRaisedVidoToGame(playerId: String):
 	receivePlayerRaisedVidoToGameSignal.emit(playerId)
 
-
-
 @rpc("authority")
 func receivePlayerFromSameTeamCanNotTakeDecision(playerId: String):
 	receivePlayerFromSameTeamCanNotTakeDecisionSignal.emit(playerId)
@@ -350,11 +382,18 @@ func receiveOnlyLeaderCanTakeThisDecision():
 func receiveVidoCanOnlyBeCalledOnYourTurn():
 	receiveVidoCanOnlyBeCalledOnYourTurnSignal.emit()
 
+@rpc("authority")
+func receivePlayerCantBeAddedSinceMaxIsReached():
+	receivePlayerCantBeAddedSinceMaxIsReachedSignal.emit()
+
+@rpc("authority")
+func receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached():
+	receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal.emit()
+
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():
 		push_error("Invalid cardIndex: " + cardIndex)
 		return
-
 	rpc_id(1, "onClientPlayedCard", cardIndex)
 
 func chooseName(playerName: String) -> void:
@@ -371,3 +410,6 @@ func rejectVido() -> void:
 
 func raisedVido() -> void:
 	rpc_id(1, "onClientRaisedVido")
+
+func startGame() -> void:
+	rpc_id(1, "onClientStartedGame")

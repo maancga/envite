@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://dm5318m3y6nh3"]
+
+[ext_resource type="Script" uid="uid://x020hwj4wutw" path="res://scenes/TeamPlayerList.gd" id="1_68iji"]
+
+[node name="TeamPlayerList" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_68iji")
+
+[node name="TeamName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 68.0
+offset_bottom = 22.0
+text = "Equipo 1"
+
+[node name="PlayerList" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 32.0
+offset_right = 39.0
+offset_bottom = 120.0

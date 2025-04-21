@@ -5,6 +5,15 @@ class_name PlayerInteractor
 func informPlayersAndTeams(_players: Dictionary) -> void:
 	push_error("⚠️ informPlayersAndTeams() must be implemented by subclass")
 
+func informPlayerAdded(_players: Dictionary) -> void:
+	push_error("⚠️ informPlayerAdded() must be implemented by subclass")
+
+func informPlayerCantBeAddedSinceMaxIsReached():
+	push_error("⚠️ informPlayerCantBeAddedSinceMaxIsReached() must be implemented by subclass")
+
+func informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached():
+	push_error("⚠️ informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached() must be implemented by subclass")
+
 func dealHandToPlayer(_player: String, _hand: ServerHand) -> void:
 	push_error("⚠️ dealHandToPlayer() must be implemented by subclass")
 

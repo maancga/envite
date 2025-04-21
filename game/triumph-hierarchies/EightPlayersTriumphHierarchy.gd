@@ -1,4 +1,4 @@
-class_name TenPlayersTriumphHierarchy extends TriumphHierarchy
+class_name EightPlayersTriumphHierarchy extends TriumphHierarchy
 
 var triumphHierarchy: Array[Dictionary] = [
   { "value": ValueEnum.Value._5, "suit": SuitEnum.Suit.OROS},

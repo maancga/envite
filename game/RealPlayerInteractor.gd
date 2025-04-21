@@ -1,6 +1,7 @@
 class_name RealPlayerInteractor extends PlayerInteractor
 
 signal sendPlayersAndTeamsSignal(players: Dictionary, team1: String, team2: String, team1Leader: String, team2Leader: String)
+signal sendPlayerAddedSignal(players: Dictionary, team1: String, team2: String, team1Leader: String, team2Leader: String)
 signal dealHandToPlayerSignal(player: String, hand: ServerHand)
 signal dealVirado(player: String, card: ServerCard)
 signal sendCurrentPlayerTurnSignal(player: String)
@@ -28,6 +29,8 @@ signal sendPlayerCalledVidoSignal(playerId: String)
 signal informPlayerFromSameTeamCanNotTakeDecisionSignal(playerId: String)
 signal informOnlyLeaderCanTakeThisDecisionSignal(playerId: String)
 signal informVidoCanOnlyBeCalledOnYourTurnSignal(playerId: String)
+signal informPlayerCantBeAddedSinceMaxIsReachedSignal()
+signal informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal()
 
 func informPlayersAndTeams(players: Dictionary) -> void:
 	var team1Array: Array[String] = []
@@ -38,6 +41,22 @@ func informPlayersAndTeams(players: Dictionary) -> void:
 	for id in players.team2.players:
 		team2Array.append(str(id))
 	sendPlayersAndTeamsSignal.emit(players.players, team1Array, team2Array, players.team1.leader, players.team2.leader)
+
+func informPlayerAdded(players: Dictionary) -> void:
+	var team1Array: Array[String] = []
+	for id in players.team1.players:
+		team1Array.append(str(id))
+
+	var team2Array: Array[String] = []
+	for id in players.team2.players:
+		team2Array.append(str(id))
+	sendPlayerAddedSignal.emit(players.players, team1Array, team2Array, players.team1.leader, players.team2.leader)
+
+func informPlayerCantBeAddedSinceMaxIsReached():
+	informPlayerCantBeAddedSinceMaxIsReachedSignal.emit()
+
+func informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached():
+	informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal.emit()
 
 func dealHandToPlayer(player: String, hand: ServerHand) -> void:
 	dealHandToPlayerSignal.emit(player, hand)
