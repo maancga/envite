@@ -131,7 +131,6 @@ func raisedVidoToChico(vidoPlayerId: String):
 func raisedVidoToGame(vidoPlayerId: String):
 	playersDisplay.raisedVidoToGame(vidoPlayerId)
 
-
 func onVidoAccepted():
 	vidoAcceptedSignal.emit()
 	
@@ -140,7 +139,12 @@ func onVidoRejected():
 	
 func onVidoRaised():
 	vidoRaisedSignal.emit()
+
+func refusedVido(vidoPlayerId: String):
+	playersDisplay.refusedVido(vidoPlayerId)
 	
+func acceptedVido(vidoPlayerId: String):
+	playersDisplay.acceptedVido(vidoPlayerId)
 
 func notifyIsNotTurn():
 	print("No es tu turno!")
@@ -150,3 +154,6 @@ func notifyCardPlayedAlready():
 
 func notifyHasPlayedAlreadyInHand():
 	print("Ya jugaste una carta en esta mano!")
+
+func vidoCanOnlyBeCalledOnYourTurn():
+	print("No puedes hacer vido si no es tu turno!")

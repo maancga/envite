@@ -83,3 +83,6 @@ func informOnlyLeaderCanTakeThisDecision(_player: String):
 func informPlayerCalledVido(_playerId: String):
 	push_error("⚠️ informPlayerCalledVido() must be implemented by subclass")
 
+func informVidoCanOnlyBeCalledOnYourTurn(_playerId: String):
+	push_error("⚠️ informVidoCanOnlyBeCalledOnYourTurn() must be implemented by subclass")
+

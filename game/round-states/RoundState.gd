@@ -1,22 +1,22 @@
 class_name RoundState
 
 func playFirstCard(_id: String):
-    pass
+	pass
 
 func playSecondCard(_id: String):
-    pass
+	pass
 
 func playThirdCard(_id: String):
-    pass
+	pass
 
 func callVido(_id: String):
-    pass    
+	pass    
 
 func rejectVido(_id: String):
-    pass
+	pass
 
 func acceptVido(_id: String):
-    pass
+	pass
 
 func raiseVido(_id: String):
-    pass
+	pass

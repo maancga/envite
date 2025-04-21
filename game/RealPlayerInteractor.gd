@@ -27,7 +27,7 @@ signal sendVidoCannotBeRaisedBecauseThereIsNoVidoCalledSignal(player: String)
 signal sendPlayerCalledVidoSignal(playerId: String)
 signal informPlayerFromSameTeamCanNotTakeDecisionSignal(playerId: String)
 signal informOnlyLeaderCanTakeThisDecisionSignal(playerId: String)
-
+signal informVidoCanOnlyBeCalledOnYourTurnSignal(playerId: String)
 
 func informPlayersAndTeams(players: Dictionary) -> void:
 	var team1Array: Array[String] = []
@@ -117,3 +117,6 @@ func informOnlyLeaderCanTakeThisDecision(_player: String):
 
 func informPlayerCalledVido(_playerId: String):
 	sendPlayerCalledVidoSignal.emit(_playerId)
+
+func informVidoCanOnlyBeCalledOnYourTurn(_playerId: String):
+	informVidoCanOnlyBeCalledOnYourTurnSignal.emit(_playerId)

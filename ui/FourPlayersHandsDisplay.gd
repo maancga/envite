@@ -11,8 +11,7 @@ class_name FourPlayersHandsDisplay
 @onready var player2Name: PlayerNameDisplay = $Player2Name
 @onready var player3Name: PlayerNameDisplay = $Player3Name
 @onready var player4Name: PlayerNameDisplay = $Player4Name
-@onready var playCardButton: Button = $PlayCardButton
-@onready var callVidoButton: Button = $CallVidoButton
+@onready var playingButtonsDisplay: PlayingButtonsDisplay = $PlayingButtonsDisplay
 @onready var vidoElectionScene: VidoElectionScene = $VidoElectionScene
 signal vidoCalledSignal()
 signal vidoAcceptedSignal()
@@ -36,6 +35,8 @@ func _ready() -> void:
 	vidoElectionScene.connect("rejectButtonPressedSignal", onVidoRejected)
 	vidoElectionScene.connect("acceptButtonPressedSignal", onVidoAccepted)
 	vidoElectionScene.connect("raisedButtonPressedSignal", onVidoRaised)
+	playingButtonsDisplay.connect("callVidoButtonPressedSignal", onVidoCalledButtonPressed)
+	playingButtonsDisplay.connect("playCardButtonPressedSignal", onPlayCardButtonPressed)
 	connectClickedCards()
 	
 func connectClickedCards() -> void:
@@ -65,10 +66,8 @@ func setUp(_playerId: String, _playerTurnId: String, _players: Dictionary, _team
 	
 	setUpPlayerDisplay(myName, yourPlayer["id"], yourPlayer["name"])
 
-	print(playersArray)
 	for player in playersArray:
 		var distance = RelativeHandsDistance.new(playersArray, yourId).calculateDistance(player)
-		print("distance from %s: %s to %s:%s distance: %s", [yourId, players[yourId]["name"], player, players[player]["name"], distance])
 		var currentPlayer = players[player]
 		if (distance == 1):
 			setUpPlayerDisplay(player2Name, currentPlayer["id"], currentPlayer["name"])
@@ -85,6 +84,8 @@ func setUpPlayerDisplay(playerNameDisplay: PlayerNameDisplay, currentPlayerId: S
 	if isTeam2(currentPlayerId): playerNameDisplay.setTeam2Color()
 
 func paintCurrentTurn():
+	if (currentPlayerTurnId == yourId): playingButtonsDisplay.show()
+	else: playingButtonsDisplay.hide()
 	var yourPlayer = players[yourId]
 	
 	if currentPlayerTurnId == yourPlayer["id"]: myName.isPlayerTurn()
@@ -135,23 +136,22 @@ func addPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
 	playedCards.addCard(players[player]["name"], card["value"], card["suit"])
 	playCard(player, cardHandIndex)
 
+func cleanPlayedCards():
+	playedCards.cleanPlayedCards()
+	playedCards.setAmountOfPlayers(playersArray.size())
+
 func playCardButtonPressed():
 	if selectedCard == myHand.card1: playedCard.emit("1")
 	if selectedCard == myHand.card2: playedCard.emit("2")
 	if selectedCard == myHand.card3: playedCard.emit("3")
 
 
-func _on_play_card_button_pressed() -> void:
+func onPlayCardButtonPressed() -> void:
 	if !selectedCard: return
 	playCardButtonPressed()
 	selectedCard = null
 
-func cleanPlayedCards():
-	playedCards.cleanPlayedCards()
-	playedCards.setAmountOfPlayers(playersArray.size())
-
-
-func _on_call_vido_button_pressed() -> void:
+func onVidoCalledButtonPressed() -> void:
 	vidoCalledSignal.emit()
 
 func setTurnTo(newPlayerId: String):
@@ -171,8 +171,7 @@ func iAmTeam2Leader():
 	return yourId == team2Leader
 
 func updateVidoView(vidoPlayerId: String):
-	playCardButton.visible = false
-	callVidoButton.visible = false
+	playingButtonsDisplay.hide()
 	vidoElectionScene.visible = false
 	var vidoCalledByTeam1 = isTeam1(vidoPlayerId)
 	if(vidoCalledByTeam1 && iAmTeam2Leader()):
@@ -195,10 +194,17 @@ func raisedVidoToChico(vidoPlayerId: String):
 func raisedVidoToGame(vidoPlayerId: String):
 	updateVidoView(vidoPlayerId)
 
-func exitVidoCalled(_rejecterPlayer: String):
-	playCardButton.visible = true
-	callVidoButton.visible = true
+func refusedVido(_playerId: String):
 	vidoElectionScene.visible = false
+	paintCurrentTurn()
+
+func acceptedVido(_playerId: String):
+	vidoElectionScene.visible = false
+	paintCurrentTurn()
+
+func exitVidoCalled(_rejecterPlayer: String):
+	vidoElectionScene.visible = false
+	paintCurrentTurn()
 
 func onVidoRejected():
 	vidoRejectedSignal.emit()

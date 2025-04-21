@@ -32,6 +32,9 @@ func playThirdCard(playerId: String):
 
 
 func callVido(playerId: String):
+	if(playerId != currentPlayerTurn):
+		playerInteractor.informVidoCanOnlyBeCalledOnYourTurn(playerId)
+		return 
 	game.changeState(VidoFor4PiedrasState.new(playerInteractor, game, scoresManager, playerId, gamePlayers ))
 	playerInteractor.informPlayerCalledVido(playerId)
 

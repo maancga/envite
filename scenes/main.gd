@@ -76,9 +76,13 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receivePlayerRaisedVidoTo9PiedrasSignal", Callable(self, "onPlayerRaisedVidoTo9Piedras"))
 	serverManager.connect("receivePlayerRaisedVidoToChicoSignal", Callable(self, "onPlayerRaisedVidoToChico"))
 	serverManager.connect("receivePlayerRaisedVidoToGameSignal", Callable(self, "onPlayerRaisedVidoToGame"))
-
+	serverManager.connect("receiveVidoCanOnlyBeCalledOnYourTurnSignal", Callable(self, "onVidoCanOnlyBeCalledOnYourTurn"))
 	serverManager.connect("receiveOnlyLeaderCanTakeThisDecisionSignal", Callable(self, "onReceiveOnlyLeaderCanTakeThisDecision"))
 	serverManager.connect("receivePlayerFromSameTeamCanNotTakeDecisionSignal", Callable(self, "onReceivePlayerFromSameTeamCanNotTakeDecision"))
+	serverManager.connect("receivePlayerAcceptedVidoSignal", Callable(self, "onPlayerAcceptedVido"))
+	serverManager.connect("receivePlayerRefusedVidoSignal", Callable(self, "onPlayerRefusedVido"))
+	serverManager.connect("receivePlayerRaisedVidoTo7PiedrasSignal", Callable(self, "onPlayerRejectedVido"))
+
 
 func onNameChosen(userName):
 	hasChosenName = true
@@ -152,6 +156,12 @@ func onPlayerRaisedVidoToChico(playerId: String):
 
 func onPlayerRaisedVidoToGame(playerId: String):
 	gameScene.raisedVidoToGame(playerId)
+
+func onPlayerRefusedVido(playerId: String):
+	gameScene.refusedVido(playerId)
+
+func onPlayerAcceptedVido(playerId: String):
+	gameScene.acceptedVido(playerId)
 	
 func onReceivedPlayedTurn(playerId: String):
 	gameScene.setPlayerTurn(playerId)
@@ -183,8 +193,12 @@ func onPlayerCouldNotPlayCardBecauseItsPlayedAlready():
 func onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand():
 	gameScene.notifyHasPlayedAlreadyInHand()
 
+func onVidoCanOnlyBeCalledOnYourTurn():
+	gameScene.vidoCanOnlyBeCalledOnYourTurn()
+
 func onReceiveOnlyLeaderCanTakeThisDecision():
 	print("Only leader can make this decision")
+
 	
 func onReceivePlayerFromSameTeamCanNotTakeDecision(_playerId: String):
 	print("eyyy")

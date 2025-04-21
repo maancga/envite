@@ -32,7 +32,7 @@ signal receivePlayerRaisedVidoTo9PiedrasSignal(playerId)
 signal receivePlayerRaisedVidoToChicoSignal(playerId)
 signal receivePlayerRaisedVidoToGameSignal(playerId)
 signal receivePlayerAcceptedVidoSignal(playerId)
-signal receivePlayerRaisedVidoSignal(playerId)
+signal receiveVidoCanOnlyBeCalledOnYourTurnSignal()
 
 var preGame: PreGame
 var game: Game
@@ -76,8 +76,9 @@ func startServer(port = 9000):
 	playerInteractor.connect("sendVidoRaisedFor9PiedrasSignal", Callable(self, "onVidoRaisedFor9Piedras"))
 	playerInteractor.connect("sendVidoRaisedForChicoSignal", Callable(self, "onVidoRaisedForChico"))
 	playerInteractor.connect("sendVidoRaisedForGameSignal", Callable(self, "onVidoRaisedForGame"))
-
-
+	playerInteractor.connect("informVidoCanOnlyBeCalledOnYourTurnSignal", Callable(self, "onVidoCanOnlyBeCalledOnYourTurn"))
+	playerInteractor.connect("sendPlayerAcceptedVidoSignal", Callable(self, "onPlayerAcceptedVido"))
+	playerInteractor.connect("sendPlayerRefusedVidoSignal", Callable(self, "onPlayerRefusedVido"))
 
 	playerInteractor.name = "Interactor"
 	add_child(playerInteractor)
@@ -146,10 +147,6 @@ func onPlayerCalledVido(playerId: String):
 	print("player %s called vido" % [playerId])
 	rpc("receivePlayerCalledVido", playerId)
 
-func onPlayerRefusedVido(playerId):
-	print("player %s refused vido" % [playerId])
-	rpc("receivePlayerRefusedVido", playerId)
-
 func onVidoRaisedFor7Piedras(playerId):
 	print("player %s raised vido to 7 piedras" % [playerId])
 	rpc("receivePlayerRaisedVidoTo7Piedras", playerId)
@@ -165,6 +162,10 @@ func onVidoRaisedForChico(playerId):
 func onVidoRaisedForGame(playerId):
 	print("player %s raised vido to game" % [playerId])
 	rpc("receivePlayerRaisedVidoToGame", playerId)
+
+func onPlayerRefusedVido(playerId):
+	print("player %s refused vido" % [playerId])
+	rpc("receivePlayerRefusedVido", playerId)
 
 func onPlayerAcceptedVido(playerId):
 	print("player %s accepted vido" % [playerId])
@@ -182,6 +183,9 @@ func onOnlyLeaderCanTakeThisDecision(playerId: String):
 	print("Player %s can not take the decision since it is not the leader" % playerId)
 	rpc_id(int(playerId), "receiveOnlyLeaderCanTakeThisDecision")
 
+func onVidoCanOnlyBeCalledOnYourTurn(playerId: String):
+	print("Player %s can not call the vido since its not its turn" % playerId)
+	rpc_id(int(playerId), "receiveVidoCanOnlyBeCalledOnYourTurn")
 
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
@@ -313,6 +317,10 @@ func receivePlayerRefusedVido(playerId: String):
 	receivePlayerRefusedVidoSignal.emit(playerId)
 
 @rpc("authority")
+func receivePlayerAcceptedVido(playerId):
+	receivePlayerAcceptedVidoSignal.emit(playerId)
+
+@rpc("authority")
 func receivePlayerRaisedVidoTo7Piedras(playerId: String):
 	receivePlayerRaisedVidoTo7PiedrasSignal.emit(playerId)
 
@@ -328,13 +336,7 @@ func receivePlayerRaisedVidoToChico(playerId: String):
 func receivePlayerRaisedVidoToGame(playerId: String):
 	receivePlayerRaisedVidoToGameSignal.emit(playerId)
 
-@rpc("authority")
-func receivePlayerAcceptedVido(playerId):
-	receivePlayerAcceptedVidoSignal.emit(playerId)
 
-@rpc("authority")
-func receivePlayerRaisedVido(playerId):
-	receivePlayerRaisedVidoSignal.emit(playerId)
 
 @rpc("authority")
 func receivePlayerFromSameTeamCanNotTakeDecision(playerId: String):
@@ -343,6 +345,10 @@ func receivePlayerFromSameTeamCanNotTakeDecision(playerId: String):
 @rpc("authority")
 func receiveOnlyLeaderCanTakeThisDecision():
 	receiveOnlyLeaderCanTakeThisDecisionSignal.emit()
+
+@rpc("authority")
+func receiveVidoCanOnlyBeCalledOnYourTurn():
+	receiveVidoCanOnlyBeCalledOnYourTurnSignal.emit()
 
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():

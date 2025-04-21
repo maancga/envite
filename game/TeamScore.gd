@@ -5,7 +5,9 @@ var wonChicos: int = 0
 var teamName: String = ""
 var playerInteractor: PlayerInteractor
 
-signal wonGame(teamName: String)
+signal wonGameSignal(teamName: String)
+signal wonChicoSignal()
+
 
 func _init(_playerInteractor: PlayerInteractor, _teamName: String) -> void:
 	playerInteractor = _playerInteractor
@@ -25,8 +27,11 @@ func winsRound(piedrasOnPlay: int):
 func winsChico():
 	wonChicos += 1
 	playerInteractor.informTeamWonChico(teamName, wonChicos)
-	if (wonChicos == 2): winsGame()
+	if (wonChicos == 2): 
+		winsGame()
+		return
+	wonChicoSignal.emit()
 
 func winsGame():
-	wonGame.emit(teamName)
+	wonGameSignal.emit(teamName)
 	return

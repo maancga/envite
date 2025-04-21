@@ -15,7 +15,10 @@ var playerInteractor: PlayerInteractor
 func _init(_playerInteractor: PlayerInteractor, _gamePlayers: GamePlayers, _game: Game) -> void:
 	team1Score = TeamScore.new(_playerInteractor, "team1")
 	team2Score = TeamScore.new(_playerInteractor, "team2")
-	team1Score.connect("wonGame", Callable(self, "onTeamWonGame"))
+	team1Score.connect("wonGameSignal", onTeamWonGame)
+	team1Score.connect("wonChicoSignal", onTeamWonChico)
+	team2Score.connect("wonGameSignal", onTeamWonGame)
+	team2Score.connect("wonChicoSignal", onTeamWonChico)
 	gamePlayers = _gamePlayers
 	game = _game
 	playerInteractor = _playerInteractor
@@ -53,6 +56,9 @@ func teamWinsRound(team: TeamScore):
 
 func onTeamWonGame(teamName: String) -> void:
 	teamWonGame.emit(teamName)
+
+func onTeamWonChico() -> void:
+	game.setNewRound()
 
 func setPiedrasOnPlay(piedras: int):
 	piedrasOnPlay = piedras
