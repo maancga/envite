@@ -74,6 +74,12 @@ func cannotAcceptVidoBecauseThereIsNoVidoCalled(_playerId: String):
 func cannotRaiseVidoBecauseThereIsNoVidoCalled(_playerId: String):
 	push_error("⚠️ cannotRaiseVidoBecauseThereIsNoVidoCalled() must be implemented by subclass")
 
+func informPlayerFromSameTeamCanNotTakeDecision(_player: String):
+	push_error("⚠️ informPlayerFromSameTeamCanNotTakeDecision() must be implemented by subclass")
+
+func informOnlyLeaderCanTakeThisDecision(_player: String):
+	push_error("⚠️ informOnlyLeaderCanTakeThisDecision() must be implemented by subclass")
+
 func informPlayerCalledVido(_playerId: String):
 	push_error("⚠️ informPlayerCalledVido() must be implemented by subclass")
 

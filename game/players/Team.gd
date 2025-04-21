@@ -19,6 +19,9 @@ func addPlayer(id: String ):
 	playersIdsMap[id] = playerIndex 
 	if (isLeader): leader = id
 
+func isTheLeader(playerId: String):
+	return playerId == leader
+
 func toDictionary():
 	var playersDict = {}
 	for playerId in players:

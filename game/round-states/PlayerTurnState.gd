@@ -32,10 +32,10 @@ func playThirdCard(playerId: String):
 
 
 func callVido(playerId: String):
-	game.changeState(VidoFor4PiedrasState.new(playerInteractor, game, scoresManager))
+	game.changeState(VidoFor4PiedrasState.new(playerInteractor, game, scoresManager, playerId, gamePlayers ))
 	playerInteractor.informPlayerCalledVido(playerId)
 
-func refuseVido(playerId: String):
+func rejectVido(playerId: String):
 	playerInteractor.cannotRefuseVidoBecauseThereIsNoVidoCalled(playerId)
 	return
 

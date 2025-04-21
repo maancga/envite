@@ -10,13 +10,15 @@ var viradoForChico = false
 var viradoForGame = false
 var game: Game
 var gamePlayers: GamePlayers
+var playerInteractor: PlayerInteractor
 
-func _init(playerInteractor: PlayerInteractor, _gamePlayers: GamePlayers, _game: Game) -> void:
-	team1Score = TeamScore.new(playerInteractor, "team1")
-	team2Score = TeamScore.new(playerInteractor, "team2")
+func _init(_playerInteractor: PlayerInteractor, _gamePlayers: GamePlayers, _game: Game) -> void:
+	team1Score = TeamScore.new(_playerInteractor, "team1")
+	team2Score = TeamScore.new(_playerInteractor, "team2")
 	team1Score.connect("wonGame", Callable(self, "onTeamWonGame"))
 	gamePlayers = _gamePlayers
 	game = _game
+	playerInteractor = _playerInteractor
 
 func teamOneWinsRound():
 	var team = team1Score
@@ -35,6 +37,7 @@ func playerRefusedVido(playerId: String):
 	var team = gamePlayers.getTeam(playerId)
 	if (team == "team1"): teamTwoWinsRound()
 	if (team == "team2"): teamOneWinsRound()
+
 
 func teamWinsRound(team: TeamScore):
 	if (viradoForGame): 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://vs6t0jiloxra"]
+[gd_scene load_steps=7 format=3 uid="uid://vs6t0jiloxra"]
 
 [ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://hands/MyHand.tscn" id="1_cbxej"]
 [ext_resource type="Script" uid="uid://dkic0o5r4tkmy" path="res://ui/FourPlayersHandsDisplay.gd" id="1_eh0v3"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://hands/UnknownHand.tscn" id="2_eh0v3"]
 [ext_resource type="PackedScene" uid="uid://btlubd0wqixut" path="res://scenes/PlayerNameDisplay.tscn" id="4_1pkko"]
 [ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://ui/UIPlayedCards.tscn" id="4_21lry"]
+[ext_resource type="PackedScene" uid="uid://50537fdo6u8y" path="res://scenes/VidoElectionScene.tscn" id="5_4vy2f"]
 
 [node name="FourPlayersHandsDisplay" type="Node2D"]
 script = ExtResource("1_eh0v3")
@@ -32,6 +33,9 @@ position = Vector2(134, 212)
 rotation = 1.55551
 scale = Vector2(0.73, 0.73)
 
+[node name="VidoElectionScene" parent="." instance=ExtResource("5_4vy2f")]
+position = Vector2(863, 462)
+
 [node name="PlayCardButton" type="Button" parent="."]
 offset_left = 942.0
 offset_top = 530.0
@@ -51,13 +55,13 @@ offset_bottom = 587.0
 text = "VIDO"
 
 [node name="Player2Name" parent="." instance=ExtResource("4_1pkko")]
-position = Vector2(153, 281)
+position = Vector2(802, 281)
 
 [node name="Player3Name" parent="." instance=ExtResource("4_1pkko")]
 position = Vector2(463, 155)
 
 [node name="Player4Name" parent="." instance=ExtResource("4_1pkko")]
-position = Vector2(819, 281)
+position = Vector2(167, 281)
 
 [connection signal="pressed" from="PlayCardButton" to="." method="_on_play_card_button_pressed"]
 [connection signal="pressed" from="CallVidoButton" to="." method="_on_call_vido_button_pressed"]

@@ -40,6 +40,9 @@ func loadChangeNameScene():
 	add_child(gameScene)
 	gameScene.playersDisplay.connect("playedCard", self.onPlayedCard)
 	gameScene.connect("vidoCalledSignal", Callable(self, 'onVidoCalled'))
+	gameScene.connect("vidoAcceptedSignal", Callable(self, "onVidoAccepted"))
+	gameScene.connect("vidoRejectedSignal", Callable(self, "onVidoRejected"))
+	gameScene.connect("vidoRaisedSignal", Callable(self, "onVidoRaised"))
 	chooseNameScene.connect("nameChosenSignal", Callable(self, "onNameChosen"))
 	currentScene = chooseNameScene
 
@@ -68,6 +71,14 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand"))
 	serverManager.connect("receivePlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsPlayedAlready"))
 	serverManager.connect("receivePlayerCalledVidoSignal", Callable(self, "onReceivedPlayerCalledVido"))
+	serverManager.connect("receivePlayerRefusedVidoSignal", Callable(self, "onReceivePlayerRefusedVido"))
+	serverManager.connect("receivePlayerRaisedVidoTo7PiedrasSignal", Callable(self, "onPlayerRaisedVidoTo7Piedras"))
+	serverManager.connect("receivePlayerRaisedVidoTo9PiedrasSignal", Callable(self, "onPlayerRaisedVidoTo9Piedras"))
+	serverManager.connect("receivePlayerRaisedVidoToChicoSignal", Callable(self, "onPlayerRaisedVidoToChico"))
+	serverManager.connect("receivePlayerRaisedVidoToGameSignal", Callable(self, "onPlayerRaisedVidoToGame"))
+
+	serverManager.connect("receiveOnlyLeaderCanTakeThisDecisionSignal", Callable(self, "onReceiveOnlyLeaderCanTakeThisDecision"))
+	serverManager.connect("receivePlayerFromSameTeamCanNotTakeDecisionSignal", Callable(self, "onReceivePlayerFromSameTeamCanNotTakeDecision"))
 
 func onNameChosen(userName):
 	hasChosenName = true
@@ -115,8 +126,32 @@ func onPlayedCard(cardIndex: String):
 func onVidoCalled():
 	serverManager.callVido()
 
+func onVidoAccepted():
+	serverManager.acceptVido()
+
+func onVidoRejected():
+	serverManager.rejectVido()
+
+func onVidoRaised():
+	serverManager.raisedVido()
+
 func onReceivedPlayerCalledVido(player: String):
 	gameScene.setPlayerCalledVido(player)
+
+func onReceivePlayerRefusedVido(playerId: String):
+	gameScene.rejectedVido(playerId)
+
+func onPlayerRaisedVidoTo7Piedras(playerId: String):
+	gameScene.raisedVidoTo7Piedras(playerId)
+
+func onPlayerRaisedVidoTo9Piedras(playerId: String):
+	gameScene.raisedVidoTo9Piedras(playerId)
+
+func onPlayerRaisedVidoToChico(playerId: String):
+	gameScene.raisedVidoToChico(playerId)
+
+func onPlayerRaisedVidoToGame(playerId: String):
+	gameScene.raisedVidoToGame(playerId)
 	
 func onReceivedPlayedTurn(playerId: String):
 	gameScene.setPlayerTurn(playerId)
@@ -147,3 +182,10 @@ func onPlayerCouldNotPlayCardBecauseItsPlayedAlready():
 
 func onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand():
 	gameScene.notifyHasPlayedAlreadyInHand()
+
+func onReceiveOnlyLeaderCanTakeThisDecision():
+	print("Only leader can make this decision")
+	
+func onReceivePlayerFromSameTeamCanNotTakeDecision(_playerId: String):
+	print("eyyy")
+	

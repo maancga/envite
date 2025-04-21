@@ -57,7 +57,7 @@ func test_refuses_vido():
 	game.newGame()
 
 	game.callVido("136122084")
-	game.refuseVido("721778859")
+	game.rejectVido("721778859")
 	assert_eq(game.scoresManager.team1Score.scoreInChico, 0)
 	assert_eq(game.scoresManager.team2Score.scoreInChico, 2)
 	assert_eq(game.gameState is PlayerTurnState, true)
@@ -156,7 +156,7 @@ func test_refuses_vido_to_game_so_the_other_team_wins_chico():
 	game.raiseVido("136122084")
 	game.raiseVido("721778859")
 	game.raiseVido("136122084")
-	game.refuseVido("721778859")
+	game.rejectVido("721778859")
 
 	assert_eq(game.scoresManager.team1Score.wonChicos, 0)
 	assert_eq(game.scoresManager.team2Score.wonChicos, 1)

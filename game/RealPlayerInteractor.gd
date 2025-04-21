@@ -25,6 +25,8 @@ signal sendVidoCannotBeAcceptedBecauseThereIsNoVidoCalledSignal(player: String)
 signal sendVidoCannotBeRefusedBecauseThereIsNoVidoCalledSignal(player: String)
 signal sendVidoCannotBeRaisedBecauseThereIsNoVidoCalledSignal(player: String)
 signal sendPlayerCalledVidoSignal(playerId: String)
+signal informPlayerFromSameTeamCanNotTakeDecisionSignal(playerId: String)
+signal informOnlyLeaderCanTakeThisDecisionSignal(playerId: String)
 
 
 func informPlayersAndTeams(players: Dictionary) -> void:
@@ -68,7 +70,7 @@ func informTeamWonChico(teamName: String, chicos: int)-> void:
 	sendTeamWonChicoSignal.emit(teamName, chicos)
 
 func informTeamWon(teamName)-> void:
-	print("%s won the game", [teamName])
+	print("%s won the game" % [teamName])
 	sendTeamWonSignal.emit(teamName)
 
 func informDealer(dealer: String)-> void:
@@ -106,6 +108,12 @@ func cannotAcceptVidoBecauseThereIsNoVidoCalled(_player: String):
 
 func cannotRaiseVidoBecauseThereIsNoVidoCalled(_player: String):
 	sendVidoCannotBeRaisedBecauseThereIsNoVidoCalledSignal.emit(_player)
+
+func informPlayerFromSameTeamCanNotTakeDecision(_player: String):
+	informPlayerFromSameTeamCanNotTakeDecisionSignal.emit(_player)
+
+func informOnlyLeaderCanTakeThisDecision(_player: String):
+	informOnlyLeaderCanTakeThisDecisionSignal.emit(_player)
 
 func informPlayerCalledVido(_playerId: String):
 	sendPlayerCalledVidoSignal.emit(_playerId)

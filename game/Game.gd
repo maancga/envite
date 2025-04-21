@@ -57,9 +57,8 @@ func callVido(id: String):
 	lastPlayerState = gameState
 	gameState.callVido(id)
 
-func refuseVido(id: String):
-	gameState.refuseVido(id)
-	gameState = lastPlayerState
+func rejectVido(id: String):
+	gameState.rejectVido(id)
 	lastPlayerState = null
 
 func acceptVido(id: String):

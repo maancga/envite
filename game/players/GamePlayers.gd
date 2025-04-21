@@ -58,6 +58,12 @@ func getTeam(id: String):
 	if team2.players.find(id) > -1: return "team2"
 	return "none"
 
+func areSameTeam(player1: String, player2: String):
+	return getTeam(player1) == getTeam(player2)
+
+func isLeader(playerId: String):
+	return team1.isTheLeader(playerId) || team2.isTheLeader(playerId)
+
 func toDictionary():
 	var players = {}
 	for playerId in playerIds:

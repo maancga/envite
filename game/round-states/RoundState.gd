@@ -12,7 +12,7 @@ func playThirdCard(_id: String):
 func callVido(_id: String):
     pass    
 
-func refuseVido(_id: String):
+func rejectVido(_id: String):
     pass
 
 func acceptVido(_id: String):

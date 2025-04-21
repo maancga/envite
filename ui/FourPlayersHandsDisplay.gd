@@ -11,7 +11,14 @@ class_name FourPlayersHandsDisplay
 @onready var player2Name: PlayerNameDisplay = $Player2Name
 @onready var player3Name: PlayerNameDisplay = $Player3Name
 @onready var player4Name: PlayerNameDisplay = $Player4Name
+@onready var playCardButton: Button = $PlayCardButton
+@onready var callVidoButton: Button = $CallVidoButton
+@onready var vidoElectionScene: VidoElectionScene = $VidoElectionScene
 signal vidoCalledSignal()
+signal vidoAcceptedSignal()
+signal vidoRejectedSignal()
+signal vidoRaisedSignal()
+
 
 var currentPlayerTurnId: String
 var players : Dictionary
@@ -24,6 +31,13 @@ var team1: Array[String]
 var team2: Array[String]
 signal playedCard(card)
 
+func _ready() -> void:
+	vidoElectionScene.visible = false
+	vidoElectionScene.connect("rejectButtonPressedSignal", onVidoRejected)
+	vidoElectionScene.connect("acceptButtonPressedSignal", onVidoAccepted)
+	vidoElectionScene.connect("raisedButtonPressedSignal", onVidoRaised)
+	connectClickedCards()
+	
 func connectClickedCards() -> void:
 	myHand.card1.clickedCard.connect(onCardClicked)
 	myHand.card2.clickedCard.connect(onCardClicked)
@@ -34,7 +48,6 @@ func onCardClicked(clickedCard: Card):
 
 func setHands(card1: CardData, card2: CardData, card3: CardData):
 	myHand.setInitialCards(card1, card2, card3)
-	connectClickedCards()
 	resetOtherPlayersCards()
 	cleanPlayedCards()
 
@@ -52,8 +65,10 @@ func setUp(_playerId: String, _playerTurnId: String, _players: Dictionary, _team
 	
 	setUpPlayerDisplay(myName, yourPlayer["id"], yourPlayer["name"])
 
+	print(playersArray)
 	for player in playersArray:
 		var distance = RelativeHandsDistance.new(playersArray, yourId).calculateDistance(player)
+		print("distance from %s: %s to %s:%s distance: %s", [yourId, players[yourId]["name"], player, players[player]["name"], distance])
 		var currentPlayer = players[player]
 		if (distance == 1):
 			setUpPlayerDisplay(player2Name, currentPlayer["id"], currentPlayer["name"])
@@ -148,3 +163,48 @@ func isTeam1(playerId: String):
 
 func isTeam2(playerId: String):
 	return team2.find(playerId) > -1
+
+func iAmTeam1Leader():
+	return yourId == team1Leader
+
+func iAmTeam2Leader():
+	return yourId == team2Leader
+
+func updateVidoView(vidoPlayerId: String):
+	playCardButton.visible = false
+	callVidoButton.visible = false
+	vidoElectionScene.visible = false
+	var vidoCalledByTeam1 = isTeam1(vidoPlayerId)
+	if(vidoCalledByTeam1 && iAmTeam2Leader()):
+		vidoElectionScene.visible = true
+	if (not vidoCalledByTeam1 && iAmTeam1Leader()):
+		vidoElectionScene.visible = true
+
+func setVidoCalledView(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func raisedVidoTo7Piedras(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func raisedVidoTo9Piedras(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func raisedVidoToChico(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func raisedVidoToGame(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func exitVidoCalled(_rejecterPlayer: String):
+	playCardButton.visible = true
+	callVidoButton.visible = true
+	vidoElectionScene.visible = false
+
+func onVidoRejected():
+	vidoRejectedSignal.emit()
+
+func onVidoAccepted():
+	vidoAcceptedSignal.emit()
+
+func onVidoRaised():
+	vidoRaisedSignal.emit()

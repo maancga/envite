@@ -16,6 +16,9 @@ extends Node2D
 @onready var playerCalledVidoLabel: Label = $PlayerCalledVidoLabel
 
 signal vidoCalledSignal()
+signal vidoAcceptedSignal()
+signal vidoRejectedSignal()
+signal vidoRaisedSignal()
 
 var playerId : String
 var currentPlayerTurnId: String
@@ -27,6 +30,9 @@ var currentDealerId: String
 func _ready() -> void:
 	setTeamLabels()
 	playersDisplay.connect("vidoCalledSignal", Callable(self, "onVidoCalled"))
+	playersDisplay.connect("vidoAcceptedSignal", Callable(self, "onVidoAccepted"))
+	playersDisplay.connect("vidoRejectedSignal", Callable(self, "onVidoRejected"))
+	playersDisplay.connect("vidoRaisedSignal", Callable(self, "onVidoRaised"))
 
 func setVirado(card: CardData):
 	virado.suit = card.suit
@@ -105,7 +111,36 @@ func onVidoCalled():
 	vidoCalledSignal.emit()
 
 func setPlayerCalledVido(vidoPlayerId: String):
-	playerCalledVidoLabel.text = "JUGADOR USÓ VIDO " +  players[vidoPlayerId]["name"]
+	playersDisplay.setVidoCalledView(vidoPlayerId)
+
+func rejectedVido(rejecterPlayer: String):
+	playersDisplay.exitVidoCalled(rejecterPlayer)
+
+func raisedVidoTo7Piedras(vidoPlayerId: String):
+	playersDisplay.raisedVidoTo7Piedras(vidoPlayerId)
+	
+
+func raisedVidoTo9Piedras(vidoPlayerId: String):
+	playersDisplay.raisedVidoTo9Piedras(vidoPlayerId)
+
+
+func raisedVidoToChico(vidoPlayerId: String):
+	playersDisplay.raisedVidoToChico(vidoPlayerId)
+
+
+func raisedVidoToGame(vidoPlayerId: String):
+	playersDisplay.raisedVidoToGame(vidoPlayerId)
+
+
+func onVidoAccepted():
+	vidoAcceptedSignal.emit()
+	
+func onVidoRejected():
+	vidoRejectedSignal.emit()
+	
+func onVidoRaised():
+	vidoRaisedSignal.emit()
+	
 
 func notifyIsNotTurn():
 	print("No es tu turno!")
