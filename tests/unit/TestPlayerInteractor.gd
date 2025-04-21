@@ -134,3 +134,6 @@ func cannotAcceptVidoBecauseThereIsNoVidoCalled(_player: String):
 
 func cannotRaiseVidoBecauseThereIsNoVidoCalled(_player: String):
 	pass
+
+func informPlayerCalledVido(_playerId: String):
+	pass

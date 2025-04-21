@@ -9,9 +9,9 @@ func test_creates_a_new_round():
 	var spy = TestPlayerInteractor.new()
 	var deck = NormalDeck.new()
 	var dealer = CardDealer.new(spy, players, deck)
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 	var scoresManager = ScoresManager.new(spy, players, game)
-	var roundManager = RoundManager.new(dealer, players, spy, scoresManager)
+	var roundManager = RoundManager.new(dealer, players, spy, scoresManager, SixPlayersTriumphHierarchy.new())
 	roundManager.deal("721778859")
 
 	assert_eq(spy.getLastInformPlayerTurnCall(), "721778859")
@@ -26,9 +26,9 @@ func test_every_player_plays_cards():
 	var spy = TestPlayerInteractor.new()
 	var deck = NormalDeck.new()
 	var dealer = CardDealer.new(spy, players, deck)
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 	var scoresManager = ScoresManager.new(spy, players, game)
-	var roundManager = RoundManager.new(dealer, players, spy, scoresManager)
+	var roundManager = RoundManager.new(dealer, players, spy, scoresManager, SixPlayersTriumphHierarchy.new())
 	roundManager.deal("721778859")
 
 	roundManager.playFirstCard("136122084")

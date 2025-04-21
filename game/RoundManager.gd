@@ -6,6 +6,7 @@ var currentPlayerTurn: String
 var gamePlayers: GamePlayers
 var playerInteractor: PlayerInteractor
 var scoresManager: ScoresManager
+var triumphHierarchy: TriumphHierarchy
 
 var team1ScoreInRound = 0
 var team2ScoreInRound = 0
@@ -16,15 +17,16 @@ var playedCards: PlayedCards
 
 var cardDealer: CardDealer
 
-func _init(_cardDealer: CardDealer, _gamePlayers: GamePlayers, _playerInteractor: PlayerInteractor, _scoresManager: ScoresManager):
+func _init(_cardDealer: CardDealer, _gamePlayers: GamePlayers, _playerInteractor: PlayerInteractor, _scoresManager: ScoresManager, _triumphHierarchy: TriumphHierarchy):
 	gamePlayers = _gamePlayers
 	playerInteractor = _playerInteractor
 	cardDealer = _cardDealer
 	scoresManager = _scoresManager
+	triumphHierarchy = _triumphHierarchy
 	turn = 1
 
 func deal(dealerId: String):
-	playedCards = PlayedCards.new(playerInteractor)
+	playedCards = PlayedCards.new(playerInteractor, triumphHierarchy)
 	currentPlayerTurn = gamePlayers.getNextPlayer(dealerId)
 	playerInteractor.informPlayerTurn(currentPlayerTurn)
 	hands = cardDealer.dealHands(dealerId)

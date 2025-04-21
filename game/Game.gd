@@ -8,19 +8,21 @@ var dealerManager: DealerManager
 var gameState: RoundState
 var lastPlayerState: RoundState
 var scoresManager: ScoresManager
+var triumphHierarchy: TriumphHierarchy
 
 const DEFAULT_PIEDRAS_WINS = 2
 var piedrasOnPlay = 2
 var viradoForChico = false
 var viradoForGame = false
 
-func _init(newGamePlayers: GamePlayers, newPlayerInteractor: PlayerInteractor, deck: Deck):
+func _init(newGamePlayers: GamePlayers, newPlayerInteractor: PlayerInteractor, deck: Deck, _triumphHierarchy: TriumphHierarchy):
 	gamePlayers = newGamePlayers
 	playerInteractor = newPlayerInteractor
 	cardDealer = CardDealer.new(newPlayerInteractor, newGamePlayers, deck)
 	dealerManager = DealerManager.new(gamePlayers, playerInteractor)
 	scoresManager = ScoresManager.new(playerInteractor, gamePlayers, self)
 	scoresManager.connect("teamWonGame", Callable(self, "teamWins"))
+	triumphHierarchy = _triumphHierarchy
 
 func changeState(newState: RoundState):
 	gameState = newState
@@ -33,7 +35,7 @@ func setNewRound():
 	startRound()
 
 func startRound():
-	roundManager = RoundManager.new(cardDealer, gamePlayers, playerInteractor, scoresManager)
+	roundManager = RoundManager.new(cardDealer, gamePlayers, playerInteractor, scoresManager, triumphHierarchy)
 	roundManager.deal(dealerManager.getCurrentDealer())
 	gameState = PlayerTurnState.new(self, gamePlayers.getNextPlayer(dealerManager.getCurrentDealer()), roundManager.hands, playerInteractor, roundManager.playedCards, scoresManager, gamePlayers)
 

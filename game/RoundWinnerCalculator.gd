@@ -3,11 +3,7 @@ class_name RoundWinnerCalculator
 var viradoCard: ServerCard
 var firstPlayedCard: ServerCard
 
-var triumphHierarchy: Array[Dictionary] = [
-	{ "value": ValueEnum.Value._3, "suit": SuitEnum.Suit.BASTOS },
-	{ "value": ValueEnum.Value.CABALLO, "suit": SuitEnum.Suit.BASTOS },
-	{ "value": ValueEnum.Value.SOTA, "suit": SuitEnum.Suit.OROS },
-]
+var triumphHierarchy: TriumphHierarchy
 
 var viradoValuesHierarchy := [
 	ValueEnum.Value._2,
@@ -35,23 +31,16 @@ var firstCardValuesHierarchy := [
 	ValueEnum.Value._2
 	]
 
-func _init(_viradoCard: ServerCard, _firstPlayedCard: ServerHandCard):
+func _init(_viradoCard: ServerCard, _firstPlayedCard: ServerHandCard, _triumphHierarchy: TriumphHierarchy):
 	viradoCard =_viradoCard
 	firstPlayedCard = _firstPlayedCard.card
+	triumphHierarchy = _triumphHierarchy
 
 func isTriumph(card: ServerCard) -> bool:
-	for triumph in triumphHierarchy:
-		if card.value == triumph.value and card.suit == triumph.suit:
-			return true
-	return false
+	return triumphHierarchy.isTriumph(card)
 
-func isBiggerTriumph(firstCard: ServerCard, secondCard: ServerCard):
-	for triumph in triumphHierarchy:
-		if firstCard.value == triumph.value and firstCard.suit == triumph.suit:
-			return true
-		if secondCard.value == triumph.value and secondCard.suit == triumph.suit:
-			return false
-	return false
+func isBiggerTriumph(firstCard: ServerCard, secondCard: ServerCard) -> bool:
+	return triumphHierarchy.isBiggerTriumph(firstCard, secondCard)
 
 func isBiggerVirado(firstCard: ServerCard, secondCard: ServerCard):
 	return viradoValuesHierarchy.find(firstCard.value) < viradoValuesHierarchy.find(secondCard.value)

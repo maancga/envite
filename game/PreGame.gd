@@ -17,7 +17,7 @@ func addPlayer(id: String, newName: String ):
 func start():
 	if not isGameStartable :
 		return 
-	var game = Game.new(gamePlayers, interactor, NormalDeck.new())
+	var game = Game.new(gamePlayers, interactor, NormalDeck.new(), SixPlayersTriumphHierarchy.new())
 	return game
 
 func amountOfPlayers():

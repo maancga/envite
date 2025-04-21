@@ -4,15 +4,9 @@ var currentScene: Node = null
 var hasChosenName = false
 var isClientConnected = false
 var hasGameStarted = false
-var receivedCards = []
-var virado = null
 var serverManagerScript = preload("res://shared/ServerManager.gd")
 var serverManager
 var gameScene = null
-var currentPlayerTurnId
-var players = {}
-var team1 = []
-var team2 = []
 @onready var chooseNameSceneResource = preload("res://scenes/ChooseNameScene.tscn")
 @onready var gameSceneResource = preload("res://scenes/GameScene.tscn")
 
@@ -199,7 +193,6 @@ func onVidoCanOnlyBeCalledOnYourTurn():
 func onReceiveOnlyLeaderCanTakeThisDecision():
 	print("Only leader can make this decision")
 
-	
 func onReceivePlayerFromSameTeamCanNotTakeDecision(_playerId: String):
 	print("eyyy")
 	

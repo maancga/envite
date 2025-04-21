@@ -9,7 +9,7 @@ func test_starts_a_game_with_4_players_and_deals_to_the_4_players():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -26,7 +26,7 @@ func test_notifies_players_in_the_given_order():
 	
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -47,7 +47,7 @@ func test_assigns_dealer_to_first_player_on_new_game():
 	
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -62,7 +62,7 @@ func test_assigns_first_turn_to_the_player_next_to_dealer_player_on_new_game():
 	
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -77,7 +77,7 @@ func test_does_nothing_if_playing_player_is_not_current_turn_player():
 	
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 

@@ -10,7 +10,7 @@ func test_raises_vido_until_game():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -36,7 +36,7 @@ func test_calls_vido():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -52,7 +52,7 @@ func test_refuses_vido():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -71,7 +71,7 @@ func test_raises_vido_to_7():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -88,7 +88,7 @@ func test_raises_vido_to_9():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -107,7 +107,7 @@ func test_raises_vido_to_chico():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -126,7 +126,7 @@ func test_raises_vido_to_game():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 
@@ -147,7 +147,7 @@ func test_refuses_vido_to_game_so_the_other_team_wins_chico():
 
 	var spy = TestPlayerInteractor.new()
 	var deck = TestDeck.new()
-	var game = Game.new(players, spy, deck)
+	var game = Game.new(players, spy, deck, SixPlayersTriumphHierarchy.new())
 
 	game.newGame()
 

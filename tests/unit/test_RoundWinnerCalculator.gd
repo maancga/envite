@@ -10,7 +10,7 @@ func test_calculates_the_winner_for_the_highest_playable_round_with_6_players():
 	var reyDeCopas = ServerHandCard.new(ServerCard.new(ValueEnum.Value.REY, SuitEnum.Suit.COPAS), 5)
 	var caballoDeCopas = ServerHandCard.new(ServerCard.new(ValueEnum.Value.CABALLO, SuitEnum.Suit.COPAS), 6)
 
-	var calculator = RoundWinnerCalculator.new(virado, tresDeBastos)
+	var calculator = RoundWinnerCalculator.new(virado, tresDeBastos, SixPlayersTriumphHierarchy.new())
 
 	var winner = calculator.calculateWinner({
 		"player1": tresDeBastos,
@@ -33,7 +33,7 @@ func test_calculates_the_winner_for_only_virado_cards_round_with_6_players():
 	var reyDeCopas = ServerHandCard.new(ServerCard.new(ValueEnum.Value.REY, SuitEnum.Suit.COPAS), 5)
 	var asDeCopas = ServerHandCard.new(ServerCard.new(ValueEnum.Value.AS, SuitEnum.Suit.COPAS), 6)
 
-	var calculator = RoundWinnerCalculator.new(virado, cincoDeCopas)
+	var calculator = RoundWinnerCalculator.new(virado, cincoDeCopas, SixPlayersTriumphHierarchy.new())
 
 	var winner = calculator.calculateWinner({
 		"player1": cincoDeCopas,
@@ -55,7 +55,7 @@ func test_case_3():
 	var caballoDeEspadas = ServerHandCard.new(ServerCard.new(ValueEnum.Value.CABALLO, SuitEnum.Suit.ESPADAS), 3)
 	var tresDeOros = ServerHandCard.new(ServerCard.new(ValueEnum.Value._3, SuitEnum.Suit.OROS), 4)
 
-	var calculator = RoundWinnerCalculator.new(virado, reyDeOros)
+	var calculator = RoundWinnerCalculator.new(virado, reyDeOros, SixPlayersTriumphHierarchy.new())
 
 	var winner = calculator.calculateWinner({
 		"player1": reyDeOros,
