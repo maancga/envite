@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://ctjy3u3ibtlhy"]
+[gd_scene load_steps=5 format=3 uid="uid://ctjy3u3ibtlhy"]
 
 [ext_resource type="Script" uid="uid://dpmbsgths4ity" path="res://scenes/GameScene.gd" id="1_xs4ih"]
 [ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://shared/mesa_fondo.png" id="2_vijgj"]
-[ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://cards/Virado.tscn" id="6_6ytau"]
-[ext_resource type="PackedScene" uid="uid://vs6t0jiloxra" path="res://ui/FourPlayersHandsDisplay.tscn" id="6_xs4ih"]
+[ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://ui/Virado.tscn" id="6_6ytau"]
 [ext_resource type="PackedScene" uid="uid://qabh3xjf55ow" path="res://ui/TeamScoreLabels.tscn" id="8_vijgj"]
 
 [node name="Main" type="Node2D"]
@@ -25,8 +24,6 @@ scale = Vector2(0.7, 0.7)
 [node name="Team2Score" parent="." instance=ExtResource("8_vijgj")]
 position = Vector2(798, 44)
 scale = Vector2(0.7, 0.7)
-
-[node name="FourPlayersHandsDisplay" parent="." instance=ExtResource("6_xs4ih")]
 
 [node name="PlayerCalledVidoLabel" type="Label" parent="."]
 offset_left = 178.0

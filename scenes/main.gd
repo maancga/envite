@@ -33,7 +33,6 @@ func loadChangeNameScene():
 	gameScene = gameSceneResource.instantiate()
 	gameScene.visible = false
 	add_child(gameScene)
-	gameScene.playersDisplay.connect("playedCard", self.onClientCallsPlayCard)
 	gameScene.connect("vidoCalledSignal", Callable(self, 'onClientCallsVido'))
 	gameScene.connect("vidoAcceptedSignal", Callable(self, "onClientCallsAcceptVido"))
 	gameScene.connect("vidoRejectedSignal", Callable(self, "onClientCallsRejectVido"))
@@ -97,7 +96,17 @@ func onGameHasStarted():
 
 func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2, team1Leader, team2Leader):
 	var playerId = multiplayer.get_unique_id()
-	gameScene.setUpScene(str(playerId), newPlayers, newTeam1, newTeam2, team1Leader, team2Leader)
+	var playerAmounts = newTeam1.size() + newTeam2.size()
+	var handDisplayScene = null
+	match playerAmounts:
+		4: handDisplayScene = preload("res://ui/player-hands-display/FourPlayersHandsDisplay.tscn").instantiate()
+		6: handDisplayScene = preload("res://ui/player-hands-display/SixPlayersHandsDisplay.tscn").instantiate()
+		8: handDisplayScene = preload("res://ui/player-hands-display/EightPlayersHandsDisplay.tscn").instantiate()
+		10: handDisplayScene = preload("res://ui/player-hands-display/TenPlayersHandsDisplay.tscn").instantiate()
+		12: handDisplayScene = preload("res://ui/player-hands-display/TwelvePlayersHandsDisplay.tscn").instantiate()
+	gameScene.setUpScene(str(playerId), newPlayers, newTeam1, newTeam2, team1Leader, team2Leader, handDisplayScene)
+	gameScene.playersDisplay.connect("playedCard", self.onClientCallsPlayCard)
+
 
 func onReceivedPlayersAdded(newPlayers, newTeam1, newTeam2, team1Leader, team2Leader):
 	var playerId = multiplayer.get_unique_id()

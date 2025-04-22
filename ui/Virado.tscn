@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cjs5q57kt6swi"]
 
-[ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://cards/Card.tscn" id="1_7r1bx"]
+[ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://ui/Card.tscn" id="1_7r1bx"]
 [ext_resource type="Texture2D" uid="uid://bm5oysr70mgs3" path="res://cards/images/deck.png" id="2_830b4"]
 
 [node name="Virado" type="Node2D"]

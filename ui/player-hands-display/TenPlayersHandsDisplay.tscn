@@ -1,0 +1,106 @@
+[gd_scene load_steps=6 format=3 uid="uid://bl8b5o38rd2bm"]
+
+[ext_resource type="Script" uid="uid://bn0g1a20xt8lb" path="res://ui/player-hands-display/HandDisplaysScript.gd" id="1_jpd7c"]
+[ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://ui/UIPlayedCards.tscn" id="2_pxivf"]
+[ext_resource type="PackedScene" uid="uid://btlubd0wqixut" path="res://scenes/PlayerNameDisplay.tscn" id="3_objat"]
+[ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://scenes/MyHand.tscn" id="4_phmdx"]
+[ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://scenes/UnknownHand.tscn" id="5_wg3y3"]
+
+[node name="TwelvePlayersHandsDisplay" type="Node2D"]
+script = ExtResource("1_jpd7c")
+playerNamesNodePaths = [NodePath("MyName"), NodePath("Player2Name"), NodePath("Player3Name"), NodePath("Player4Name"), NodePath("Player5Name"), NodePath("Player6Name"), NodePath("Player7Name"), NodePath("Player8Name"), NodePath("Player9Name"), NodePath("Player10Name")]
+playerHandsNodePaths = [NodePath("MyHand"), NodePath("Player2Hand"), NodePath("Player3Hand"), NodePath("Player4Hand"), NodePath("Player5Hand"), NodePath("Player6Hand"), NodePath("Player7Hand"), NodePath("Player8Hand"), NodePath("Player9Hand"), NodePath("Player10Hand")]
+
+[node name="PlayedCards" parent="." instance=ExtResource("2_pxivf")]
+position = Vector2(406, 372)
+scale = Vector2(0.3, 0.3)
+
+[node name="MyName" parent="." instance=ExtResource("3_objat")]
+position = Vector2(505, 497)
+scale = Vector2(0.6, 0.6)
+
+[node name="MyHand" parent="." instance=ExtResource("4_phmdx")]
+position = Vector2(468, 550)
+rotation = 0.0041769
+scale = Vector2(0.5, 0.5)
+
+[node name="Player2Hand" parent="." instance=ExtResource("5_wg3y3")]
+position = Vector2(735, 548)
+rotation = -0.261799
+scale = Vector2(0.5, 0.5)
+
+[node name="Player2Name" parent="." instance=ExtResource("3_objat")]
+position = Vector2(764, 460)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player3Hand" parent="." instance=ExtResource("5_wg3y3")]
+position = Vector2(1000, 506)
+rotation = -1.309
+scale = Vector2(0.5, 0.5)
+
+[node name="Player3Name" parent="." instance=ExtResource("3_objat")]
+position = Vector2(906, 401)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player4Hand" parent="." instance=ExtResource("5_wg3y3")]
+position = Vector2(1039, 317)
+rotation = -1.8326
+scale = Vector2(0.5, 0.5)
+
+[node name="Player4Name" parent="." instance=ExtResource("3_objat")]
+position = Vector2(903, 230)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player5Hand" parent="." instance=ExtResource("5_wg3y3")]
+position = Vector2(963, 140)
+rotation = -2.87979
+scale = Vector2(0.5, 0.5)
+
+[node name="Player5Name" parent="." instance=ExtResource("3_objat")]
+position = Vector2(818, 150)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player6Hand" parent="." instance=ExtResource("5_wg3y3")]
+position = Vector2(726, 120)
+rotation = -3.14159
+scale = Vector2(0.5, 0.5)
+
+[node name="Player6Name" parent="." instance=ExtResource("3_objat")]
+position = Vector2(623, 140)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player7Hand" parent="." instance=ExtResource("5_wg3y3")]
+position = Vector2(475, 103)
+rotation = 2.87979
+scale = Vector2(0.5, 0.5)
+
+[node name="Player7Name" parent="." instance=ExtResource("3_objat")]
+position = Vector2(367, 151)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player8Hand" parent="." instance=ExtResource("5_wg3y3")]
+position = Vector2(227, 127)
+rotation = 2.0944
+scale = Vector2(0.5, 0.5)
+
+[node name="Player8Name" parent="." instance=ExtResource("3_objat")]
+position = Vector2(201, 191)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player9Hand" parent="." instance=ExtResource("5_wg3y3")]
+position = Vector2(174, 324)
+rotation = 1.309
+scale = Vector2(0.5, 0.5)
+
+[node name="Player9Name" parent="." instance=ExtResource("3_objat")]
+position = Vector2(217, 367)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player10Hand" parent="." instance=ExtResource("5_wg3y3")]
+position = Vector2(239, 505)
+rotation = 0.261799
+scale = Vector2(0.5, 0.5)
+
+[node name="Player10Name" parent="." instance=ExtResource("3_objat")]
+position = Vector2(268, 469)
+scale = Vector2(0.6, 0.6)

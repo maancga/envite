@@ -12,7 +12,7 @@ extends Node2D
 @onready var team2RoundScore = $Team2Score/RoundScore
 @onready var team1Score = $Team1Score
 @onready var team2Score = $Team2Score
-@onready var playersDisplay: FourPlayersHandsDisplay = $FourPlayersHandsDisplay
+@onready var playersDisplay: Node
 @onready var playerCalledVidoLabel: Label = $PlayerCalledVidoLabel
 
 signal vidoCalledSignal()
@@ -26,13 +26,6 @@ var players : Dictionary
 var team1 : Array[String]
 var team2 : Array[String]
 var currentDealerId: String
-
-func _ready() -> void:
-	setTeamLabels()
-	playersDisplay.connect("vidoCalledSignal", Callable(self, "onVidoCalled"))
-	playersDisplay.connect("vidoAcceptedSignal", Callable(self, "onVidoAccepted"))
-	playersDisplay.connect("vidoRejectedSignal", Callable(self, "onVidoRejected"))
-	playersDisplay.connect("vidoRaisedSignal", Callable(self, "onVidoRaised"))
 
 func setVirado(card: CardData):
 	virado.suit = card.suit
@@ -48,12 +41,19 @@ func setTeamLabels():
 	team1LabelTopLabel.text = "Equipo 1"
 	team2LabelTopLabel.text = "Equipo 2"
 
-func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[String], newTeam2: Array[String], team1Leader: String, team2Leader: String):
-	playersDisplay.setUp(newPlayerId, currentPlayerTurnId, newPlayers, team1Leader, team2Leader, newTeam1, newTeam2)
+func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[String], newTeam2: Array[String], team1Leader: String, team2Leader: String, handDisplay: Node):
 	playerId = newPlayerId
 	players = newPlayers
 	team1 = newTeam1
 	team2 = newTeam2
+	add_child(handDisplay)
+	playersDisplay = handDisplay
+	playersDisplay.setUp(newPlayerId, currentPlayerTurnId, newPlayers, team1Leader, team2Leader, newTeam1, newTeam2)
+	setTeamLabels()
+	playersDisplay.connect("vidoCalledSignal", Callable(self, "onVidoCalled"))
+	playersDisplay.connect("vidoAcceptedSignal", Callable(self, "onVidoAccepted"))
+	playersDisplay.connect("vidoRejectedSignal", Callable(self, "onVidoRejected"))
+	playersDisplay.connect("vidoRaisedSignal", Callable(self, "onVidoRaised"))
 
 	
 func setPlayerTurn(newPlayerId: String):

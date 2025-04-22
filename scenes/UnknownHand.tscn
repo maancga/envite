@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://cjkt2y3wp6ky6"]
 
-[ext_resource type="Script" uid="uid://cci7geahrhwx6" path="res://hands/UnknownHand.gd" id="1_v0wtu"]
-[ext_resource type="Curve" uid="uid://dvah2nj4xfhol" path="res://hands/curves/MyHandSpacingCurve.tres" id="2_05wc4"]
-[ext_resource type="PackedScene" uid="uid://cb6nhtncq4cae" path="res://cards/UnknownCard.tscn" id="3_ccwuf"]
-[ext_resource type="Curve" uid="uid://b1ac0pvn2gaqc" path="res://hands/curves/MyHandRotationCurve.tres" id="3_wpxgv"]
-[ext_resource type="Curve" uid="uid://ddsp7ivdlps6f" path="res://hands/curves/MyHandHeightCurve.tres" id="4_4iirk"]
+[ext_resource type="Script" uid="uid://cci7geahrhwx6" path="res://scenes/UnknownHand.gd" id="1_v0wtu"]
+[ext_resource type="Curve" uid="uid://dvah2nj4xfhol" path="res://scenes/curves/MyHandSpacingCurve.tres" id="2_05wc4"]
+[ext_resource type="PackedScene" uid="uid://cb6nhtncq4cae" path="res://ui/UnknownCard.tscn" id="3_ccwuf"]
+[ext_resource type="Curve" uid="uid://b1ac0pvn2gaqc" path="res://scenes/curves/MyHandRotationCurve.tres" id="3_wpxgv"]
+[ext_resource type="Curve" uid="uid://ddsp7ivdlps6f" path="res://scenes/curves/MyHandHeightCurve.tres" id="4_4iirk"]
 
 [node name="UnknownHand" type="Node2D"]
 script = ExtResource("1_v0wtu")

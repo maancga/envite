@@ -6,7 +6,7 @@ var playerInstances = {}
 var team1: Team
 var team2: Team
 
-const MAX_AMOUNT_OF_PLAYERS = 6
+const MAX_AMOUNT_OF_PLAYERS = 12
 
 func _init():
 	team1 = Team.new("Equipo 1")

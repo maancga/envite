@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://qutkjd1k6mlo"]
 
-[ext_resource type="Script" uid="uid://bfc3vv3ayy720" path="res://hands/MyHand.gd" id="1_y4tjv"]
-[ext_resource type="Curve" uid="uid://dvah2nj4xfhol" path="res://hands/curves/MyHandSpacingCurve.tres" id="2_m447l"]
-[ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://cards/Card.tscn" id="2_vnd3e"]
-[ext_resource type="Curve" uid="uid://b1ac0pvn2gaqc" path="res://hands/curves/MyHandRotationCurve.tres" id="3_uft5m"]
-[ext_resource type="Curve" uid="uid://ddsp7ivdlps6f" path="res://hands/curves/MyHandHeightCurve.tres" id="4_csxfp"]
+[ext_resource type="Script" uid="uid://bfc3vv3ayy720" path="res://scenes/MyHand.gd" id="1_y4tjv"]
+[ext_resource type="Curve" uid="uid://dvah2nj4xfhol" path="res://scenes/curves/MyHandSpacingCurve.tres" id="2_m447l"]
+[ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://ui/Card.tscn" id="2_vnd3e"]
+[ext_resource type="Curve" uid="uid://b1ac0pvn2gaqc" path="res://scenes/curves/MyHandRotationCurve.tres" id="3_uft5m"]
+[ext_resource type="Curve" uid="uid://ddsp7ivdlps6f" path="res://scenes/curves/MyHandHeightCurve.tres" id="4_csxfp"]
 
 [node name="MyHand" type="Node2D" node_paths=PackedStringArray("card1", "card2", "card3")]
 script = ExtResource("1_y4tjv")
