@@ -8,6 +8,25 @@ class_name HandDisplaysScript
 @export var playerHandsNodePaths = []
 @onready var playerNames: Array = loadNodes(playerNamesNodePaths)
 @onready var playerHands: Array = loadNodes(playerHandsNodePaths)
+@onready var playingButtonsDisplay: PlayingButtonsDisplay = $PlayingButtonsDisplay
+@onready var vidoElectionScene: VidoElectionScene = $VidoElectionScene
+@onready var virado = $Virado/Card
+@onready var team1LabelTopLabel = $Team1Score/TopLabel
+@onready var team2LabelTopLabel = $Team2Score/TopLabel
+@onready var team1GameChicosScore = $Team1Score/GameChicosScore
+@onready var team2GameChicosScore = $Team2Score/GameChicosScore
+@onready var team1ChicoPointsScore = $Team1Score/ChicoPointsScore
+@onready var team2ChicoPointsScore = $Team2Score/ChicoPointsScore
+@onready var team1RoundScore = $Team1Score/RoundScore
+@onready var team2RoundScore = $Team2Score/RoundScore
+@onready var team1Score = $Team1Score
+@onready var team2Score = $Team2Score
+signal vidoCalledSignal()
+signal vidoAcceptedSignal()
+signal vidoRejectedSignal()
+signal vidoRaisedSignal()
+signal playedCard(card)
+
 
 var currentPlayerTurnId: String
 var players : Dictionary
@@ -20,6 +39,12 @@ var team1: Array[String]
 var team2: Array[String]
 
 func _ready() -> void:
+	vidoElectionScene.visible = false
+	vidoElectionScene.connect("rejectButtonPressedSignal", onVidoRejected)
+	vidoElectionScene.connect("acceptButtonPressedSignal", onVidoAccepted)
+	vidoElectionScene.connect("raisedButtonPressedSignal", onVidoRaised)
+	playingButtonsDisplay.connect("callVidoButtonPressedSignal", onVidoCalledButtonPressed)
+	playingButtonsDisplay.connect("playCardButtonPressedSignal", onPlayCardButtonPressed)
 	connectClickedCards()
 
 func loadNodes(nodePaths: Array) -> Array:
@@ -29,6 +54,17 @@ func loadNodes(nodePaths: Array) -> Array:
 				if node != null:
 						nodes.append(node)
 		return nodes
+
+func setVirado(card: CardData):
+	virado.suit = card.suit
+	virado.value = card.value
+	virado.update_texture()
+
+func setTeamLabels():
+	team1Score.setTeam1Color()
+	team2Score.setTeam2Color()
+	team1LabelTopLabel.text = "Equipo 1"
+	team2LabelTopLabel.text = "Equipo 2"
 	
 func connectClickedCards() -> void:
 	myHand.card1.clickedCard.connect(onCardClicked)
@@ -66,6 +102,8 @@ func setUpPlayerDisplay(playerNameDisplay: PlayerNameDisplay, currentPlayerId: S
 	if isTeam2(currentPlayerId): playerNameDisplay.setTeam2Color()
 
 func paintCurrentTurn():
+	if (currentPlayerTurnId == yourId): playingButtonsDisplay.show()
+	else: playingButtonsDisplay.hide()
 	for player in playersArray:
 		var distance = RelativeHandsDistance.new(playersArray, yourId).calculateDistance(player)
 		var currentPlayer = players[player]
@@ -96,6 +134,20 @@ func cleanPlayedCards():
 	playedCards.cleanPlayedCards()
 	playedCards.setAmountOfPlayers(playersArray.size())
 
+func playCardButtonPressed():
+	if selectedCard == myHand.card1: playedCard.emit("1")
+	if selectedCard == myHand.card2: playedCard.emit("2")
+	if selectedCard == myHand.card3: playedCard.emit("3")
+
+
+func onPlayCardButtonPressed() -> void:
+	if !selectedCard: return
+	playCardButtonPressed()
+	selectedCard = null
+
+func onVidoCalledButtonPressed() -> void:
+	vidoCalledSignal.emit()
+
 func setTurnTo(newPlayerId: String):
 	currentPlayerTurnId = newPlayerId
 	paintCurrentTurn()
@@ -111,3 +163,90 @@ func iAmTeam1Leader():
 
 func iAmTeam2Leader():
 	return yourId == team2Leader
+
+func updateVidoView(vidoPlayerId: String):
+	playingButtonsDisplay.hide()
+	vidoElectionScene.visible = false
+	var vidoCalledByTeam1 = isTeam1(vidoPlayerId)
+	if(vidoCalledByTeam1 && iAmTeam2Leader()):
+		vidoElectionScene.visible = true
+	if (not vidoCalledByTeam1 && iAmTeam1Leader()):
+		vidoElectionScene.visible = true
+
+func setVidoCalledView(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func raisedVidoTo7Piedras(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func raisedVidoTo9Piedras(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func raisedVidoToChico(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func raisedVidoToGame(vidoPlayerId: String):
+	updateVidoView(vidoPlayerId)
+
+func refusedVido(_playerId: String):
+	vidoElectionScene.visible = false
+	paintCurrentTurn()
+
+func acceptedVido(_playerId: String):
+	vidoElectionScene.visible = false
+	paintCurrentTurn()
+
+func exitVidoCalled(_rejecterPlayer: String):
+	vidoElectionScene.visible = false
+	paintCurrentTurn()
+
+func onVidoRejected():
+	vidoRejectedSignal.emit()
+
+func onVidoAccepted():
+	vidoAcceptedSignal.emit()
+
+func onVidoRaised():
+	vidoRaisedSignal.emit()
+
+func getTeam(player: String) -> String:
+	if player in team1: return "team1"
+	if player in team2: return "team2"
+	return "unknown"
+
+func playerWonRound(player: String,  roundScore: int):
+	print("Player %s won the round!" % [players[player]["name"]])
+	if getTeam(player) == "team1": team1RoundScore.text = str(roundScore)
+	if getTeam(player) == "team2": team2RoundScore.text = str(roundScore)
+	await get_tree().create_timer(2.0).timeout
+	cleanPlayedCards()
+
+func teamWonChicoPoints(teamName: String, chicoPoints: int):
+	print("Team %s won chico points!" % [teamName])
+	if teamName == "team1": team1ChicoPointsScore.text = str(chicoPoints)
+	if teamName == "team2": team2ChicoPointsScore.text = str(chicoPoints)
+	await get_tree().create_timer(2.0).timeout
+	resetRoundScore()
+
+func resetRoundScore():
+	team1RoundScore.text = "0"
+	team2RoundScore.text = "0"
+
+
+func teamWonChico(teamName: String, chicosScore: int):
+	print("Team %s won a chico!" % [teamName])
+	if teamName == "team1": team1GameChicosScore.text = str(chicosScore)
+	if teamName == "team2": team2GameChicosScore.text = str(chicosScore)
+	await get_tree().create_timer(2.0).timeout
+	resetChicoPointsScore()
+
+func resetChicoPointsScore():
+	team1ChicoPointsScore.text = "0"
+	team2ChicoPointsScore.text = "0"
+	resetRoundScore()
+
+func teamWon(teamName: String):
+	print("Team %s won!" % [teamName])
+	if teamName == "team1": team1LabelTopLabel.text = "EQUIPO 1 GANÓ"
+	if teamName == "team2": team2LabelTopLabel.text = "EQUIPO 2 GANADOR"
+	await get_tree().create_timer(2.0).timeout

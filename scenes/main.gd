@@ -1,8 +1,6 @@
 extends Node
 
 var currentScene: Node = null
-var hasChosenName = false
-var isClientConnected = false
 var hasGameStarted = false
 var serverManagerScript = preload("res://shared/ServerManager.gd")
 var serverManager
@@ -50,7 +48,6 @@ func connectToServer():
 	serverManager.connectClient()
 
 func connectServerManagerSignals() -> void:
-	serverManager.connect("clientConnectedSignal", Callable(self, "onClientConnected"))
 	serverManager.connect("receivedPlayersAndTeamsSignal", Callable(self, "onReceivedPlayersAndTeams"))
 	serverManager.connect("receivedPlayerAddedSignal", Callable(self, "onReceivedPlayersAdded"))
 	serverManager.connect("cardsReceivedSignal", Callable(self, "onReceivedCards"))
@@ -81,18 +78,10 @@ func connectServerManagerSignals() -> void:
 
 
 func onNameChosen(userName):
-	hasChosenName = true
 	serverManager.chooseName(userName)
-	
-	tryLoadGameScene()
-
-func onClientConnected():
-	isClientConnected = true
-	tryLoadGameScene()
 
 func onGameHasStarted():
-	hasGameStarted = true
-	tryLoadGameScene()
+		showGameScene()
 
 func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2, team1Leader, team2Leader):
 	var playerId = multiplayer.get_unique_id()
@@ -112,11 +101,8 @@ func onReceivedPlayersAdded(newPlayers, newTeam1, newTeam2, team1Leader, team2Le
 	var playerId = multiplayer.get_unique_id()
 	chooseNameScene.updateList(str(playerId), newPlayers, newTeam1, newTeam2, team1Leader, team2Leader)
 
-func tryLoadGameScene():
-	if (hasChosenName && isClientConnected && hasGameStarted):
-		showGameScene()
-
 func showGameScene():
+	chooseNameScene.queue_free()
 	gameScene.visible = true
 	currentScene = gameScene
 

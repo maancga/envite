@@ -11,7 +11,7 @@ func _ready() -> void:
 	team1PlayerList.setTeamColor1()
 	team1PlayerList.setTeamName("Equipo 1")
 	team2PlayerList.setTeamColor2()
-	team1PlayerList.setTeamName("Equipo 2")
+	team2PlayerList.setTeamName("Equipo 2")
 
 func _on_ready_button_pressed() -> void:
 	emit_signal("nameChosenSignal", userName.text)

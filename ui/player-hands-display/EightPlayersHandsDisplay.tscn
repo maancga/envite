@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://cgplcendgw5qa"]
+[gd_scene load_steps=8 format=3 uid="uid://cgplcendgw5qa"]
 
 [ext_resource type="Script" uid="uid://bn0g1a20xt8lb" path="res://ui/player-hands-display/HandDisplaysScript.gd" id="1_62jk0"]
 [ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://ui/UIPlayedCards.tscn" id="2_1ox1g"]
 [ext_resource type="PackedScene" uid="uid://btlubd0wqixut" path="res://scenes/PlayerNameDisplay.tscn" id="3_g3mul"]
 [ext_resource type="PackedScene" uid="uid://qutkjd1k6mlo" path="res://scenes/MyHand.tscn" id="4_7hu4r"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://scenes/UnknownHand.tscn" id="5_ypler"]
+[ext_resource type="PackedScene" uid="uid://50537fdo6u8y" path="res://scenes/VidoElectionScene.tscn" id="6_g3mul"]
+[ext_resource type="PackedScene" uid="uid://bbhlsdn0e05ya" path="res://ui/PlayingButtonsDisplay.tscn" id="7_7hu4r"]
 
 [node name="TwelvePlayersHandsDisplay" type="Node2D"]
 script = ExtResource("1_62jk0")
@@ -12,8 +14,8 @@ playerNamesNodePaths = [NodePath("MyName"), NodePath("Player2Name"), NodePath("P
 playerHandsNodePaths = [NodePath("MyHand"), NodePath("Player2Hand"), NodePath("Player3Hand"), NodePath("Player4Hand"), NodePath("Player5Hand"), NodePath("Player6Hand"), NodePath("Player7Hand"), NodePath("Player8Hand"), NodePath(""), NodePath(""), NodePath(""), NodePath("")]
 
 [node name="PlayedCards" parent="." instance=ExtResource("2_1ox1g")]
-position = Vector2(406, 372)
-scale = Vector2(0.3, 0.3)
+position = Vector2(342, 256)
+scale = Vector2(0.5, 0.5)
 
 [node name="MyName" parent="." instance=ExtResource("3_g3mul")]
 position = Vector2(523, 490)
@@ -86,3 +88,9 @@ scale = Vector2(0.5, 0.5)
 [node name="Player8Name" parent="." instance=ExtResource("3_g3mul")]
 position = Vector2(209, 408)
 scale = Vector2(0.6, 0.6)
+
+[node name="VidoElectionScene" parent="." instance=ExtResource("6_g3mul")]
+position = Vector2(863, 462)
+
+[node name="PlayingButtonsDisplay" parent="." instance=ExtResource("7_7hu4r")]
+position = Vector2(789, 512)
