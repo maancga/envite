@@ -11,8 +11,14 @@ func informPlayerAdded(_players: Dictionary) -> void:
 func informPlayerCantBeAddedSinceMaxIsReached():
 	push_error("⚠️ informPlayerCantBeAddedSinceMaxIsReached() must be implemented by subclass")
 
-func informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached():
+func informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(_playerId: String):
 	push_error("⚠️ informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached() must be implemented by subclass")
+
+func informGameCanNotStartSinceItsNotOwner(_player: String):
+	push_error("⚠️ informGameCanNotStartSinceItsNotOwner() must be implemented by subclass")
+
+func informIsGameOwner(_playerId: String):
+	push_error("⚠️ informIsGameOwner() must be implemented by subclass")
 
 func dealHandToPlayer(_player: String, _hand: ServerHand) -> void:
 	push_error("⚠️ dealHandToPlayer() must be implemented by subclass")

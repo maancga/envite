@@ -5,9 +5,15 @@ signal startGameSignal()
 
 @onready var userNameInput = $CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameInput
 @onready var teamPlayerList= $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows
+@onready var startGameButton = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/MarginContainer/StartGameButton 
+var yourId = null
 
 func _ready():
 	cleanPlayersLists()
+	startGameButton.visible = false
+
+func setId(newPlayerId: String):
+	yourId = newPlayerId
 	
 func updateList(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[String], newTeam2: Array[String], team1Leader: String, team2Leader: String):
 	cleanPlayersLists()
@@ -47,3 +53,8 @@ func _on_button_pressed() -> void:
 
 func _on_choose_a_name_ready_button_pressed() -> void:
 	emit_signal("nameChosenSignal", userNameInput.text)
+
+func addPlayerOwner(playerId: String):
+	print ("aaa ", yourId, " ", playerId )
+	if(yourId != playerId): startGameButton.visible = false
+	if(yourId == playerId): startGameButton.visible = true

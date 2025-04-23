@@ -72,7 +72,8 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receivePlayerFromSameTeamCanNotTakeDecisionSignal", Callable(self, "onReceivePlayerFromSameTeamCanNotTakeDecision"))
 	serverManager.connect("receivePlayerAcceptedVidoSignal", Callable(self, "onPlayerAcceptedVido"))
 	serverManager.connect("receivePlayerRefusedVidoSignal", Callable(self, "onPlayerRefusedVido"))
-	serverManager.connect("receivePlayerRaisedVidoTo7PiedrasSignal", Callable(self, "onPlayerRejectedVido"))
+	serverManager.connect("receivePlayerIsGameOwnerSignal", Callable(self, "onAssignPlayerOwner"))
+	serverManager.connect("receiveClientIdSignal", onReceivedClientId)
 
 
 func onNameChosen(userName):
@@ -80,6 +81,9 @@ func onNameChosen(userName):
 
 func onGameHasStarted():
 		showGameScene()
+
+func onReceivedClientId(playerId: String):
+	chooseNameScene.setId(playerId)
 
 func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2, team1Leader, team2Leader):
 	var playerId = multiplayer.get_unique_id()
@@ -190,6 +194,9 @@ func onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand():
 
 func onVidoCanOnlyBeCalledOnYourTurn():
 	gameScene.vidoCanOnlyBeCalledOnYourTurn()
+
+func onAssignPlayerOwner(playerId: String):
+	chooseNameScene.addPlayerOwner(playerId)
 
 func onReceiveOnlyLeaderCanTakeThisDecision():
 	print("Only leader can make this decision")

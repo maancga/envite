@@ -30,6 +30,8 @@ signal informPlayerFromSameTeamCanNotTakeDecisionSignal(playerId: String)
 signal informOnlyLeaderCanTakeThisDecisionSignal(playerId: String)
 signal informVidoCanOnlyBeCalledOnYourTurnSignal(playerId: String)
 signal informPlayerCantBeAddedSinceMaxIsReachedSignal()
+signal informGameCanNotStartSinceItsNotOwnerSignal(playerId: String)
+signal informIsGameOwnerSignal(playerId: String)
 signal informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal()
 
 func informPlayersAndTeams(players: Dictionary) -> void:
@@ -55,8 +57,14 @@ func informPlayerAdded(players: Dictionary) -> void:
 func informPlayerCantBeAddedSinceMaxIsReached():
 	informPlayerCantBeAddedSinceMaxIsReachedSignal.emit()
 
-func informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached():
-	informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal.emit()
+func informGameCanNotStartSinceItsNotOwner(player: String):
+	informGameCanNotStartSinceItsNotOwnerSignal.emit(player)
+
+func informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(playerId: String):
+	informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal.emit(playerId)
+
+func informIsGameOwner(playerId: String):
+	informIsGameOwnerSignal.emit(playerId)
 
 func dealHandToPlayer(player: String, hand: ServerHand) -> void:
 	dealHandToPlayerSignal.emit(player, hand)

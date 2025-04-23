@@ -16,7 +16,7 @@ script = ExtResource("1_msssm")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Screen" type="PanelContainer" parent="CanvasLayer"]
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -31,7 +31,7 @@ expand_mode = 1
 layout_mode = 2
 
 [node name="Envilatro" type="TextureRect" parent="CanvasLayer/Screen/VBoxContainer"]
-custom_minimum_size = Vector2(300, 300)
+custom_minimum_size = Vector2(250, 250)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -248,10 +248,10 @@ theme_override_constants/margin_left = 150
 theme_override_constants/margin_top = 150
 theme_override_constants/margin_right = 10
 
-[node name="Button" type="Button" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/MarginContainer"]
+[node name="StartGameButton" type="Button" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/MarginContainer"]
 layout_mode = 2
 text = "Empezar
 partida"
 
 [connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameReadyButton" to="." method="_on_choose_a_name_ready_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/MarginContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/MarginContainer/StartGameButton" to="." method="_on_button_pressed"]

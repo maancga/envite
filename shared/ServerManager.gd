@@ -8,7 +8,8 @@ const CardIndex = {
 	CARD_3 = "3"
 }
 
-signal clientConnectedSignal
+signal clientConnectedSignal()
+signal receiveClientIdSignal(playerId)
 signal cardsReceivedSignal(cards)
 signal viradoReceivedSignal(virado)
 signal gameStartedSignal()
@@ -36,6 +37,7 @@ signal receivePlayerAcceptedVidoSignal(playerId)
 signal receiveVidoCanOnlyBeCalledOnYourTurnSignal()
 signal receivePlayerCantBeAddedSinceMaxIsReachedSignal()
 signal receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal()
+signal receivePlayerIsGameOwnerSignal(playerId)
 
 var preGame: PreGame
 var game: Game
@@ -92,11 +94,14 @@ func connectPlayerInteractorSignals():
 	playerInteractor.connect("informVidoCanOnlyBeCalledOnYourTurnSignal", Callable(self, "onVidoCanOnlyBeCalledOnYourTurn"))
 	playerInteractor.connect("sendPlayerAcceptedVidoSignal", Callable(self, "onPlayerAcceptedVido"))
 	playerInteractor.connect("informPlayerCantBeAddedSinceMaxIsReachedSignal", Callable(self, "onInformPlayerCantBeAddedSinceMaxIsReached"))
+	playerInteractor.connect("informGameCanNotStartSinceItsNotOwnerSignal", Callable(self, "onInformGameCanNotStartSinceItsNotOwner"))
+	playerInteractor.connect("informIsGameOwnerSignal", Callable(self, "onInformIsGameOwner"))
 	playerInteractor.connect("informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal", Callable(self, "onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached"))
 
 
 func onClientConnected(id):
 	print("🟢 Client connected with id: ", id)
+	rpc_id(id, "receiveClientId", str(id))
 
 func onReceivedPlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
 	print("Sending players and teams...")
@@ -209,6 +214,13 @@ func onInformPlayerCantBeAddedSinceMaxIsReached(playerId: String):
 	print("Player %s can not be added since max players is reached" % playerId)
 	rpc_id(int(playerId), "receivePlayerCantBeAddedSinceMaxIsReached")
 
+func onInformGameCanNotStartSinceItsNotOwner(playerId: String):
+	print("Player %s can not start the game since it is not the owner" % playerId)
+
+func onInformIsGameOwner(playerId: String):
+	print("Informing to player %s that it is the game owner" % playerId)
+	rpc("receivePlayerIsGameOwner", playerId)
+
 func onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(playerId):
 	print("Game can not start since the minimum of players is not reached")
 	rpc_id(int(playerId), "receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached")
@@ -261,7 +273,9 @@ func onClientRaisedVido():
 
 @rpc("any_peer")
 func onClientStartedGame():
-	game = preGame.start()
+	var sender = multiplayer.get_remote_sender_id()
+	var playerId = str(sender)
+	game = preGame.start(playerId)
 	if game is Game:
 		game.newGame()
 		for player in gamePlayers.playerIds:
@@ -281,6 +295,10 @@ func connectClient(ip = "127.0.0.1", port = 9000):
 		return
 	multiplayer.multiplayer_peer = peer
 	clientConnectedSignal.emit()
+
+@rpc("authority")
+func receiveClientId(playerId: String):
+	receiveClientIdSignal.emit(playerId)
 
 @rpc("authority")
 func receivePlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
@@ -385,6 +403,10 @@ func receiveVidoCanOnlyBeCalledOnYourTurn():
 @rpc("authority")
 func receivePlayerCantBeAddedSinceMaxIsReached():
 	receivePlayerCantBeAddedSinceMaxIsReachedSignal.emit()
+
+@rpc("authority")
+func receivePlayerIsGameOwner(playerId: String):
+	receivePlayerIsGameOwnerSignal.emit(playerId)
 
 @rpc("authority")
 func receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached():
