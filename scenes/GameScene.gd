@@ -6,6 +6,8 @@ signal vidoCalledSignal()
 signal vidoAcceptedSignal()
 signal vidoRejectedSignal()
 signal vidoRaisedSignal()
+signal playedCardSignal()
+
 
 var playerId : String
 var currentPlayerTurnId: String
@@ -31,10 +33,12 @@ func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 	playersDisplay = handDisplay
 	playersDisplay.setUp(newPlayerId, currentPlayerTurnId, newPlayers, team1Leader, team2Leader, newTeam1, newTeam2)
 	setTeamLabels()
-	playersDisplay.connect("vidoCalledSignal", Callable(self, "onVidoCalled"))
-	playersDisplay.connect("vidoAcceptedSignal", Callable(self, "onVidoAccepted"))
-	playersDisplay.connect("vidoRejectedSignal", Callable(self, "onVidoRejected"))
-	playersDisplay.connect("vidoRaisedSignal", Callable(self, "onVidoRaised"))
+	playersDisplay.connect("vidoCalledSignal", onVidoCalled)
+	playersDisplay.connect("vidoAcceptedSignal", onVidoAccepted)
+	playersDisplay.connect("vidoRejectedSignal", onVidoRejected)
+	playersDisplay.connect("vidoRaisedSignal", onVidoRaised)
+	playersDisplay.connect("playedCard", onPlayedCard)
+
 
 func setPlayerTurn(newPlayerId: String):
 	playersDisplay.setTurnTo(newPlayerId)
@@ -94,6 +98,9 @@ func onVidoRejected():
 	
 func onVidoRaised():
 	vidoRaisedSignal.emit()
+
+func onPlayedCard(cardIndex: String):
+	playedCardSignal.emit(cardIndex)
 
 func refusedVido(vidoPlayerId: String):
 	playersDisplay.refusedVido(vidoPlayerId)

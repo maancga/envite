@@ -11,16 +11,7 @@ class_name HandDisplaysScript
 @onready var playingButtonsDisplay: PlayingButtonsDisplay = $PlayingButtonsDisplay
 @onready var vidoElectionScene: VidoElectionScene = $VidoElectionScene
 @onready var virado = $Virado/Card
-@onready var team1LabelTopLabel = $Team1Score/TopLabel
-@onready var team2LabelTopLabel = $Team2Score/TopLabel
-@onready var team1GameChicosScore = $Team1Score/GameChicosScore
-@onready var team2GameChicosScore = $Team2Score/GameChicosScore
-@onready var team1ChicoPointsScore = $Team1Score/ChicoPointsScore
-@onready var team2ChicoPointsScore = $Team2Score/ChicoPointsScore
-@onready var team1RoundScore = $Team1Score/RoundScore
-@onready var team2RoundScore = $Team2Score/RoundScore
-@onready var team1Score = $Team1Score
-@onready var team2Score = $Team2Score
+@onready var teamScore = $TeamScore
 signal vidoCalledSignal()
 signal vidoAcceptedSignal()
 signal vidoRejectedSignal()
@@ -61,10 +52,8 @@ func setVirado(card: CardData):
 	virado.update_texture()
 
 func setTeamLabels():
-	team1Score.setTeam1Color()
-	team2Score.setTeam2Color()
-	team1LabelTopLabel.text = "Equipo 1"
-	team2LabelTopLabel.text = "Equipo 2"
+	if(isTeam1(yourId)): teamScore.highlightTeam1Row()
+	if(isTeam2(yourId)): teamScore.highlightTeam2Row()
 	
 func connectClickedCards() -> void:
 	myHand.card1.clickedCard.connect(onCardClicked)
@@ -93,10 +82,12 @@ func setUp(_playerId: String, _playerTurnId: String, _players: Dictionary, _team
 	for player in playersArray:
 		var distance = RelativeHandsDistance.new(playersArray, yourId).calculateDistance(player)
 		var currentPlayer = players[player]
-		setUpPlayerDisplay(playerNames[distance], currentPlayer["id"], currentPlayer["name"])
+		var isYou = player == yourId
+		setUpPlayerDisplay(playerNames[distance], currentPlayer["id"], currentPlayer["name"], isYou)
 
-func setUpPlayerDisplay(playerNameDisplay: PlayerNameDisplay, currentPlayerId: String, currentPlayerName: String):
+func setUpPlayerDisplay(playerNameDisplay: PlayerNameDisplay, currentPlayerId: String, currentPlayerName: String, isYou: bool):
 	playerNameDisplay.setPlayerName(currentPlayerName)
+	if isYou: playerNameDisplay.isYou()
 	if currentPlayerId == team1Leader || currentPlayerId == team2Leader: playerNameDisplay.convertToLeader()
 	if isTeam1(currentPlayerId): playerNameDisplay.setTeam1Color()
 	if isTeam2(currentPlayerId): playerNameDisplay.setTeam2Color()
@@ -216,37 +207,34 @@ func getTeam(player: String) -> String:
 
 func playerWonRound(player: String,  roundScore: int):
 	print("Player %s won the round!" % [players[player]["name"]])
-	if getTeam(player) == "team1": team1RoundScore.text = str(roundScore)
-	if getTeam(player) == "team2": team2RoundScore.text = str(roundScore)
+	if getTeam(player) == "team1": teamScore.setTeam1Rondas(roundScore)
+	if getTeam(player) == "team2": teamScore.setTeam2Rondas(roundScore)
 	await get_tree().create_timer(2.0).timeout
 	cleanPlayedCards()
 
 func teamWonChicoPoints(teamName: String, chicoPoints: int):
 	print("Team %s won chico points!" % [teamName])
-	if teamName == "team1": team1ChicoPointsScore.text = str(chicoPoints)
-	if teamName == "team2": team2ChicoPointsScore.text = str(chicoPoints)
+	if teamName == "team1": teamScore.setTeam1Piedras(chicoPoints)
+	if teamName == "team2": teamScore.setTeam2Piedras(chicoPoints)
 	await get_tree().create_timer(2.0).timeout
 	resetRoundScore()
 
 func resetRoundScore():
-	team1RoundScore.text = "0"
-	team2RoundScore.text = "0"
-
+	teamScore.setTeam1Rondas(0)
+	teamScore.setTeam2Rondas(0)
 
 func teamWonChico(teamName: String, chicosScore: int):
 	print("Team %s won a chico!" % [teamName])
-	if teamName == "team1": team1GameChicosScore.text = str(chicosScore)
-	if teamName == "team2": team2GameChicosScore.text = str(chicosScore)
+	if teamName == "team1": teamScore.setTeam1Piedras(chicosScore)
+	if teamName == "team2": teamScore.setTeam2Chicos(chicosScore)
 	await get_tree().create_timer(2.0).timeout
 	resetChicoPointsScore()
 
 func resetChicoPointsScore():
-	team1ChicoPointsScore.text = "0"
-	team2ChicoPointsScore.text = "0"
+	teamScore.setTeam1Piedras(0)
+	teamScore.setTeam2Piedras(0)
 	resetRoundScore()
 
 func teamWon(teamName: String):
 	print("Team %s won!" % [teamName])
-	if teamName == "team1": team1LabelTopLabel.text = "EQUIPO 1 GANÓ"
-	if teamName == "team2": team2LabelTopLabel.text = "EQUIPO 2 GANADOR"
 	await get_tree().create_timer(2.0).timeout

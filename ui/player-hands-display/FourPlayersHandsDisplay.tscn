@@ -8,25 +8,20 @@
 [ext_resource type="PackedScene" uid="uid://50537fdo6u8y" path="res://scenes/VidoElectionScene.tscn" id="5_4vy2f"]
 [ext_resource type="PackedScene" uid="uid://bbhlsdn0e05ya" path="res://ui/PlayingButtonsDisplay.tscn" id="6_lsqbr"]
 [ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://ui/Virado.tscn" id="8_jdnlm"]
-[ext_resource type="PackedScene" uid="uid://qabh3xjf55ow" path="res://ui/TeamScoreLabels.tscn" id="9_2wsq1"]
+[ext_resource type="PackedScene" uid="uid://db1v5r22fkqey" path="res://ui/TeamScoreLabels.tscn" id="10_2wsq1"]
 
 [node name="FourPlayersHandsDisplay" type="Node2D"]
 script = ExtResource("1_46vyt")
 playerNamesNodePaths = [NodePath("MyName"), NodePath("Player2Name"), NodePath("Player3Name"), NodePath("Player4Name")]
 playerHandsNodePaths = [NodePath("MyHand"), NodePath("Player2Hand"), NodePath("Player3Hand"), NodePath("Player4Hand")]
 
-[node name="PlayedCards" parent="." instance=ExtResource("4_21lry")]
-position = Vector2(259, 238)
+[node name="MyName" parent="." instance=ExtResource("4_1pkko")]
+position = Vector2(530, 421)
 scale = Vector2(0.6, 0.6)
 
-[node name="MyName" parent="." instance=ExtResource("4_1pkko")]
-position = Vector2(259, 543)
-scale = Vector2(0.8, 0.8)
-
 [node name="MyHand" parent="." instance=ExtResource("1_cbxej")]
-position = Vector2(426, 508)
+position = Vector2(405, 479)
 rotation = 0.0041769
-scale = Vector2(0.73, 0.73)
 
 [node name="Player2Hand" parent="." instance=ExtResource("2_eh0v3")]
 position = Vector2(1097, 426)
@@ -34,21 +29,21 @@ rotation = -1.61618
 scale = Vector2(0.73, 0.73)
 
 [node name="Player2Name" parent="." instance=ExtResource("4_1pkko")]
-position = Vector2(922, 265)
-scale = Vector2(0.8, 0.8)
+position = Vector2(971, 268)
+scale = Vector2(0.6, 0.6)
 
 [node name="Player3Name" parent="." instance=ExtResource("4_1pkko")]
-position = Vector2(460, 80)
-scale = Vector2(0.8, 0.8)
+position = Vector2(516, 96)
+scale = Vector2(0.6, 0.6)
 
 [node name="Player3Hand" parent="." instance=ExtResource("2_eh0v3")]
-position = Vector2(659, 62)
+position = Vector2(696, 63)
 rotation = 3.14159
 scale = Vector2(0.73, 0.73)
 
 [node name="Player4Name" parent="." instance=ExtResource("4_1pkko")]
 position = Vector2(101, 287)
-scale = Vector2(0.8, 0.8)
+scale = Vector2(0.6, 0.6)
 
 [node name="Player4Hand" parent="." instance=ExtResource("2_eh0v3")]
 position = Vector2(75, 185)
@@ -61,14 +56,13 @@ position = Vector2(863, 462)
 [node name="PlayingButtonsDisplay" parent="." instance=ExtResource("6_lsqbr")]
 position = Vector2(789, 512)
 
+[node name="PlayedCards" parent="." instance=ExtResource("4_21lry")]
+position = Vector2(264, 169)
+scale = Vector2(0.7, 0.7)
+
+[node name="TeamScore" parent="." instance=ExtResource("10_2wsq1")]
+position = Vector2(-54, -18)
+
 [node name="Virado" parent="." instance=ExtResource("8_jdnlm")]
-position = Vector2(225, 57)
-scale = Vector2(0.6, 0.6)
-
-[node name="Team1Score" parent="." instance=ExtResource("9_2wsq1")]
-position = Vector2(-11, 22)
-scale = Vector2(0.7, 0.7)
-
-[node name="Team2Score" parent="." instance=ExtResource("9_2wsq1")]
-position = Vector2(-11, -5)
-scale = Vector2(0.7, 0.7)
+position = Vector2(-477, 287)
+scale = Vector2(1.3, 1.3)

@@ -1,65 +1,93 @@
-[gd_scene load_steps=3 format=3 uid="uid://qabh3xjf55ow"]
+[gd_scene load_steps=3 format=3 uid="uid://db1v5r22fkqey"]
 
 [ext_resource type="Texture2D" uid="uid://brbwgupq832jq" path="res://ui/tablon_de_madera.png" id="1_4c7m4"]
-[ext_resource type="Script" uid="uid://c18uwad5g7nry" path="res://ui/TeamScoreLabels.gd" id="1_8cv70"]
+[ext_resource type="Script" uid="uid://baave6th5317l" path="res://ui/TeamScoreLabels.gd" id="1_8cv70"]
 
-[node name="TeamScore" type="Node2D"]
+[node name="TeamScoreLabels" type="Node2D"]
 script = ExtResource("1_8cv70")
 
 [node name="TablonDeMadera" type="Sprite2D" parent="."]
-position = Vector2(220.5, 88)
-scale = Vector2(0.253255, 0.240234)
+position = Vector2(226.5, 88)
+scale = Vector2(0.261068, 0.240234)
 texture = ExtResource("1_4c7m4")
 
-[node name="TopLabel" type="Label" parent="."]
-offset_left = 169.0
-offset_top = 34.0
-offset_right = 226.0
-offset_bottom = 57.0
-text = "Team X"
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 103.0
+offset_top = 47.0
+offset_right = 103.0
+offset_bottom = 47.0
 
-[node name="RoundScoreLabel" type="Label" parent="."]
-offset_left = 235.0
-offset_top = 69.0
-offset_right = 363.0
-offset_bottom = 118.0
-text = "Puntos 
-de ronda"
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FirstColumn" type="VBoxContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
+
+[node name="TeamsLabel" type="Label" parent="Control/HBoxContainer/FirstColumn"]
+layout_mode = 2
+text = "Teams "
+
+[node name="Team1Label" type="Label" parent="Control/HBoxContainer/FirstColumn"]
+layout_mode = 2
+text = "Team1"
+
+[node name="Team2Label" type="Label" parent="Control/HBoxContainer/FirstColumn"]
+layout_mode = 2
+text = "Team2"
+
+[node name="SecondColumn" type="VBoxContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
+
+[node name="Chicos" type="Label" parent="Control/HBoxContainer/SecondColumn"]
+layout_mode = 2
+text = "Chicos "
+
+[node name="Team1Chicos" type="Label" parent="Control/HBoxContainer/SecondColumn"]
+layout_mode = 2
+text = "0"
 horizontal_alignment = 1
 
-[node name="RoundScore" type="Label" parent="."]
-offset_left = 283.0
-offset_top = 118.0
-offset_right = 323.0
-offset_bottom = 141.0
+[node name="Team2Chicos" type="Label" parent="Control/HBoxContainer/SecondColumn"]
+layout_mode = 2
 text = "0"
-
-[node name="ChicoPointsScoreLabel" type="Label" parent="."]
-offset_left = 143.0
-offset_top = 69.0
-offset_right = 270.0
-offset_bottom = 118.0
-text = "Puntos 
-del chico"
 horizontal_alignment = 1
 
-[node name="ChicoPointsScore" type="Label" parent="."]
-offset_left = 195.0
-offset_top = 118.0
-offset_right = 235.0
-offset_bottom = 141.0
-text = "0"
+[node name="ThirdColumn" type="VBoxContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
 
-[node name="GameChicosScore" type="Label" parent="."]
-offset_left = 114.0
-offset_top = 118.0
-offset_right = 154.0
-offset_bottom = 141.0
-text = "0"
+[node name="Piedras" type="Label" parent="Control/HBoxContainer/ThirdColumn"]
+layout_mode = 2
+text = "Piedras "
+horizontal_alignment = 1
 
-[node name="GameChicosScoreLabel" type="Label" parent="."]
-offset_left = 91.0
-offset_top = 69.0
-offset_right = 142.0
-offset_bottom = 92.0
-text = "Chicos"
+[node name="Team1Piedras" type="Label" parent="Control/HBoxContainer/ThirdColumn"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="Team2Piedras" type="Label" parent="Control/HBoxContainer/ThirdColumn"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="FourthColumn" type="VBoxContainer" parent="Control/HBoxContainer"]
+layout_mode = 2
+
+[node name="Ronda" type="Label" parent="Control/HBoxContainer/FourthColumn"]
+layout_mode = 2
+text = "Rondas"
+horizontal_alignment = 1
+
+[node name="Team1Rondas" type="Label" parent="Control/HBoxContainer/FourthColumn"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="Team2Rondas" type="Label" parent="Control/HBoxContainer/FourthColumn"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1

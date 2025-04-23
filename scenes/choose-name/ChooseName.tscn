@@ -1,0 +1,257 @@
+[gd_scene load_steps=4 format=3 uid="uid://bww4ax6xs0wcd"]
+
+[ext_resource type="Script" uid="uid://conejyoe5mf" path="res://scenes/choose-name/ChooseName.gd" id="1_msssm"]
+[ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://shared/mesa_fondo.png" id="1_nlomy"]
+[ext_resource type="Texture2D" uid="uid://darjyvxtq2y8b" path="res://scenes/choose-name/envilatro.png" id="2_acpur"]
+
+[node name="ChooseName" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_msssm")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Screen" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="CanvasLayer/Screen"]
+layout_mode = 2
+texture = ExtResource("1_nlomy")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Screen"]
+layout_mode = 2
+
+[node name="Envilatro" type="TextureRect" parent="CanvasLayer/Screen/VBoxContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("2_acpur")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ChooseANameBlock" type="PanelContainer" parent="CanvasLayer/Screen/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ChooseANameMargin" type="MarginContainer" parent="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock"]
+layout_mode = 2
+
+[node name="ChooseANameHBox" type="VBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin"]
+layout_mode = 2
+
+[node name="ChooseANameLabel" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox"]
+layout_mode = 2
+text = "Elige un nombre"
+horizontal_alignment = 1
+
+[node name="ChooseANameInputVBox" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox"]
+custom_minimum_size = Vector2(300, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ChooseANameInput" type="TextEdit" parent="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Player1"
+
+[node name="ChooseANameReadyButton" type="Button" parent="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox"]
+layout_mode = 2
+text = "Listo"
+
+[node name="ConnectedPlayersBlock" type="PanelContainer" parent="CanvasLayer/Screen/VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="SectionVAlignment" type="VBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment"]
+layout_mode = 2
+text = "Jugadores conectados"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/HBoxContainer/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Equipo1"
+
+[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo2" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/HBoxContainer/CenterContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Equipo2"
+
+[node name="PlayersRows" type="VBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment"]
+layout_mode = 2
+
+[node name="PlayersCols1" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols1/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador1"
+
+[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols1/CenterContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador2"
+
+[node name="PlayersCols2" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols2/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador1"
+
+[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols2/CenterContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador2"
+
+[node name="PlayersCols3" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols3/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador1"
+
+[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols3/CenterContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador2"
+
+[node name="PlayersCols4" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols4/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador1"
+
+[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols4/CenterContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador2"
+
+[node name="PlayersCols5" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols5/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador1"
+
+[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols5/CenterContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador2"
+
+[node name="PlayersCols6" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols6/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador1"
+
+[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols6/CenterContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jugador2"
+
+[node name="Control" type="Control" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 150
+theme_override_constants/margin_right = 10
+
+[node name="Button" type="Button" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/MarginContainer"]
+layout_mode = 2
+text = "Empezar
+partida"
+
+[connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameReadyButton" to="." method="_on_choose_a_name_ready_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/MarginContainer/Button" to="." method="_on_button_pressed"]

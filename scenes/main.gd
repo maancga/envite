@@ -1,13 +1,8 @@
 extends Node
 
-var currentScene: Node = null
-var hasGameStarted = false
-var serverManagerScript = preload("res://shared/ServerManager.gd")
 var serverManager
-var gameScene = null
+var gameScene
 var chooseNameScene
-@onready var chooseNameSceneResource = preload("res://scenes/ChooseNameScene.tscn")
-@onready var gameSceneResource = preload("res://scenes/GameScene.tscn")
 
 func _ready():
 	var args = OS.get_cmdline_args()
@@ -17,30 +12,33 @@ func _ready():
 	else:
 		print("🎮 Starting in CLIENT mode")
 		connectToServer()
-		loadChangeNameScene()
+		setUpAndLoadChooseNameScene()
+		loadGameSceneInvisible()
 
 func startServer():
-	var server = serverManagerScript.new()
+	var server =  ServerManager.new()
 	server.name = "ServerManager"
 	add_child(server)
 	server.startServer()
 
-func loadChangeNameScene():
-	chooseNameScene = chooseNameSceneResource.instantiate()
+func setUpAndLoadChooseNameScene():
+	chooseNameScene = preload("res://scenes/choose-name/ChooseName.tscn").instantiate()
+	chooseNameScene.connect("nameChosenSignal", onNameChosen)
+	chooseNameScene.connect("startGameSignal", onClientCallsStartsGame)
 	add_child(chooseNameScene)
-	gameScene = gameSceneResource.instantiate()
+
+func loadGameSceneInvisible():
+	gameScene = preload("res://scenes/GameScene.tscn").instantiate()
 	gameScene.visible = false
 	add_child(gameScene)
-	gameScene.connect("vidoCalledSignal", Callable(self, 'onClientCallsVido'))
-	gameScene.connect("vidoAcceptedSignal", Callable(self, "onClientCallsAcceptVido"))
-	gameScene.connect("vidoRejectedSignal", Callable(self, "onClientCallsRejectVido"))
-	gameScene.connect("vidoRaisedSignal", Callable(self, "onClientCallsVidoRaise"))
-	chooseNameScene.connect("nameChosenSignal", Callable(self, "onNameChosen"))
-	chooseNameScene.connect("startGameSignal", Callable(self, "onClientCallsStartsGame"))
-	currentScene = chooseNameScene
+	gameScene.connect("vidoCalledSignal", onClientCallsVido)
+	gameScene.connect("vidoAcceptedSignal", onClientCallsAcceptVido)
+	gameScene.connect("vidoRejectedSignal", onClientCallsRejectVido)
+	gameScene.connect("vidoRaisedSignal", onClientCallsVidoRaise)
+	gameScene.connect("playedCardSignal", onClientCallsPlayCard)
 
 func connectToServer():
-	serverManager = serverManagerScript.new()
+	serverManager = ServerManager.new()
 	serverManager.name = "ServerManager"
 	add_child(serverManager)
 
@@ -94,7 +92,7 @@ func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2, team1Leader, team
 		10: handDisplayScene = preload("res://ui/player-hands-display/TenPlayersHandsDisplay.tscn").instantiate()
 		12: handDisplayScene = preload("res://ui/player-hands-display/TwelvePlayersHandsDisplay.tscn").instantiate()
 	gameScene.setUpScene(str(playerId), newPlayers, newTeam1, newTeam2, team1Leader, team2Leader, handDisplayScene)
-	gameScene.playersDisplay.connect("playedCard", self.onClientCallsPlayCard)
+
 
 
 func onReceivedPlayersAdded(newPlayers, newTeam1, newTeam2, team1Leader, team2Leader):
@@ -104,7 +102,6 @@ func onReceivedPlayersAdded(newPlayers, newTeam1, newTeam2, team1Leader, team2Le
 func showGameScene():
 	chooseNameScene.queue_free()
 	gameScene.visible = true
-	currentScene = gameScene
 
 
 func onReceivedCards(cards):
@@ -118,7 +115,6 @@ func onReceivedVirado(newVirado):
 	gameScene.setVirado(
 		CardData.new(newVirado.value, newVirado.suit)
 	)
-
 
 func onClientCallsPlayCard(cardIndex: String):	
 	serverManager.playCard(cardIndex)
