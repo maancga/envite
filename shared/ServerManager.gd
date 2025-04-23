@@ -38,6 +38,7 @@ signal receiveVidoCanOnlyBeCalledOnYourTurnSignal()
 signal receivePlayerCantBeAddedSinceMaxIsReachedSignal()
 signal receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal()
 signal receivePlayerIsGameOwnerSignal(playerId)
+signal receiveTriumphsConfigurationSignal(triumphs)
 
 var preGame: PreGame
 var game: Game
@@ -97,7 +98,7 @@ func connectPlayerInteractorSignals():
 	playerInteractor.connect("informGameCanNotStartSinceItsNotOwnerSignal", Callable(self, "onInformGameCanNotStartSinceItsNotOwner"))
 	playerInteractor.connect("informIsGameOwnerSignal", Callable(self, "onInformIsGameOwner"))
 	playerInteractor.connect("informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal", Callable(self, "onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached"))
-
+	playerInteractor.connect("informTriumphsConfigurationSignal", Callable(self, "onInformTriumphsConfiguration"))
 
 func onClientConnected(id):
 	print("🟢 Client connected with id: ", id)
@@ -218,13 +219,16 @@ func onInformGameCanNotStartSinceItsNotOwner(playerId: String):
 	print("Player %s can not start the game since it is not the owner" % playerId)
 
 func onInformIsGameOwner(playerId: String):
-	print("Informing to player %s that it is the game owner" % playerId)
+	print("Informing that %s is the game owner" % playerId)
 	rpc("receivePlayerIsGameOwner", playerId)
 
 func onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(playerId):
 	print("Game can not start since the minimum of players is not reached")
 	rpc_id(int(playerId), "receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached")
 
+func onInformTriumphsConfiguration(triumphs: Array[Dictionary]):
+	print("Informing current triumphs configuration" % triumphs)
+	rpc("receiveTriumphsConfiguration", triumphs)
 
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
@@ -411,6 +415,10 @@ func receivePlayerIsGameOwner(playerId: String):
 @rpc("authority")
 func receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached():
 	receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal.emit()
+
+@rpc("authority")
+func receiveTriumphsConfiguration(triumphs: Array[Dictionary]):
+	receiveTriumphsConfigurationSignal.emit(triumphs)
 
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():

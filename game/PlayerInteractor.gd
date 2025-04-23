@@ -8,6 +8,9 @@ func informPlayersAndTeams(_players: Dictionary) -> void:
 func informPlayerAdded(_players: Dictionary) -> void:
 	push_error("⚠️ informPlayerAdded() must be implemented by subclass")
 
+func informTriumphsConfiguration(_triumph: TriumphHierarchy) -> void:
+	push_error("⚠️ informTriumphsConfiguration() must be implemented by subclass")
+
 func informPlayerCantBeAddedSinceMaxIsReached():
 	push_error("⚠️ informPlayerCantBeAddedSinceMaxIsReached() must be implemented by subclass")
 

@@ -5,11 +5,13 @@ signal startGameSignal()
 
 @onready var userNameInput = $CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameInput
 @onready var teamPlayerList= $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows
-@onready var startGameButton = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/MarginContainer/StartGameButton 
+@onready var startGameButton = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer2/StartGameButton
+@onready var triumphsRows = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock/PanelContainer6/TriumphsRows
 var yourId = null
 
 func _ready():
 	cleanPlayersLists()
+	cleanTriumphs()
 	startGameButton.visible = false
 
 func setId(newPlayerId: String):
@@ -43,9 +45,27 @@ func updateList(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 			firstPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
 			secondPlayerContainer = CenterContainer.new()
 			secondPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
-		
+
+func configureTriumphs(triumphs: Array[Dictionary]):
+	cleanTriumphs()
+	for triumph in triumphs:
+		var panelContainer = PanelContainer.new()
+		var label = Label.new()
+		panelContainer.add_child(label)
+		triumphsRows.add_child(panelContainer)
+		label.text = CardData.new(triumph["value"], triumph["suit"]).getCardName()
+	var lastContainer = PanelContainer.new()
+	var lastLabel = Label.new()
+	lastContainer.add_child(lastLabel)
+	triumphsRows.add_child(lastContainer)
+	lastLabel.text = "La mala (2 de lo virado)"
+	
 func cleanPlayersLists():
 	for child in teamPlayerList.get_children():
+		child.queue_free()
+		
+func cleanTriumphs():
+	for child in triumphsRows.get_children():
 		child.queue_free()
 
 func _on_button_pressed() -> void:
@@ -55,6 +75,5 @@ func _on_choose_a_name_ready_button_pressed() -> void:
 	emit_signal("nameChosenSignal", userNameInput.text)
 
 func addPlayerOwner(playerId: String):
-	print ("aaa ", yourId, " ", playerId )
 	if(yourId != playerId): startGameButton.visible = false
 	if(yourId == playerId): startGameButton.visible = true

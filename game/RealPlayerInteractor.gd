@@ -33,6 +33,7 @@ signal informPlayerCantBeAddedSinceMaxIsReachedSignal()
 signal informGameCanNotStartSinceItsNotOwnerSignal(playerId: String)
 signal informIsGameOwnerSignal(playerId: String)
 signal informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal()
+signal informTriumphsConfigurationSignal(triumphs: Array[Dictionary])
 
 func informPlayersAndTeams(players: Dictionary) -> void:
 	var team1Array: Array[String] = []
@@ -53,6 +54,9 @@ func informPlayerAdded(players: Dictionary) -> void:
 	for id in players.team2.players:
 		team2Array.append(str(id))
 	sendPlayerAddedSignal.emit(players.players, team1Array, team2Array, players.team1.leader, players.team2.leader)
+
+func informTriumphsConfiguration(triumph: TriumphHierarchy) -> void:
+	informTriumphsConfigurationSignal.emit(triumph.getTriumphHierarchy())
 
 func informPlayerCantBeAddedSinceMaxIsReached():
 	informPlayerCantBeAddedSinceMaxIsReachedSignal.emit()

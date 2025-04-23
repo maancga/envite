@@ -74,6 +74,7 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receivePlayerRefusedVidoSignal", Callable(self, "onPlayerRefusedVido"))
 	serverManager.connect("receivePlayerIsGameOwnerSignal", Callable(self, "onAssignPlayerOwner"))
 	serverManager.connect("receiveClientIdSignal", onReceivedClientId)
+	serverManager.connect("receiveTriumphsConfigurationSignal", Callable(self, "onReceivedTriumphsConfiguration"))
 
 
 func onNameChosen(userName):
@@ -197,6 +198,9 @@ func onVidoCanOnlyBeCalledOnYourTurn():
 
 func onAssignPlayerOwner(playerId: String):
 	chooseNameScene.addPlayerOwner(playerId)
+
+func onReceivedTriumphsConfiguration(triumphs: Array[Dictionary]):
+	chooseNameScene.configureTriumphs(triumphs)
 
 func onReceiveOnlyLeaderCanTakeThisDecision():
 	print("Only leader can make this decision")

@@ -23,6 +23,7 @@ func addPlayer(id: String, newName: String):
 	gamePlayers.addPlayer(id, newName)
 	if gamePlayers.amountOfPlayers() >= 4 : isGameStartable = true
 	interactor.informPlayerAdded(gamePlayers.toDictionary())
+	interactor.informTriumphsConfiguration(getTriumphsConfiguration())
 
 
 func start(starterPlayer: String):
@@ -31,21 +32,17 @@ func start(starterPlayer: String):
 	if amountOfPlayers() < 4:
 		interactor.informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(starterPlayer)
 		return 
-	var triumphHierarchy = null
-	match gamePlayers.amountOfPlayers():
-		4:
-			triumphHierarchy = FourPlayersTriumphHierarchy.new()
-		6:
-			triumphHierarchy = SixPlayersTriumphHierarchy.new()
-		8:
-			triumphHierarchy = EightPlayersTriumphHierarchy.new()
-		10:
-			triumphHierarchy = TenPlayersTriumphHierarchy.new()
-		12:
-			triumphHierarchy = TwelvePlayersTriumphHierarchy.new()
+	var triumphHierarchy = getTriumphsConfiguration()
 
 	var game = Game.new(gamePlayers, interactor, NormalDeck.new(), triumphHierarchy)
 	return game
 
 func amountOfPlayers():
 	return gamePlayers.amountOfPlayers()
+
+func getTriumphsConfiguration() -> TriumphHierarchy:
+	if (gamePlayers.amountOfPlayers() <= 4): return FourPlayersTriumphHierarchy.new()
+	if (gamePlayers.amountOfPlayers() <= 6): return SixPlayersTriumphHierarchy.new()
+	if (gamePlayers.amountOfPlayers() <= 8): return EightPlayersTriumphHierarchy.new()
+	if (gamePlayers.amountOfPlayers() <= 10): return TenPlayersTriumphHierarchy.new()
+	return TwelvePlayersTriumphHierarchy.new()
