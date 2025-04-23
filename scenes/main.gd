@@ -28,7 +28,7 @@ func setUpAndLoadChooseNameScene():
 	add_child(chooseNameScene)
 
 func loadGameSceneInvisible():
-	gameScene = preload("res://scenes/GameScene.tscn").instantiate()
+	gameScene = preload("res://scenes/game/GameScene.tscn").instantiate()
 	gameScene.visible = false
 	add_child(gameScene)
 	gameScene.connect("vidoCalledSignal", onClientCallsVido)
@@ -91,11 +91,11 @@ func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2, team1Leader, team
 	var playerAmounts = newTeam1.size() + newTeam2.size()
 	var handDisplayScene = null
 	match playerAmounts:
-		4: handDisplayScene = preload("res://ui/player-hands-display/FourPlayersHandsDisplay.tscn").instantiate()
-		6: handDisplayScene = preload("res://ui/player-hands-display/SixPlayersHandsDisplay.tscn").instantiate()
-		8: handDisplayScene = preload("res://ui/player-hands-display/EightPlayersHandsDisplay.tscn").instantiate()
-		10: handDisplayScene = preload("res://ui/player-hands-display/TenPlayersHandsDisplay.tscn").instantiate()
-		12: handDisplayScene = preload("res://ui/player-hands-display/TwelvePlayersHandsDisplay.tscn").instantiate()
+		4: handDisplayScene = preload("res://scenes/game/player-hands-display/FourPlayersHandsDisplay.tscn").instantiate()
+		6: handDisplayScene = preload("res://scenes/game/player-hands-display/SixPlayersHandsDisplay.tscn").instantiate()
+		8: handDisplayScene = preload("res://scenes/game/player-hands-display/EightPlayersHandsDisplay.tscn").instantiate()
+		10: handDisplayScene = preload("res://scenes/game/player-hands-display/TenPlayersHandsDisplay.tscn").instantiate()
+		12: handDisplayScene = preload("res://scenes/game/player-hands-display/TwelvePlayersHandsDisplay.tscn").instantiate()
 	gameScene.setUpScene(str(playerId), newPlayers, newTeam1, newTeam2, team1Leader, team2Leader, handDisplayScene)
 
 

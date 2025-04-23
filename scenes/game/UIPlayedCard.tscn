@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dvmoyuj0y5i7j"]
+
+[ext_resource type="Script" uid="uid://2tacpfua1sfh" path="res://scenes/game/UIPlayedCard.gd" id="1_rdmo6"]
+[ext_resource type="PackedScene" uid="uid://bgac4qkncf57l" path="res://scenes/game/cards/Card.tscn" id="2_nnhjp"]
+
+[node name="UIPlayedCard" type="Node2D"]
+script = ExtResource("1_rdmo6")
+
+[node name="Card" parent="." instance=ExtResource("2_nnhjp")]
+
+[node name="PlayerNameLabel" type="Label" parent="."]
+offset_left = -35.0
+offset_top = -144.0
+offset_right = 34.0
+offset_bottom = -121.0
+text = "Jugador1"

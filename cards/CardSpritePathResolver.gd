@@ -23,5 +23,5 @@ const VALUES_TO_STRING = {
 func resolve(suit: SuitEnum.Suit, value: ValueEnum.Value):
 	var suit_path = SUITS_TO_PATH[suit]
 	var value_path  = VALUES_TO_STRING[value]
-	var path = "res://cards/images/cards/card_" + suit_path + "_" + value_path + ".png"
+	var path = "res://scenes/game/cards/images/cards/card_" + suit_path + "_" + value_path + ".png"
 	return path
