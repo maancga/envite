@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://btlubd0wqixut"]
 
 [ext_resource type="Texture2D" uid="uid://brbwgupq832jq" path="res://ui/tablon_de_madera.png" id="1_6t4iw"]
-[ext_resource type="Script" uid="uid://tb0vw3fnemb4" path="res://scenes/PlayerNameDisplay.gd" id="1_msypb"]
+[ext_resource type="Script" path="res://scenes/PlayerNameDisplay.gd" id="1_msypb"]
 [ext_resource type="Texture2D" uid="uid://fbus5hk5n115" path="res://ui/crown_pixel_art.png" id="3_rnx7d"]
 [ext_resource type="Texture2D" uid="uid://c7c55c1k3yuiq" path="res://ui/Bordillo pixelado amarillo retro.png" id="4_3o32p"]
 

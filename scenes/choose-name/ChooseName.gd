@@ -11,7 +11,6 @@ var yourId = null
 
 func _ready():
 	cleanPlayersLists()
-	cleanTriumphs()
 	startGameButton.visible = false
 
 func setId(newPlayerId: String):
@@ -22,15 +21,23 @@ func updateList(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 	var playersArray = []
 	for player in newPlayers.keys():
 		playersArray.append(player)
-	var firstPlayerContainer = CenterContainer.new()
+	var team1Theme = preload("res://scenes/choose-name/PlayerNameLabelThemeTeam1.tres")
+	var team2Theme = preload("res://scenes/choose-name/PlayerNameLabelThemeTeam2.tres")
+	var firstPlayerContainer = PanelContainer.new()
 	firstPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
-	var secondPlayerContainer = CenterContainer.new()
+	firstPlayerContainer.theme = team1Theme
+	var secondPlayerContainer = PanelContainer.new()
 	secondPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
+	secondPlayerContainer.theme = team2Theme
 	for player in playersArray:
 		var currentPlayer = newPlayers[player]
 		var playerName = currentPlayer["name"]
 		var playerNameLabel = Label.new()
 		playerNameLabel.text = playerName
+		playerNameLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		playerNameLabel.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		playerNameLabel.set_h_size_flags(Control.SIZE_EXPAND_FILL)
+		playerNameLabel.set_v_size_flags(Control.SIZE_EXPAND_FILL)
 		if (currentPlayer["id"] == team1Leader || currentPlayer["id"] == team2Leader): playerNameLabel.text += " (Líder)"
 		if (currentPlayer["id"] == newPlayerId): playerNameLabel.add_theme_color_override("font_color", "54ba5e")
 		if player in newTeam1:
@@ -41,20 +48,23 @@ func updateList(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 			hbox.add_child(secondPlayerContainer)
 		if player in newTeam2 :
 			secondPlayerContainer.add_child(playerNameLabel)
-			firstPlayerContainer = CenterContainer.new()
+			firstPlayerContainer = PanelContainer.new()
 			firstPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
-			secondPlayerContainer = CenterContainer.new()
+			firstPlayerContainer.theme = team1Theme
+			secondPlayerContainer = PanelContainer.new()
 			secondPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
+			secondPlayerContainer.theme = team2Theme
+
 
 func configureTriumphs(triumphs: Array[Dictionary]):
 	cleanTriumphs()
 	for triumph in triumphs:
-		var panelContainer = PanelContainer.new()
+		var panelContainer = CenterContainer.new()
 		var label = Label.new()
 		panelContainer.add_child(label)
 		triumphsRows.add_child(panelContainer)
 		label.text = CardData.new(triumph["value"], triumph["suit"]).getCardName()
-	var lastContainer = PanelContainer.new()
+	var lastContainer = CenterContainer.new()
 	var lastLabel = Label.new()
 	lastContainer.add_child(lastLabel)
 	triumphsRows.add_child(lastContainer)
