@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ctjy3u3ibtlhy"]
 
-[ext_resource type="Script" uid="uid://dpmbsgths4ity" path="res://scenes/game/GameScene.gd" id="1_xs4ih"]
-[ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://shared/mesa_fondo.png" id="2_vijgj"]
+[ext_resource type="Script" uid="uid://tpq35st4dp0n" path="res://scenes/game/GameScene.gd" id="1_xs4ih"]
+[ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://scenes/all-scenes-assets/mesa_fondo.png" id="2_vijgj"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_xs4ih")

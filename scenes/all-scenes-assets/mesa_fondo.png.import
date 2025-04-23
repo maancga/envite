@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dtvlvwwpp6ye4"
-path="res://.godot/imported/mesa_fondo.png-a3be2f60a097cf39542accb0ef7de198.ctex"
+path="res://.godot/imported/mesa_fondo.png-c3f46db285df7d3051474524488758cc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://shared/mesa_fondo.png"
-dest_files=["res://.godot/imported/mesa_fondo.png-a3be2f60a097cf39542accb0ef7de198.ctex"]
+source_file="res://scenes/all-scenes-assets/mesa_fondo.png"
+dest_files=["res://.godot/imported/mesa_fondo.png-c3f46db285df7d3051474524488758cc.ctex"]
 
 [params]
 

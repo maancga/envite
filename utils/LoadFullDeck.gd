@@ -1,7 +1,7 @@
 extends Node2D
 
-const Suits = preload("res://cards/SuitEnum.gd")
-const Values = preload("res://cards/ValueEnum.gd")
+const Suits = preload("res://game/cards/SuitEnum.gd")
+const Values = preload("res://game/cards/ValueEnum.gd")
 
 var cards = []
 
@@ -13,7 +13,7 @@ const card_height = 95
 func _ready():
 	for suit in Suits.Suit.values():
 		for value in Values.Value.values():
-			var card = preload("res://cards/Card.tscn").instantiate()
+			var card = preload("res://scenes/game/cards/Card.tscn").instantiate()
 			var xAxis = (int(value) * card_height) + xOffset
 			var yAxis = (int(suit) * card_width) + yOffset
 			card.scale = Vector2(0.7, 0.7)

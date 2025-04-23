@@ -2,8 +2,8 @@ extends Node2D
 
 class_name Deck
 
-const Suits = preload("res://cards/SuitEnum.gd")
-const Values = preload("res://cards/ValueEnum.gd")
+const Suits = preload("res://game/cards/SuitEnum.gd")
+const Values = preload("res://game/cards/ValueEnum.gd")
 
 var cards : Array[ServerCard]
 

@@ -1,5 +1,5 @@
 extends "res://addons/gut/test.gd"
-const pathResolver = preload("res://cards/CardSpritePathResolver.gd")
+const pathResolver = preload("res://scenes/game/cards/CardSpritePathResolver.gd")
 
 var bastosParameters = [
 		[

@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bww4ax6xs0wcd"]
 
 [ext_resource type="Script" uid="uid://conejyoe5mf" path="res://scenes/choose-name/ChooseName.gd" id="1_msssm"]
-[ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://shared/mesa_fondo.png" id="1_nlomy"]
+[ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://scenes/all-scenes-assets/mesa_fondo.png" id="1_nlomy"]
 [ext_resource type="Texture2D" uid="uid://darjyvxtq2y8b" path="res://scenes/choose-name/envilatro.png" id="2_acpur"]
 [ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/choose-name/ButtonTheme.tres" id="4_bauhr"]
 [ext_resource type="Theme" uid="uid://bvyw4cobof6rs" path="res://scenes/choose-name/PlayerNamesContainerTheme.tres" id="4_dyw15"]

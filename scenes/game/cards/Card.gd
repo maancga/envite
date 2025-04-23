@@ -2,9 +2,9 @@ extends Node2D
 
 class_name Card
 
-const Suits = preload("res://cards/SuitEnum.gd")
-const Values = preload("res://cards/ValueEnum.gd")
-const pathResolver = preload("res://cards/CardSpritePathResolver.gd")
+const Suits = preload("res://game/cards/SuitEnum.gd")
+const Values = preload("res://game/cards/ValueEnum.gd")
+const pathResolver = preload("res://scenes/game/cards/CardSpritePathResolver.gd")
 
 signal clickedCard
 signal hovered
