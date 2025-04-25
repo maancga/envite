@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://cn176acx61ntw"]
+
+[ext_resource type="Texture2D" uid="uid://b1f5osi60bun" path="res://scenes/choose-name/madera_sin_bordes.png" id="1_jff1x"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y08ej"]
+texture = ExtResource("1_jff1x")
+region_rect = Rect2(232, 272, 1016, 488)
+modulate_color = Color(0.247059, 0.364706, 0.721569, 1)
+
+[resource]
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_y08ej")

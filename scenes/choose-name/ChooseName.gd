@@ -4,14 +4,23 @@ signal nameChosenSignal(name)
 signal startGameSignal()
 
 @onready var userNameInput = $CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameInput
-@onready var teamPlayerList= $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows
-@onready var startGameButton = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer2/StartGameButton
-@onready var triumphsRows = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock/PanelContainer6/TriumphsRows
+@onready var startGameButton = $CanvasLayer/Screen/PanelContainer/MarginContainer2/StartGameButton
+@onready var triumphsBlock = $CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock
+@onready var goldPanel = $CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/GoldPanel
+@onready var silverPanel = $CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/SilverPanel
+@onready var bronzePanel = $CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/BronzePanel
+@onready var otherTriumphPanel =$CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/OtherTriumphPanel
+@onready var team1Column = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersColumns/Team1Column
+@onready var team2Column = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersColumns/Team2Column
+
 var yourId = null
+var toDeleteTriumphsNodes = []
 
 func _ready():
 	cleanPlayersLists()
-	startGameButton.visible = false
+	configureTriumphs([])
+	addPlayerOwner("")
+
 
 func setId(newPlayerId: String):
 	yourId = newPlayerId
@@ -23,60 +32,91 @@ func updateList(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 		playersArray.append(player)
 	var team1Theme = preload("res://scenes/choose-name/PlayerNameLabelThemeTeam1.tres")
 	var team2Theme = preload("res://scenes/choose-name/PlayerNameLabelThemeTeam2.tres")
-	var firstPlayerContainer = PanelContainer.new()
-	firstPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
-	firstPlayerContainer.theme = team1Theme
-	var secondPlayerContainer = PanelContainer.new()
-	secondPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
-	secondPlayerContainer.theme = team2Theme
 	for player in playersArray:
 		var currentPlayer = newPlayers[player]
 		var playerName = currentPlayer["name"]
-		var playerNameLabel = Label.new()
-		playerNameLabel.text = playerName
-		playerNameLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		playerNameLabel.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		playerNameLabel.set_h_size_flags(Control.SIZE_EXPAND_FILL)
-		playerNameLabel.set_v_size_flags(Control.SIZE_EXPAND_FILL)
-		if (currentPlayer["id"] == team1Leader || currentPlayer["id"] == team2Leader): playerNameLabel.text += " (Líder)"
-		if (currentPlayer["id"] == newPlayerId): playerNameLabel.add_theme_color_override("font_color", "54ba5e")
+		var container = preload("res://scenes/choose-name/PlayerContainer.tscn").instantiate()
+		if (currentPlayer["id"] == newPlayerId): container.isYou()
 		if player in newTeam1:
-			var hbox = HBoxContainer.new()
-			teamPlayerList.add_child(hbox)
-			firstPlayerContainer.add_child(playerNameLabel)
-			hbox.add_child(firstPlayerContainer)
-			hbox.add_child(secondPlayerContainer)
+			container.theme = team1Theme			
+			team1Column.add_child(container)
+			container.changeName(playerName)
 		if player in newTeam2 :
-			secondPlayerContainer.add_child(playerNameLabel)
-			firstPlayerContainer = PanelContainer.new()
-			firstPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
-			firstPlayerContainer.theme = team1Theme
-			secondPlayerContainer = PanelContainer.new()
-			secondPlayerContainer.set_h_size_flags(Control.SIZE_EXPAND_FILL)
-			secondPlayerContainer.theme = team2Theme
+			container.theme = team2Theme			
+			team2Column.add_child(container)
+			container.changeName(playerName)
+		if (currentPlayer["id"] == team1Leader || currentPlayer["id"] == team2Leader): container.isLeader()
+		if (currentPlayer["id"] == newPlayerId): container.isYou()
+
 
 
 func configureTriumphs(triumphs: Array[Dictionary]):
 	cleanTriumphs()
-	for triumph in triumphs:
-		var panelContainer = CenterContainer.new()
-		var label = Label.new()
-		panelContainer.add_child(label)
-		triumphsRows.add_child(panelContainer)
-		label.text = CardData.new(triumph["value"], triumph["suit"]).getCardName()
-	var lastContainer = CenterContainer.new()
-	var lastLabel = Label.new()
-	lastContainer.add_child(lastLabel)
-	triumphsRows.add_child(lastContainer)
-	lastLabel.text = "La mala (2 de lo virado)"
+	if triumphs.size() == 0:
+		goldPanel.get_node("MarginContainer/Label").text = "La mala (2 de lo virado)"
+		goldPanel.visible = true
+		return
+	for triumph in triumphs.size():
+		match triumph:
+			0: 
+				goldPanel.get_node("MarginContainer/Label").text = CardData.new(triumphs[triumph]["value"], triumphs[triumph]["suit"]).getCardName()
+				goldPanel.visible = true
+				continue
+			1: 
+				silverPanel.get_node("MarginContainer/Label").text = CardData.new(triumphs[triumph]["value"], triumphs[triumph]["suit"]).getCardName()
+				silverPanel.visible = true
+				continue
+			2: 
+				bronzePanel.get_node("MarginContainer/Label").text = CardData.new(triumphs[triumph]["value"], triumphs[triumph]["suit"]).getCardName()
+				bronzePanel.visible = true
+				continue
+			_:
+				var container = PanelContainer.new()
+				container.theme = otherTriumphPanel.theme
+				var margin = getSettedMarginContainer( CardData.new(triumphs[triumph]["value"], triumphs[triumph]["suit"]).getCardName())
+				container.add_child(margin)
+				triumphsBlock.add_child(container)
+				toDeleteTriumphsNodes.push_back(container)
+				continue
+		var finalContainer = PanelContainer.new()
+		finalContainer.theme = otherTriumphPanel.theme
+		var finalMargin = getSettedMarginContainer("La mala (2 de lo virado)")
+		finalContainer.add_child(finalMargin)
+		triumphsBlock.add_child(finalContainer)
+		toDeleteTriumphsNodes.push_back(finalContainer)
+
+func getSettedMarginContainer(labelText: String):
+	var finalMargin = MarginContainer.new()
+	finalMargin.add_theme_constant_override("margin_left", 2)
+	finalMargin.add_theme_constant_override("margin_top", 2)
+	finalMargin.add_theme_constant_override("margin_right", 2)
+	finalMargin.add_theme_constant_override("margin_bottom", 2)
+
+	var finalLabel = Label.new()
+	finalLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	finalLabel.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	finalLabel.text = labelText
+	finalMargin.add_child(finalLabel)
+	return finalMargin
+
 	
 func cleanPlayersLists():
-	for child in teamPlayerList.get_children():
+	for child in team1Column.get_children():
+		child.queue_free()
+	for child in team2Column.get_children():
 		child.queue_free()
 		
 func cleanTriumphs():
-	for child in triumphsRows.get_children():
-		child.queue_free()
+	goldPanel.visible = false
+	silverPanel.visible = false
+	bronzePanel.visible = false
+	otherTriumphPanel.visible = false
+
+	for node in toDeleteTriumphsNodes:
+		toDeleteTriumphsNodes.erase(node)
+		node.queue_free()
+
+
 
 func _on_button_pressed() -> void:
 	startGameSignal.emit()
@@ -85,5 +125,6 @@ func _on_choose_a_name_ready_button_pressed() -> void:
 	emit_signal("nameChosenSignal", userNameInput.text)
 
 func addPlayerOwner(playerId: String):
-	if(yourId != playerId): startGameButton.visible = false
-	if(yourId == playerId): startGameButton.visible = true
+	if(yourId != playerId): startGameButton.disabled = true
+	if(yourId == playerId): startGameButton.disabled = false
+	#if (currentPlayer["id"] == team1Leader || currentPlayer["id"] == team2Leader): playerNameLabel.text += " (Líder)"

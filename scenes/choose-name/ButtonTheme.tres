@@ -1,5 +1,6 @@
-[gd_resource type="Theme" load_steps=9 format=4 uid="uid://8p0gerr82ggh"]
+[gd_resource type="Theme" load_steps=10 format=4 uid="uid://8p0gerr82ggh"]
 
+[ext_resource type="Texture2D" uid="uid://dhfjpr8i4q66q" path="res://scenes/choose-name/madera_de_plata.png" id="1_l5kgp"]
 [ext_resource type="Texture2D" uid="uid://b1f5osi60bun" path="res://scenes/choose-name/madera_sin_bordes.png" id="1_ngpd1"]
 
 [sub_resource type="Image" id="Image_l5kgp"]
@@ -984,17 +985,10 @@ cache/0/16/0/glyphs/268435475/size = Vector2(10, 14)
 cache/0/16/0/glyphs/268435475/uv_rect = Rect2(1, 165, 10, 14)
 cache/0/16/0/glyphs/268435475/texture_idx = 0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jwobq"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.1, 0.1, 0.1, 0.3)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kyblq"]
+texture = ExtResource("1_l5kgp")
+region_rect = Rect2(64, 240, 896, 536)
+modulate_color = Color(0.746223, 0.739645, 0.523358, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5guwu"]
 content_margin_left = 4.0
@@ -1055,7 +1049,7 @@ Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
 Button/font_sizes/font_size = 16
 Button/fonts/font = SubResource("FontFile_kyblq")
-Button/styles/disabled = SubResource("StyleBoxFlat_jwobq")
+Button/styles/disabled = SubResource("StyleBoxTexture_kyblq")
 Button/styles/focus = SubResource("StyleBoxFlat_5guwu")
 Button/styles/hover = SubResource("StyleBoxTexture_ngpd1")
 Button/styles/normal = SubResource("StyleBoxTexture_vjpgy")

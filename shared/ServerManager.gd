@@ -227,7 +227,9 @@ func onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(playerId):
 	rpc_id(int(playerId), "receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached")
 
 func onInformTriumphsConfiguration(triumphs: Array[Dictionary]):
-	print("Informing current triumphs configuration" % triumphs)
+	print("Informing current triumphs configuration")
+	for triumph in triumphs:
+		print(triumph)
 	rpc("receiveTriumphsConfiguration", triumphs)
 
 @rpc("any_peer")

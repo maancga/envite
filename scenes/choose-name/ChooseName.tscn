@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bww4ax6xs0wcd"]
+[gd_scene load_steps=13 format=3 uid="uid://bww4ax6xs0wcd"]
 
 [ext_resource type="Script" uid="uid://conejyoe5mf" path="res://scenes/choose-name/ChooseName.gd" id="1_msssm"]
 [ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://scenes/all-scenes-assets/mesa_fondo.png" id="1_nlomy"]
@@ -7,6 +7,11 @@
 [ext_resource type="Theme" uid="uid://bvyw4cobof6rs" path="res://scenes/choose-name/PlayerNamesContainerTheme.tres" id="4_dyw15"]
 [ext_resource type="Theme" uid="uid://cvmvdbnwechh" path="res://scenes/choose-name/PlayerNameLabelThemeTeam1.tres" id="4_kh8il"]
 [ext_resource type="Theme" uid="uid://i5lwgml05fi" path="res://scenes/choose-name/PlayerNameLabelThemeTeam2.tres" id="5_ieks8"]
+[ext_resource type="PackedScene" uid="uid://cio22kq7vvvf0" path="res://scenes/choose-name/PlayerContainer.tscn" id="7_td42p"]
+[ext_resource type="Theme" uid="uid://dgvj48fakhv6y" path="res://scenes/choose-name/TriumphLabelGoldTheme.tres" id="7_x1bkj"]
+[ext_resource type="Theme" uid="uid://8fbuo3ibvysv" path="res://scenes/choose-name/TriumphLabelSilverTheme.tres" id="8_td42p"]
+[ext_resource type="Theme" uid="uid://ixv868xkj6te" path="res://scenes/choose-name/TriumphLabelBronzeTheme.tres" id="9_2wdij"]
+[ext_resource type="Theme" uid="uid://cn176acx61ntw" path="res://scenes/choose-name/TriumphLabelDefaultTheme.tres" id="10_qingj"]
 
 [node name="ChooseName" type="Control"]
 layout_mode = 3
@@ -78,10 +83,13 @@ placeholder_text = "Player1"
 
 [node name="ChooseANameReadyButton" type="Button" parent="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.44
+theme = ExtResource("4_bauhr")
 text = "Listo"
 
 [node name="ConnectedPlayersBlock" type="PanelContainer" parent="CanvasLayer/Screen/VBoxContainer"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(300, 250)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -92,7 +100,7 @@ layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment"]
 layout_mode = 2
-theme_override_constants/margin_top = 20
+theme_override_constants/margin_top = 30
 
 [node name="Label" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment"]
 layout_mode = 2
@@ -122,199 +130,153 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Equipo2"
 
-[node name="PlayersRows" type="VBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment"]
+[node name="PlayersColumns" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment"]
 layout_mode = 2
 
-[node name="PlayersCols1" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
-layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols1"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("4_kh8il")
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols1/PanelContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador1"
-
-[node name="CenterContainer2" type="PanelContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols1"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("5_ieks8")
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols1/CenterContainer2"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador2"
-
-[node name="PlayersCols2" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
-layout_mode = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols2"]
+[node name="Team1Column" type="VBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersColumns"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols2/CenterContainer"]
+[node name="PlayerContainer2" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersColumns/Team1Column" instance=ExtResource("7_td42p")]
 layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador1"
 
-[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols2"]
+[node name="Team2Column" type="VBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersColumns"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols2/CenterContainer2"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador2"
-
-[node name="PlayersCols3" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
+[node name="PlayerContainer2" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersColumns/Team2Column" instance=ExtResource("7_td42p")]
 layout_mode = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols3"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols3/CenterContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador1"
-
-[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols3"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols3/CenterContainer2"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador2"
-
-[node name="PlayersCols4" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
-layout_mode = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols4"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols4/CenterContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador1"
-
-[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols4"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols4/CenterContainer2"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador2"
-
-[node name="PlayersCols5" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
-layout_mode = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols5"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols5/CenterContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador1"
-
-[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols5"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols5/CenterContainer2"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador2"
-
-[node name="PlayersCols6" type="HBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows"]
-layout_mode = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols6"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols6/CenterContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador1"
-
-[node name="CenterContainer2" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols6"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Equipo1" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersRows/PlayersCols6/CenterContainer2"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jugador2"
-
-[node name="Control" type="Control" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock"]
+[node name="PanelContainer" type="Control" parent="CanvasLayer/Screen"]
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control"]
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer"]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -186.0
-offset_right = 316.0
-offset_bottom = 186.0
-grow_vertical = 2
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -683.0
+offset_bottom = 385.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+mouse_filter = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3"]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_constants/margin_left = 150
-theme_override_constants/margin_top = 150
-theme_override_constants/margin_right = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 100
 
-[node name="TriumphsBlock" type="VBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer"]
+custom_minimum_size = Vector2(200, 250)
 layout_mode = 2
-theme_override_constants/separation = 0
+theme = ExtResource("4_dyw15")
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="TriumphsLabel" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock/PanelContainer/MarginContainer/CenterContainer"]
-layout_mode = 2
-text = "Listado de triunfos"
-
-[node name="PanelContainer6" type="PanelContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock"]
-layout_mode = 2
-
-[node name="TriumphsRows" type="VBoxContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock/PanelContainer6"]
-layout_mode = 2
-
-[node name="PanelContainer" type="CenterContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock/PanelContainer6/TriumphsRows"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer/TriumphsBlock/PanelContainer6/TriumphsRows/PanelContainer"]
-layout_mode = 2
-text = "La mala (2 de lo virado)"
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 20
 
-[node name="StartGameButton" type="Button" parent="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer2"]
-custom_minimum_size = Vector2(175, 0)
+[node name="TriumphsBlock" type="VBoxContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TriumphsLabel" type="Label" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock"]
+layout_mode = 2
+text = "Listado de triunfos"
+horizontal_alignment = 1
+
+[node name="GoldPanel" type="PanelContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock"]
+layout_mode = 2
+theme = ExtResource("7_x1bkj")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/GoldPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/GoldPanel/MarginContainer"]
+layout_mode = 2
+text = "3 de bastos"
+horizontal_alignment = 1
+
+[node name="SilverPanel" type="PanelContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock"]
+layout_mode = 2
+theme = ExtResource("8_td42p")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/SilverPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/SilverPanel/MarginContainer"]
+layout_mode = 2
+text = "11 de bastos"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BronzePanel" type="PanelContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock"]
+layout_mode = 2
+theme = ExtResource("9_2wdij")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/BronzePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/BronzePanel/MarginContainer"]
+layout_mode = 2
+text = "10 de oros"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OtherTriumphPanel" type="PanelContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock"]
+layout_mode = 2
+theme = ExtResource("10_qingj")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/OtherTriumphPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/OtherTriumphPanel/MarginContainer"]
+layout_mode = 2
+text = "La mala (2 de lo virado)"
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -483.0
+offset_top = -68.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="StartGameButton" type="Button" parent="CanvasLayer/Screen/PanelContainer/MarginContainer2"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
@@ -323,4 +285,4 @@ text = "Empezar
 partida"
 
 [connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameReadyButton" to="." method="_on_choose_a_name_ready_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/Control/VBoxContainer/MarginContainer2/StartGameButton" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Screen/PanelContainer/MarginContainer2/StartGameButton" to="." method="_on_button_pressed"]

@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://8fbuo3ibvysv"]
+
+[ext_resource type="Texture2D" uid="uid://dhfjpr8i4q66q" path="res://scenes/choose-name/madera_de_plata.png" id="1_n4kig"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y08ej"]
+texture = ExtResource("1_n4kig")
+region_rect = Rect2(96, 288, 824, 440)
+
+[resource]
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_y08ej")

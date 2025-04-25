@@ -13,6 +13,9 @@ config_version=5
 config/name="envite"
 run/main_scene="uid://b75metx5vn0ix"
 config/features=PackedStringArray("4.4", "Mobile")
+config/icon="uid://darjyvxtq2y8b"
+config/macos_native_icon="uid://darjyvxtq2y8b"
+config/windows_native_icon="uid://darjyvxtq2y8b"
 
 [display]
 
@@ -30,3 +33,4 @@ enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

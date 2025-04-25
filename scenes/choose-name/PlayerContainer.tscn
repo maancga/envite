@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://cio22kq7vvvf0"]
+
+[ext_resource type="Theme" uid="uid://c5y7v6opattap" path="res://scenes/choose-name/PlayerNameLeaderTheme.tres" id="1_lfpai"]
+[ext_resource type="Theme" uid="uid://cvmvdbnwechh" path="res://scenes/choose-name/PlayerNameLabelThemeTeam1.tres" id="1_xekcp"]
+[ext_resource type="Script" uid="uid://cq15o0vp4rr4" path="res://scenes/choose-name/PlayerContainer.gd" id="2_sdffx"]
+
+[node name="PlayerContainer" type="PanelContainer"]
+offset_right = 105.0
+offset_bottom = 23.0
+size_flags_horizontal = 3
+theme = ExtResource("1_xekcp")
+script = ExtResource("2_sdffx")
+
+[node name="Layout" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PlayerLabel" type="Label" parent="Layout"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_stretch_ratio = 3.9
+text = "Equipo1"
+
+[node name="LeaderIcon" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_lfpai")
