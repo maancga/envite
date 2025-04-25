@@ -15,6 +15,7 @@ signal startGameSignal()
 
 var yourId = null
 var toDeleteTriumphsNodes = []
+var ownerId: String = ""
 
 func _ready():
 	cleanPlayersLists()
@@ -47,6 +48,7 @@ func updateList(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 			container.changeName(playerName)
 		if (currentPlayer["id"] == team1Leader || currentPlayer["id"] == team2Leader): container.isLeader()
 		if (currentPlayer["id"] == newPlayerId): container.isYou()
+		if (ownerId == player): container.isGameOwner()
 
 
 
@@ -125,6 +127,10 @@ func _on_choose_a_name_ready_button_pressed() -> void:
 	emit_signal("nameChosenSignal", userNameInput.text)
 
 func addPlayerOwner(playerId: String):
-	if(yourId != playerId): startGameButton.disabled = true
-	if(yourId == playerId): startGameButton.disabled = false
-	#if (currentPlayer["id"] == team1Leader || currentPlayer["id"] == team2Leader): playerNameLabel.text += " (Líder)"
+	ownerId = playerId
+	showStartGameButton()
+
+func showStartGameButton():
+	if(yourId != ownerId): startGameButton.disabled = true
+	if(yourId == ownerId): 
+		startGameButton.disabled = false

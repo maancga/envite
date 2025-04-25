@@ -184,7 +184,7 @@ theme = ExtResource("4_dyw15")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_top = 20
+theme_override_constants/margin_top = 30
 
 [node name="TriumphsBlock" type="VBoxContainer" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer"]
 layout_mode = 2

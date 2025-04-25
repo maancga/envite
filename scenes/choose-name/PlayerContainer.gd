@@ -17,4 +17,4 @@ func changeName(newName: String):
 	$Layout/PlayerLabel.text = newName
 
 func isGameOwner():
-	print("a")
+	$Layout/PlayerLabel.text = $Layout/PlayerLabel.text + " (Líder)"
