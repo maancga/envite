@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dq53t8hff17ib" path="res://scenes/testing/adding_card_testing.gd" id="1_mablf"]
 [ext_resource type="PackedScene" uid="uid://ct8jgbl27xwgu" path="res://scenes/game/drop-zone/DropZone.tscn" id="3_l3i4x"]
-[ext_resource type="PackedScene" uid="uid://bqmsuon32f8x" path="res://scenes/game/hands/NewMyHand.tscn" id="3_mablf"]
+[ext_resource type="PackedScene" uid="uid://bqmsuon32f8x" path="res://scenes/game/hands/MyHand.tscn" id="3_mablf"]
 
 [node name="Adding-card-testing" type="Node2D"]
 script = ExtResource("1_mablf")

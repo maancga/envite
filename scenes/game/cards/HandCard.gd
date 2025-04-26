@@ -116,6 +116,7 @@ func onMouseEnteredArea() -> void:
 	startHover()
 
 func startHover():
+	$HoverSoundStreamPlayer.play()
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.2)
 	z_index = 1000
@@ -134,3 +135,7 @@ func resetHover() -> void:
 func hideCard() -> void:
 	isHiden = true
 	cardImage.visible = false
+	
+func getCardName():
+	return  ValueEnum.VALUES_TRANSLATIONS[value] + " de " + str(SuitEnum.SUIT_NAMES[suit])
+	

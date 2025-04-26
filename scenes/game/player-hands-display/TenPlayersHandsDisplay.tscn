@@ -1,31 +1,26 @@
 [gd_scene load_steps=10 format=3 uid="uid://dfhft8mpham3a"]
 
 [ext_resource type="Script" uid="uid://bn0g1a20xt8lb" path="res://scenes/game/player-hands-display/HandDisplaysScript.gd" id="1_jpd7c"]
-[ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://scenes/game/UIPlayedCards.tscn" id="2_pxivf"]
 [ext_resource type="PackedScene" uid="uid://btlubd0wqixut" path="res://scenes/game/PlayerNameDisplay.tscn" id="3_objat"]
-[ext_resource type="PackedScene" uid="uid://q46ll40fyx0n" path="res://scenes/game/hands/MyHand.tscn" id="4_phmdx"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://scenes/game/hands/UnknownHand.tscn" id="5_wg3y3"]
 [ext_resource type="PackedScene" uid="uid://50537fdo6u8y" path="res://scenes/game/VidoElectionScene.tscn" id="6_objat"]
 [ext_resource type="PackedScene" uid="uid://bbhlsdn0e05ya" path="res://scenes/game/PlayingButtonsDisplay.tscn" id="7_phmdx"]
+[ext_resource type="PackedScene" uid="uid://bqmsuon32f8x" path="res://scenes/game/hands/MyHand.tscn" id="8_bqboj"]
 [ext_resource type="PackedScene" uid="uid://db1v5r22fkqey" path="res://scenes/game/TeamScoreLabels.tscn" id="8_wg3y3"]
 [ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://scenes/game/cards/Virado.tscn" id="9_g7b0u"]
+[ext_resource type="PackedScene" uid="uid://ct8jgbl27xwgu" path="res://scenes/game/drop-zone/DropZone.tscn" id="9_iqtvd"]
 
-[node name="TwelvePlayersHandsDisplay" type="Node2D"]
+[node name="TenPlayersHandsDisplay" type="Node2D"]
 script = ExtResource("1_jpd7c")
 playerNamesNodePaths = [NodePath("MyName"), NodePath("Player2Name"), NodePath("Player3Name"), NodePath("Player4Name"), NodePath("Player5Name"), NodePath("Player6Name"), NodePath("Player7Name"), NodePath("Player8Name"), NodePath("Player9Name"), NodePath("Player10Name")]
 playerHandsNodePaths = [NodePath("MyHand"), NodePath("Player2Hand"), NodePath("Player3Hand"), NodePath("Player4Hand"), NodePath("Player5Hand"), NodePath("Player6Hand"), NodePath("Player7Hand"), NodePath("Player8Hand"), NodePath("Player9Hand"), NodePath("Player10Hand")]
 
-[node name="PlayedCards" parent="." instance=ExtResource("2_pxivf")]
-position = Vector2(264, 169)
-scale = Vector2(0.7, 0.7)
+[node name="MyHand" parent="." instance=ExtResource("8_bqboj")]
+position = Vector2(413, 477)
 
 [node name="MyName" parent="." instance=ExtResource("3_objat")]
 position = Vector2(530, 421)
 scale = Vector2(0.6, 0.6)
-
-[node name="MyHand" parent="." instance=ExtResource("4_phmdx")]
-position = Vector2(405, 479)
-rotation = 0.0041769
 
 [node name="Player2Hand" parent="." instance=ExtResource("5_wg3y3")]
 position = Vector2(1100, 444)
@@ -113,7 +108,7 @@ position = Vector2(812.8, 504.2)
 scale = Vector2(0.6, 0.6)
 
 [node name="PlayingButtonsDisplay" parent="." instance=ExtResource("7_phmdx")]
-position = Vector2(768.4, 534.2)
+position = Vector2(815, 532)
 scale = Vector2(0.6, 0.6)
 
 [node name="TeamScore" parent="." instance=ExtResource("8_wg3y3")]
@@ -122,3 +117,7 @@ position = Vector2(-54, -18)
 [node name="Virado" parent="." instance=ExtResource("9_g7b0u")]
 position = Vector2(-477, 287)
 scale = Vector2(1.3, 1.3)
+
+[node name="DropZone" parent="." instance=ExtResource("9_iqtvd")]
+position = Vector2(256, 161)
+scale = Vector2(0.7, 0.7)

@@ -2,7 +2,7 @@ extends Node2D
 
 class_name HandDisplaysScript
 
-@onready var myHand: NewMyHand = $MyHand
+@onready var myHand: MyHand = $MyHand
 @onready var dropZone: DropZone = $DropZone
 @export var playerNamesNodePaths = []
 @export var playerHandsNodePaths = []

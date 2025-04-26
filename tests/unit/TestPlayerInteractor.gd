@@ -137,3 +137,36 @@ func cannotRaiseVidoBecauseThereIsNoVidoCalled(_player: String):
 
 func informPlayerCalledVido(_playerId: String):
 	pass
+
+func informPlayerAdded(_players: Dictionary):
+	pass
+
+func informTriumphsConfiguration(_triumph: TriumphHierarchy):
+	pass
+
+func informPlayerCantBeAddedSinceMaxIsReached():
+	pass
+
+func informGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(_playerId: String):
+	pass
+
+func informGameCanNotStartSinceItsNotOwner(_player: String):
+	pass
+
+func informIsGameOwner(_playerId: String):
+	pass
+
+func informPlayerCouldNotPlayCardBecauseItsPlayedAlready(_player: String)-> void:
+	pass
+
+func informCanNotRaiseVidoMoreThanGame(_player: String) -> void:
+	pass
+
+func informPlayerFromSameTeamCanNotTakeDecision(_player: String):
+	pass
+
+func informVidoCanOnlyBeCalledOnYourTurn(_playerId: String):
+	pass
+
+func informOnlyLeaderCanTakeThisDecision(_player: String):
+	pass

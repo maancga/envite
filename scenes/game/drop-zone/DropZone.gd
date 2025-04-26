@@ -11,6 +11,7 @@ func addCard(namePlayer: String, newValue: ValueEnum.Value, givenSuit: SuitEnum.
 	var card = preload("res://scenes/game/drop-zone/DropZoneCard.tscn").instantiate()
 	cardsContainer.add_child(card)
 	card.setCardData(namePlayer, newValue, givenSuit)
+	$PlaySoundStreamPlayer.play()
 
 func cleanPlayedCards():
 	for card in cardsContainer.get_children():

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://50537fdo6u8y"]
 
 [ext_resource type="Script" uid="uid://b1f8v2ldpmld7" path="res://scenes/game/VidoElectionScene.gd" id="1_yyl68"]
-[ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/choose-name/ButtonTheme.tres" id="2_c0fre"]
+[ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/all-scenes-assets/ButtonTheme.tres" id="2_c0fre"]
 
 [node name="VidoElectionScene" type="Node2D"]
 script = ExtResource("1_yyl68")
