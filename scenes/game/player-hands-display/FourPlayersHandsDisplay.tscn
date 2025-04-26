@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://q46ll40fyx0n" path="res://scenes/game/hands/MyHand.tscn" id="1_cbxej"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://scenes/game/hands/UnknownHand.tscn" id="2_eh0v3"]
 [ext_resource type="PackedScene" uid="uid://btlubd0wqixut" path="res://scenes/game/PlayerNameDisplay.tscn" id="4_1pkko"]
-[ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://scenes/all-scenes-assets/UIPlayedCards.tscn" id="4_21lry"]
+[ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://scenes/game/UIPlayedCards.tscn" id="4_21lry"]
 [ext_resource type="PackedScene" uid="uid://50537fdo6u8y" path="res://scenes/game/VidoElectionScene.tscn" id="5_4vy2f"]
 [ext_resource type="PackedScene" uid="uid://bbhlsdn0e05ya" path="res://scenes/game/PlayingButtonsDisplay.tscn" id="6_lsqbr"]
 [ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://scenes/game/cards/Virado.tscn" id="8_jdnlm"]
@@ -19,9 +19,10 @@ playerHandsNodePaths = [NodePath("MyHand"), NodePath("Player2Hand"), NodePath("P
 position = Vector2(530, 421)
 scale = Vector2(0.6, 0.6)
 
-[node name="MyHand" parent="." instance=ExtResource("1_cbxej")]
+[node name="MyHand" parent="." node_paths=PackedStringArray("playedCards") instance=ExtResource("1_cbxej")]
 position = Vector2(405, 479)
 rotation = 0.0041769
+playedCards = NodePath("../PlayedCards")
 
 [node name="Player2Hand" parent="." instance=ExtResource("2_eh0v3")]
 position = Vector2(1097, 426)

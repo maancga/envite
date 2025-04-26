@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://dfhft8mpham3a"]
 
 [ext_resource type="Script" uid="uid://bn0g1a20xt8lb" path="res://scenes/game/player-hands-display/HandDisplaysScript.gd" id="1_jpd7c"]
-[ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://scenes/all-scenes-assets/UIPlayedCards.tscn" id="2_pxivf"]
+[ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://scenes/game/UIPlayedCards.tscn" id="2_pxivf"]
 [ext_resource type="PackedScene" uid="uid://btlubd0wqixut" path="res://scenes/game/PlayerNameDisplay.tscn" id="3_objat"]
 [ext_resource type="PackedScene" uid="uid://q46ll40fyx0n" path="res://scenes/game/hands/MyHand.tscn" id="4_phmdx"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://scenes/game/hands/UnknownHand.tscn" id="5_wg3y3"]

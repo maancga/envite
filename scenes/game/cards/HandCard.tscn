@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bui7ryfyqlk3x"]
+
+[ext_resource type="Script" uid="uid://cwop6mfw0054t" path="res://scenes/game/cards/HandCard.gd" id="1_kek0h"]
+[ext_resource type="PackedScene" uid="uid://b21l3cgdm8qek" path="res://scenes/game/CardImage.tscn" id="2_6icrp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ivkx2"]
+size = Vector2(116, 177)
+
+[node name="HandCard" type="Node2D"]
+script = ExtResource("1_kek0h")
+
+[node name="CardImage" parent="." instance=ExtResource("2_6icrp")]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_ivkx2")
+
+[connection signal="input_event" from="Area2D" to="." method="_onArea2DInputEvent"]
+[connection signal="mouse_entered" from="Area2D" to="." method="onMouseEnteredArea"]
+[connection signal="mouse_exited" from="Area2D" to="." method="onMouseExitedArea"]

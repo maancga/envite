@@ -1,0 +1,12 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqmsuon32f8x"]
+
+[ext_resource type="Script" uid="uid://bmkkml04mth45" path="res://scenes/game/hands/NewMyHand.gd" id="1_7m8qe"]
+[ext_resource type="Curve" uid="uid://dvah2nj4xfhol" path="res://scenes/game/hands/curves/MyHandSpacingCurve.tres" id="2_uimjy"]
+[ext_resource type="Curve" uid="uid://b1ac0pvn2gaqc" path="res://scenes/game/hands/curves/MyHandRotationCurve.tres" id="3_vva4e"]
+[ext_resource type="Curve" uid="uid://ddsp7ivdlps6f" path="res://scenes/game/hands/curves/MyHandHeightCurve.tres" id="4_bdqq0"]
+
+[node name="NewMyHand" type="Node2D"]
+script = ExtResource("1_7m8qe")
+spacingCurve = ExtResource("2_uimjy")
+rotationCurve = ExtResource("3_vva4e")
+heightCurve = ExtResource("4_bdqq0")

@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://q46ll40fyx0n" path="res://scenes/game/hands/MyHand.tscn" id="3_upqhr"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://scenes/game/hands/UnknownHand.tscn" id="4_2i7ir"]
 [ext_resource type="PackedScene" uid="uid://bbhlsdn0e05ya" path="res://scenes/game/PlayingButtonsDisplay.tscn" id="4_y4q5x"]
-[ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://scenes/all-scenes-assets/UIPlayedCards.tscn" id="7_nulyl"]
+[ext_resource type="PackedScene" uid="uid://dsrixwxbv0a6c" path="res://scenes/game/UIPlayedCards.tscn" id="7_nulyl"]
 [ext_resource type="PackedScene" uid="uid://db1v5r22fkqey" path="res://scenes/game/TeamScoreLabels.tscn" id="8_y4q5x"]
 [ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://scenes/game/cards/Virado.tscn" id="9_upqhr"]
 

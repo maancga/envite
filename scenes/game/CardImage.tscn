@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b21l3cgdm8qek"]
+
+[ext_resource type="Script" uid="uid://rjf07auvbwy0" path="res://scenes/game/CardImage.gd" id="1_h4gv5"]
+
+[node name="CardImage" type="Sprite2D"]
+region_rect = Rect2(351, 38, 115, 177)
+script = ExtResource("1_h4gv5")

@@ -40,6 +40,7 @@ func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 	playersDisplay.connect("playedCard", onPlayedCard)
 
 
+
 func setPlayerTurn(newPlayerId: String):
 	playersDisplay.setTurnTo(newPlayerId)
 

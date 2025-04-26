@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnd2lirxxquor"]
+
+[ext_resource type="Script" uid="uid://b32j7hjun1el2" path="res://scenes/game/drop-zone/DropZoneCard.gd" id="1_15r0n"]
+[ext_resource type="Texture2D" uid="uid://ppclvfosioyp" path="res://scenes/game/cards/images/cards/card_bastos_0.png" id="1_qkiq6"]
+
+[node name="DropZoneCard" type="Control"]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_15r0n")
+
+[node name="Overlay" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerName" type="Label" parent="Overlay"]
+layout_mode = 2
+text = "Player1"
+horizontal_alignment = 1
+
+[node name="Image" type="TextureRect" parent="Overlay"]
+layout_mode = 2
+texture = ExtResource("1_qkiq6")

@@ -1,5 +1,7 @@
 extends Node
 
+class_name CardSpritePathResolver
+
 const SUITS_TO_PATH = {
 	SuitEnum.Suit.OROS: "oro",
 	SuitEnum.Suit.COPAS: "copas",

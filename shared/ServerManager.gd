@@ -22,7 +22,7 @@ signal receiveTeamWonChicoPointsSignal(teamName, chicoPoints)
 signal receiveTeamWonChicoSignal(teamName, chicos)
 signal receiveTeamWonSignal(teamName)
 signal informGotDealerSignal(dealer)
-signal receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal(playerId)
+signal receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal()
 signal receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal(playerId)
 signal receivePlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal(playerId)
 signal receivePlayerCalledVidoSignal(playerId)
@@ -355,8 +355,8 @@ func receiveDealer(dealer: String):
 	informGotDealerSignal.emit(dealer)
 
 @rpc("authority")
-func receivePlayerCouldNotPlayCardBecauseItsNotTurn(player: String):
-	receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal.emit(player)
+func receivePlayerCouldNotPlayCardBecauseItsNotTurn():
+	receivePlayerCouldNotPlayCardBecauseItsNotTurnSignal.emit()
 
 @rpc("authority")
 func receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand(player: String):

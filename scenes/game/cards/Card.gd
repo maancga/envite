@@ -13,6 +13,7 @@ signal hoveredOff
 @export var suit : Suits.Suit
 @export var value : Values.Value
 @onready var card_image: Sprite2D = $CardImage
+var cardOverDropArea: bool
 
 func setPosition(newPosition: Vector2):
 	position = newPosition
@@ -24,6 +25,11 @@ func setCardData(newValue: Values.Value, givenSuit: Suits.Suit):
 	suit = givenSuit
 	value = newValue
 	update_texture()
+	
+# func _process(_delta: float) -> void:
+	#if card_being_dragged:
+		#var mouse_pos = get_global_mouse_position()
+	#	card_being_dragged.global_position = mouse_pos
 
 func update_texture():
 	var path = pathResolver.new().resolve(suit, value)
@@ -44,6 +50,16 @@ func getSuitName():
 func _on_area_2d_mouse_entered() -> void:
 	hovered.emit(self)
 
-
 func _on_area_2d_mouse_exited() -> void:
 	hoveredOff.emit(self)
+	
+func cardIsOverDropArea():
+	cardOverDropArea = true
+	
+func cardNotOverDropArea():
+	cardOverDropArea = false
+	
+func isCardOverDropArea():
+	return cardOverDropArea
+
+	

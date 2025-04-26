@@ -36,6 +36,7 @@ func _ready() -> void:
 	vidoElectionScene.connect("raisedButtonPressedSignal", onVidoRaised)
 	playingButtonsDisplay.connect("callVidoButtonPressedSignal", onVidoCalledButtonPressed)
 	playingButtonsDisplay.connect("playCardButtonPressedSignal", onPlayCardButtonPressed)
+	myHand.connect("playedCardSignal", onPlayCardFromDrag)
 	connectClickedCards()
 
 func loadNodes(nodePaths: Array) -> Array:
@@ -135,6 +136,9 @@ func onPlayCardButtonPressed() -> void:
 	if !selectedCard: return
 	playCardButtonPressed()
 	selectedCard = null
+
+func onPlayCardFromDrag(cardIndex: String):
+	playedCard.emit(cardIndex)
 
 func onVidoCalledButtonPressed() -> void:
 	vidoCalledSignal.emit()

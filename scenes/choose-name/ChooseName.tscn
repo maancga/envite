@@ -259,6 +259,7 @@ theme_override_constants/margin_bottom = 2
 [node name="Label" type="Label" parent="CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/OtherTriumphPanel/MarginContainer"]
 layout_mode = 2
 text = "La mala (2 de lo virado)"
+horizontal_alignment = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Screen/PanelContainer"]
 layout_mode = 1

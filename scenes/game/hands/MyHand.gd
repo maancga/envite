@@ -4,6 +4,7 @@ class_name MyHand
 
 var card_being_dragged
 var initial_card_position
+var initial_card_z_index = 0
 
 @export var card1: Card
 @export var card2: Card
@@ -11,6 +12,8 @@ var initial_card_position
 @export var spacingCurve: Curve
 @export var rotationCurve: Curve
 @export var heightCurve: Curve
+@export var playedCards: UIPlayedCards
+signal playedCardSignal(cardIndex)
 
 func _ready() -> void:
 	card1.update_texture()
@@ -75,9 +78,18 @@ func _input(event):
 			if card && isHandCard(card):
 				initial_card_position = card.global_position
 				card_being_dragged = card
+				initial_card_z_index = card.z_index
+				card.z_index = 100
 		else:
 			if card_being_dragged:
+				if card_being_dragged.isCardOverDropArea(): 
+					card_being_dragged.cardNotOverDropArea()
+					if card_being_dragged == card1: playedCardSignal.emit("1")
+					if card_being_dragged == card2: playedCardSignal.emit("2")
+					if card_being_dragged == card3: playedCardSignal.emit("3")
 				card_being_dragged.global_position = initial_card_position
+				card_being_dragged.z_index = initial_card_z_index
+				initial_card_z_index = 0
 				card_being_dragged = null
 
 func isHandCard(card: Node) -> bool:
