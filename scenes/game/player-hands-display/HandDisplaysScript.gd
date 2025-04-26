@@ -2,8 +2,8 @@ extends Node2D
 
 class_name HandDisplaysScript
 
-@onready var myHand: MyHand = $MyHand
-@onready var playedCards: UIPlayedCards = $PlayedCards
+@onready var myHand: NewMyHand = $MyHand
+@onready var dropZone: DropZone = $DropZone
 @export var playerNamesNodePaths = []
 @export var playerHandsNodePaths = []
 @onready var playerNames: Array = loadNodes(playerNamesNodePaths)
@@ -16,14 +16,13 @@ signal vidoCalledSignal()
 signal vidoAcceptedSignal()
 signal vidoRejectedSignal()
 signal vidoRaisedSignal()
-signal playedCard(card)
+signal droppedCardSignal(card: String)
 
 
 var currentPlayerTurnId: String
 var players : Dictionary
 var yourId: String
 var playersArray: Array[String]
-var selectedCard: Card = null
 var team1Leader: String
 var team2Leader: String
 var team1: Array[String]
@@ -35,9 +34,7 @@ func _ready() -> void:
 	vidoElectionScene.connect("acceptButtonPressedSignal", onVidoAccepted)
 	vidoElectionScene.connect("raisedButtonPressedSignal", onVidoRaised)
 	playingButtonsDisplay.connect("callVidoButtonPressedSignal", onVidoCalledButtonPressed)
-	playingButtonsDisplay.connect("playCardButtonPressedSignal", onPlayCardButtonPressed)
-	myHand.connect("playedCardSignal", onPlayCardFromDrag)
-	connectClickedCards()
+	dropZone.connect("cardDroppedSignal", onCardDroppedSignal)
 
 func loadNodes(nodePaths: Array) -> Array:
 		var nodes := []
@@ -55,14 +52,7 @@ func setVirado(card: CardData):
 func setTeamLabels():
 	if(isTeam1(yourId)): teamScore.highlightTeam1Row()
 	if(isTeam2(yourId)): teamScore.highlightTeam2Row()
-	
-func connectClickedCards() -> void:
-	myHand.card1.clickedCard.connect(onCardClicked)
-	myHand.card2.clickedCard.connect(onCardClicked)
-	myHand.card3.clickedCard.connect(onCardClicked)
 
-func onCardClicked(clickedCard: Card):
-	selectedCard = clickedCard
 
 func setHands(card1: CardData, card2: CardData, card3: CardData):
 	myHand.setInitialCards(card1, card2, card3)
@@ -102,7 +92,7 @@ func paintCurrentTurn():
 		if (currentPlayerTurnId == currentPlayer["id"]): playerNames[distance].isPlayerTurn()
 		else: playerNames[distance].isNotPlayerTurn()
 
-func playCard(playerId: String, index: int):
+func updateHandPlayedCard(playerId: String, index: int):
 	var distance = RelativeHandsDistance.new(playersArray, yourId).calculateDistance(playerId)
 	var chosenHand = playerHands[distance]
 
@@ -119,26 +109,14 @@ func resetOtherPlayersCards():
 
 	
 func addPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
-	playedCards.addCard(players[player]["name"], card["value"], card["suit"])
-	playCard(player, cardHandIndex)
+	dropZone.addCard(players[player]["name"], card["value"], card["suit"])
+	updateHandPlayedCard(player, cardHandIndex)
 
 func cleanPlayedCards():
-	playedCards.cleanPlayedCards()
-	playedCards.setAmountOfPlayers(playersArray.size())
+	dropZone.cleanPlayedCards()
 
-func playCardButtonPressed():
-	if selectedCard == myHand.card1: playedCard.emit("1")
-	if selectedCard == myHand.card2: playedCard.emit("2")
-	if selectedCard == myHand.card3: playedCard.emit("3")
-
-
-func onPlayCardButtonPressed() -> void:
-	if !selectedCard: return
-	playCardButtonPressed()
-	selectedCard = null
-
-func onPlayCardFromDrag(cardIndex: String):
-	playedCard.emit(cardIndex)
+func onCardDroppedSignal(cardIndex: String):
+	droppedCardSignal.emit(cardIndex)
 
 func onVidoCalledButtonPressed() -> void:
 	vidoCalledSignal.emit()

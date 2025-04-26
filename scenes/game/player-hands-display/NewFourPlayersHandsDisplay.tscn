@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://b7pmui61dk7kj"]
+
+[ext_resource type="Script" uid="uid://bn0g1a20xt8lb" path="res://scenes/game/player-hands-display/HandDisplaysScript.gd" id="1_2lm82"]
+[ext_resource type="PackedScene" uid="uid://btlubd0wqixut" path="res://scenes/game/PlayerNameDisplay.tscn" id="2_oitmq"]
+[ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://scenes/game/hands/UnknownHand.tscn" id="4_ddp7m"]
+[ext_resource type="PackedScene" uid="uid://50537fdo6u8y" path="res://scenes/game/VidoElectionScene.tscn" id="5_th3e3"]
+[ext_resource type="PackedScene" uid="uid://bbhlsdn0e05ya" path="res://scenes/game/PlayingButtonsDisplay.tscn" id="6_psql4"]
+[ext_resource type="PackedScene" uid="uid://ct8jgbl27xwgu" path="res://scenes/game/drop-zone/DropZone.tscn" id="8_2lm82"]
+[ext_resource type="PackedScene" uid="uid://db1v5r22fkqey" path="res://scenes/game/TeamScoreLabels.tscn" id="8_3l8d0"]
+[ext_resource type="PackedScene" uid="uid://bqmsuon32f8x" path="res://scenes/game/hands/NewMyHand.tscn" id="9_oitmq"]
+[ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://scenes/game/cards/Virado.tscn" id="9_w10yt"]
+
+[node name="FourPlayersHandsDisplay" type="Node2D"]
+script = ExtResource("1_2lm82")
+playerNamesNodePaths = [NodePath("MyName"), NodePath("Player2Name"), NodePath("Player3Name"), NodePath("Player4Name")]
+playerHandsNodePaths = [NodePath("MyHand"), NodePath("Player2Hand"), NodePath("Player3Hand"), NodePath("Player4Hand")]
+
+[node name="MyName" parent="." instance=ExtResource("2_oitmq")]
+position = Vector2(530, 421)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player2Hand" parent="." instance=ExtResource("4_ddp7m")]
+position = Vector2(1097, 426)
+rotation = -1.61618
+scale = Vector2(0.73, 0.73)
+
+[node name="Player2Name" parent="." instance=ExtResource("2_oitmq")]
+position = Vector2(971, 268)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player3Name" parent="." instance=ExtResource("2_oitmq")]
+position = Vector2(516, 96)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player3Hand" parent="." instance=ExtResource("4_ddp7m")]
+position = Vector2(696, 63)
+rotation = 3.14159
+scale = Vector2(0.73, 0.73)
+
+[node name="Player4Name" parent="." instance=ExtResource("2_oitmq")]
+position = Vector2(101, 287)
+scale = Vector2(0.6, 0.6)
+
+[node name="Player4Hand" parent="." instance=ExtResource("4_ddp7m")]
+position = Vector2(75, 185)
+rotation = 1.55551
+scale = Vector2(0.73, 0.73)
+
+[node name="VidoElectionScene" parent="." instance=ExtResource("5_th3e3")]
+position = Vector2(863, 462)
+
+[node name="PlayingButtonsDisplay" parent="." instance=ExtResource("6_psql4")]
+position = Vector2(859, 510)
+
+[node name="TeamScore" parent="." instance=ExtResource("8_3l8d0")]
+position = Vector2(-54, -18)
+
+[node name="Virado" parent="." instance=ExtResource("9_w10yt")]
+position = Vector2(-477, 287)
+scale = Vector2(1.3, 1.3)
+
+[node name="DropZone" parent="." instance=ExtResource("8_2lm82")]
+position = Vector2(256, 161)
+scale = Vector2(0.7, 0.7)
+
+[node name="MyHand" parent="." instance=ExtResource("9_oitmq")]
+position = Vector2(413, 477)

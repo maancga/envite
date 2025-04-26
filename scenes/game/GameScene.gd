@@ -37,7 +37,7 @@ func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 	playersDisplay.connect("vidoAcceptedSignal", onVidoAccepted)
 	playersDisplay.connect("vidoRejectedSignal", onVidoRejected)
 	playersDisplay.connect("vidoRaisedSignal", onVidoRaised)
-	playersDisplay.connect("playedCard", onPlayedCard)
+	playersDisplay.connect("droppedCardSignal", onDroppedCard)
 
 
 
@@ -78,15 +78,12 @@ func rejectedVido(rejecterPlayer: String):
 
 func raisedVidoTo7Piedras(vidoPlayerId: String):
 	playersDisplay.raisedVidoTo7Piedras(vidoPlayerId)
-	
 
 func raisedVidoTo9Piedras(vidoPlayerId: String):
 	playersDisplay.raisedVidoTo9Piedras(vidoPlayerId)
 
-
 func raisedVidoToChico(vidoPlayerId: String):
 	playersDisplay.raisedVidoToChico(vidoPlayerId)
-
 
 func raisedVidoToGame(vidoPlayerId: String):
 	playersDisplay.raisedVidoToGame(vidoPlayerId)
@@ -100,7 +97,7 @@ func onVidoRejected():
 func onVidoRaised():
 	vidoRaisedSignal.emit()
 
-func onPlayedCard(cardIndex: String):
+func onDroppedCard(cardIndex: String):
 	playedCardSignal.emit(cardIndex)
 
 func refusedVido(vidoPlayerId: String):

@@ -1,11 +1,26 @@
 extends Node2D
 
 class_name NewMyHand
+const HandCardScene = preload("res://scenes/game/cards/HandCard.tscn")
 
 @export var spacingCurve: Curve
 @export var rotationCurve: Curve
 @export var heightCurve: Curve
 var cards: Array[HandCard]
+
+func setInitialCards(card1: CardData, card2: CardData, card3: CardData):
+	var firstHandCard = HandCardScene.instantiate()
+	addCard(firstHandCard)
+	firstHandCard.setCardData(card1.value, card1.suit)
+	firstHandCard.setHandIndex("1")
+	var secondHandCard = HandCardScene.instantiate()
+	addCard(secondHandCard)
+	secondHandCard.setCardData(card2.value, card2.suit)
+	secondHandCard.setHandIndex("2")	
+	var thirdHandCard = HandCardScene.instantiate()
+	addCard(thirdHandCard)
+	thirdHandCard.setCardData(card3.value, card3.suit)
+	thirdHandCard.setHandIndex("3")
 
 func addCard(card: HandCard):
 	cards.push_front(card)
@@ -13,19 +28,27 @@ func addCard(card: HandCard):
 	movePositions()
 	
 func eraseCard(card: HandCard):
-	cards.erase(card)
-	self.remove_child(card)
+	card.hideCard()
 	movePositions()
 	
+func playFirstCard():
+	eraseCard(cards[0])
+
+func playSecondCard():
+	eraseCard(cards[1])
+
+func playThirdCard():
+	eraseCard(cards[2])
+
 func movePositions():
-	var showingCards = cards.filter(func(card): return card.cardImage.texture != null)
+	var showingCards = cards.filter(func(card): return !card.isHiden)
 
 	for card in showingCards:
 		var index = showingCards.find(card) + 1
 		var elementInDistribution: float = (float(index) / (showingCards.size() + 1))
 		var spacingResult = getRelativeX(elementInDistribution)
 		var heightResult = getRelativeHeight(elementInDistribution)
-		card.setPosition(Vector2(spacingResult, heightResult))
+		card.setPositionWithTransition(Vector2(spacingResult, heightResult))
 		var new_rotation = getRelativeRotation(elementInDistribution)
 		card.setRotation(new_rotation)
 		card.setZIndex(index)

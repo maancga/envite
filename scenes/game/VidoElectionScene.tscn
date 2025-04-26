@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://50537fdo6u8y"]
+[gd_scene load_steps=3 format=3 uid="uid://50537fdo6u8y"]
 
-[ext_resource type="Script" uid="uid://b1f8v2ldpmld7" path="res://scenes/VidoElectionScene.gd" id="1_yyl68"]
+[ext_resource type="Script" uid="uid://b1f8v2ldpmld7" path="res://scenes/game/VidoElectionScene.gd" id="1_yyl68"]
+[ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/choose-name/ButtonTheme.tres" id="2_c0fre"]
 
 [node name="VidoElectionScene" type="Node2D"]
 script = ExtResource("1_yyl68")
@@ -8,18 +9,21 @@ script = ExtResource("1_yyl68")
 [node name="RejectVidoButton" type="Button" parent="."]
 offset_right = 116.0
 offset_bottom = 45.0
+theme = ExtResource("2_c0fre")
 text = "Rechazar vido"
 
 [node name="AcceptVidoButton" type="Button" parent="."]
 offset_top = 62.0
 offset_right = 116.0
 offset_bottom = 107.0
+theme = ExtResource("2_c0fre")
 text = "Aceptar vido"
 
 [node name="RaiseVidoButton" type="Button" parent="."]
 offset_top = 123.0
 offset_right = 116.0
 offset_bottom = 168.0
+theme = ExtResource("2_c0fre")
 text = "Subir vido"
 
 [connection signal="pressed" from="RejectVidoButton" to="." method="_on_reject_vido_button_pressed"]

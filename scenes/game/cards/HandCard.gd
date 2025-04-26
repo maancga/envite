@@ -6,6 +6,8 @@ class_name HandCard
 @export var value : ValueEnum.Value
 @onready var cardImage: CardImage = $CardImage
 var cardOverDropArea: bool
+var handIndex: String = "0"
+var isHiden: bool
 
 var dragging: bool = false
 var initialPosition: Vector2 = Vector2.ZERO
@@ -29,8 +31,12 @@ func setCardData(newValue: ValueEnum.Value, givenSuit: SuitEnum.Suit):
 	value = newValue
 	update_texture()
 
-func setPosition(newPosition: Vector2):
-	position = newPosition
+func setHandIndex(index: String):
+	handIndex = index
+
+func setPositionWithTransition(newPosition: Vector2):
+	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "position", newPosition, 0.2)
 	initialPosition = newPosition
 
 func setRotation(newRotation: float):
@@ -124,3 +130,7 @@ func resetHover() -> void:
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", Vector2(1, 1), 0.2)
 	z_index = initialZIndex
+
+func hideCard() -> void:
+	isHiden = true
+	cardImage.visible = false
