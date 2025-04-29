@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://ct8jgbl27xwgu"]
+[gd_scene load_steps=6 format=3 uid="uid://ct8jgbl27xwgu"]
 
 [ext_resource type="Script" uid="uid://00s8fp7npabp" path="res://scenes/game/drop-zone/DropZone.gd" id="1_3egly"]
 [ext_resource type="Texture2D" uid="uid://brbwgupq832jq" path="res://scenes/all-scenes-assets/tablon_de_madera.png" id="1_6bkfq"]
-[ext_resource type="AudioStream" uid="uid://bccokjr20cow8" path="res://scenes/game/cards/audio/card-slide-8.ogg" id="3_nthrk"]
+[ext_resource type="AudioStream" uid="uid://6gkkay5kkmrd" path="res://audio/movil_arrastrar_folio_1.wav" id="3_oxae5"]
+[ext_resource type="AudioStream" uid="uid://d378g677eisvd" path="res://audio/glow.wav" id="4_oxae5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3egly"]
 size = Vector2(879, 257.5)
@@ -36,7 +37,10 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="PlaySoundStreamPlayer" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_nthrk")
+stream = ExtResource("3_oxae5")
+
+[node name="CardOnZoneSoundStreamPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_oxae5")
 
 [connection signal="area_entered" from="Area2D" to="." method="dropZoneAreaEntered"]
 [connection signal="area_exited" from="Area2D" to="." method="dropZoneAreaExited"]

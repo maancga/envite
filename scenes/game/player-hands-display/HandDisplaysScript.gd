@@ -12,11 +12,13 @@ class_name HandDisplaysScript
 @onready var vidoElectionScene: VidoElectionScene = $VidoElectionScene
 @onready var virado = $Virado/Card
 @onready var teamScore = $TeamScore
+var notificationsManager: NotificationsManager
 signal vidoCalledSignal()
 signal vidoAcceptedSignal()
 signal vidoRejectedSignal()
 signal vidoRaisedSignal()
 signal droppedCardSignal(card: String)
+signal yourTurnSignal()
 
 
 var currentPlayerTurnId: String
@@ -59,7 +61,7 @@ func setHands(card1: CardData, card2: CardData, card3: CardData):
 	resetOtherPlayersCards()
 	cleanPlayedCards()
 
-func setUp(_playerId: String, _playerTurnId: String, _players: Dictionary, _team1Leader: String, _team2Leader: String, _team1: Array[String], _team2: Array[String]) -> void:
+func setUp(_playerId: String, _playerTurnId: String, _players: Dictionary, _team1Leader: String, _team2Leader: String, _team1: Array[String], _team2: Array[String], _notificationsManager: NotificationsManager) -> void:
 	yourId = _playerId
 	currentPlayerTurnId = _playerTurnId
 	players = _players
@@ -67,6 +69,7 @@ func setUp(_playerId: String, _playerTurnId: String, _players: Dictionary, _team
 	team2Leader = _team2Leader
 	team1 = _team1
 	team2 = _team2
+	notificationsManager = _notificationsManager
 	for player in players.keys():
 		playersArray.append(player)
 	
@@ -84,7 +87,9 @@ func setUpPlayerDisplay(playerNameDisplay: PlayerNameDisplay, currentPlayerId: S
 	if isTeam2(currentPlayerId): playerNameDisplay.setTeam2Color()
 
 func paintCurrentTurn():
-	if (currentPlayerTurnId == yourId): playingButtonsDisplay.show()
+	if (currentPlayerTurnId == yourId): 
+		playingButtonsDisplay.show()
+		yourTurnSignal.emit()
 	else: playingButtonsDisplay.hide()
 	for player in playersArray:
 		var distance = RelativeHandsDistance.new(playersArray, yourId).calculateDistance(player)

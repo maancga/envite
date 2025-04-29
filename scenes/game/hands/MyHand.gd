@@ -40,6 +40,9 @@ func playSecondCard():
 	eraseCard(cards[1])
 
 func playThirdCard():
+	print("cards:", cards)
+	print("size:", cards.size())
+
 	print("playing third card!")
 	eraseCard(cards[2])
 

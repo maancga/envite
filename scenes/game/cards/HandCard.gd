@@ -15,6 +15,9 @@ var initialZIndex: int = 0
 static var draggingCard : HandCard = null 
 static var hoveredCard : HandCard = null 
 var dragTween: Tween = null
+@onready var hoverSound = $HoverSoundStreamPlayer
+const HOVER_SOUND_COOLDOWN = 0.2
+static var lastHoverSoundTime = -1000
 
 func _exit_tree():
 	if draggingCard == self:
@@ -110,13 +113,26 @@ func snapBack():
 	tween.tween_property(self, "scale", Vector2(1, 1), 0.3)
 
 func onMouseEnteredArea() -> void:
+	if(draggingCard != null): return
 	if hoveredCard and hoveredCard != self:
 		hoveredCard.resetHover()
 	hoveredCard = self
 	startHover()
 
+func makeHoverSound():
+	var currentTime = Time.get_ticks_msec() / 1000.0  # pasa a segundos
+	if currentTime - lastHoverSoundTime >= HOVER_SOUND_COOLDOWN:
+		if hoverSound.playing:
+			hoverSound.stop()
+			hoverSound.play()
+		else:
+			hoverSound.play()
+		lastHoverSoundTime = currentTime
+
+
+
 func startHover():
-	$HoverSoundStreamPlayer.play()
+	makeHoverSound()
 	var tween: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.2)
 	z_index = 1000

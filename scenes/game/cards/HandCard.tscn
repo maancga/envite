@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bui7ryfyqlk3x"]
+[gd_scene load_steps=6 format=3 uid="uid://bui7ryfyqlk3x"]
 
 [ext_resource type="Script" uid="uid://cwop6mfw0054t" path="res://scenes/game/cards/HandCard.gd" id="1_kek0h"]
 [ext_resource type="PackedScene" uid="uid://b21l3cgdm8qek" path="res://scenes/game/CardImage.tscn" id="2_6icrp"]
-[ext_resource type="AudioStream" uid="uid://bccokjr20cow8" path="res://scenes/game/cards/audio/card-slide-8.ogg" id="3_gjfm1"]
+[ext_resource type="AudioStream" uid="uid://b4qvfx0xomado" path="res://audio/hover_menu.wav" id="3_mifxt"]
+[ext_resource type="AudioStream" uid="uid://6gkkay5kkmrd" path="res://audio/movil_arrastrar_folio_1.wav" id="4_mifxt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ivkx2"]
 size = Vector2(116, 177)
@@ -19,10 +20,11 @@ position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_ivkx2")
 
 [node name="HoverSoundStreamPlayer" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_gjfm1")
+stream = ExtResource("3_mifxt")
+volume_db = -12.394
 
 [node name="PlaySoundStreamPlayer" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_gjfm1")
+stream = ExtResource("4_mifxt")
 
 [node name="ErrorSoundStreamPlayer" type="AudioStreamPlayer2D" parent="."]
 
