@@ -104,7 +104,6 @@ func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2, team1Leader, team
 	gameScene.setUpScene(str(playerId), newPlayers, newTeam1, newTeam2, team1Leader, team2Leader, handDisplayScene)
 
 
-
 func onReceivedPlayersAdded(newPlayers, newTeam1, newTeam2, team1Leader, team2Leader):
 	var playerId = multiplayer.get_unique_id()
 	chooseNameScene.updateList(str(playerId), newPlayers, newTeam1, newTeam2, team1Leader, team2Leader)

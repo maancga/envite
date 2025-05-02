@@ -19,12 +19,11 @@ func addPlayer(id: String, newName: String):
 	if amountOfPlayers() == 12: 
 		interactor.informPlayerCantBeAddedSinceMaxIsReached()
 		return 
-	if amountOfPlayers() == 0: changeGameOwner(id)
 	gamePlayers.addPlayer(id, newName)
 	if gamePlayers.amountOfPlayers() >= 4 : isGameStartable = true
 	interactor.informPlayerAdded(gamePlayers.toDictionary())
 	interactor.informTriumphsConfiguration(getTriumphsConfiguration())
-
+	if amountOfPlayers() == 1: changeGameOwner(id)
 
 func start(starterPlayer: String):
 	if gameOwner != starterPlayer:

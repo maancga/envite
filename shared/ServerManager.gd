@@ -171,58 +171,58 @@ func onGotDealer(dealer: String):
 	rpc("receiveDealer", dealer)
 
 func onPlayerCalledVido(playerId: String):
-	print("player %s called vido" % [playerId])
+	print("player %s called vido" %  [gamePlayers.getPlayerName(playerId)])
 	rpc("receivePlayerCalledVido", playerId)
 
 func onVidoRaisedFor7Piedras(playerId):
-	print("player %s raised vido to 7 piedras" % [playerId])
+	print("player %s raised vido to 7 piedras" % [gamePlayers.getPlayerName(playerId)])
 	rpc("receivePlayerRaisedVidoTo7Piedras", playerId)
 
 func onVidoRaisedFor9Piedras(playerId):
-	print("player %s raised vido to 9 piedras" % [playerId])
+	print("player %s raised vido to 9 piedras" % [gamePlayers.getPlayerName(playerId)])
 	rpc("receivePlayerRaisedVidoTo9Piedras", playerId)
 
 func onVidoRaisedForChico(playerId):
-	print("player %s raised vido to chico" % [playerId])
+	print("player %s raised vido to chico" % [gamePlayers.getPlayerName(playerId)])
 	rpc("receivePlayerRaisedVidoToChico", playerId)
 
 func onVidoRaisedForGame(playerId):
-	print("player %s raised vido to game" % [playerId])
+	print("player %s raised vido to game" % [gamePlayers.getPlayerName(playerId)])
 	rpc("receivePlayerRaisedVidoToGame", playerId)
 
 func onPlayerRefusedVido(playerId):
-	print("player %s refused vido" % [playerId])
+	print("player %s refused vido" % [gamePlayers.getPlayerName(playerId)])
 	rpc("receivePlayerRefusedVido", playerId)
 
 func onPlayerAcceptedVido(playerId):
-	print("player %s accepted vido" % [playerId])
+	print("player %s accepted vido" % [gamePlayers.getPlayerName(playerId)])
 	rpc("receivePlayerAcceptedVido", playerId)
 
 func onPlayerRaisedVido(playerId):
-	print("player %s raised vido" % [playerId])
+	print("player %s raised vido" % [gamePlayers.getPlayerName(playerId)])
 	rpc("receivePlayerRaisedVido", playerId)
 
 func onPlayerFromSameTeamCanNotTakeDecision(playerId: String):
-	print("Player %s can not take the decision since it is from the same team" % playerId)
+	print("Player %s can not take the decision since it is from the same team" % [gamePlayers.getPlayerName(playerId)])
 	rpc_id(int(playerId), "receivePlayerFromSameTeamCanNotTakeDecision")
 
 func onOnlyLeaderCanTakeThisDecision(playerId: String):
-	print("Player %s can not take the decision since it is not the leader" % playerId)
+	print("Player %s can not take the decision since it is not the leader" % [gamePlayers.getPlayerName(playerId)])
 	rpc_id(int(playerId), "receiveOnlyLeaderCanTakeThisDecision")
 
 func onVidoCanOnlyBeCalledOnYourTurn(playerId: String):
-	print("Player %s can not call the vido since its not its turn" % playerId)
+	print("Player %s can not call the vido since its not its turn" % [gamePlayers.getPlayerName(playerId)])
 	rpc_id(int(playerId), "receiveVidoCanOnlyBeCalledOnYourTurn")
 
 func onInformPlayerCantBeAddedSinceMaxIsReached(playerId: String):
-	print("Player %s can not be added since max players is reached" % playerId)
+	print("Player %s can not be added since max players is reached" % [gamePlayers.getPlayerName(playerId)])
 	rpc_id(int(playerId), "receivePlayerCantBeAddedSinceMaxIsReached")
 
 func onInformGameCanNotStartSinceItsNotOwner(playerId: String):
-	print("Player %s can not start the game since it is not the owner" % playerId)
+	print("Player %s can not start the game since it is not the owner" % [gamePlayers.getPlayerName(playerId)])
 
 func onInformIsGameOwner(playerId: String):
-	print("Informing that %s is the game owner" % playerId)
+	print("Informing that %s is the game owner" % [gamePlayers.getPlayerName(playerId)])
 	rpc("receivePlayerIsGameOwner", playerId)
 
 func onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(playerId):

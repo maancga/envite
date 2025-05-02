@@ -33,18 +33,12 @@ func eraseCard(card: HandCard):
 	movePositions()
 	
 func playFirstCard():
-	print("playing first card!")
 	eraseCard(cards[0])
 
 func playSecondCard():
-	print("playing second card!")
 	eraseCard(cards[1])
 
 func playThirdCard():
-	print("cards:", cards)
-	print("size:", cards.size())
-
-	print("playing third card!")
 	eraseCard(cards[2])
 
 func movePositions():
