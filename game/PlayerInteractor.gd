@@ -71,7 +71,7 @@ func informCanNotRaiseVidoMoreThanGame(_player: String) -> void:
 func informPlayerRoundWinner(_player: String, _roundScore: int)-> void:
 	push_error("⚠️ informPlayerRoundWinner() must be implemented by subclass")
 
-func informTeamWonPiedras(_teamName: String, _piedras: int)-> void:
+func informTeamWonPiedras(_teamName: String, _piedras: int, _piedrasOnPlay: int)-> void:
 	push_error("⚠️ informTeamWonPiedras() must be implemented by subclass")
 
 func informTeamWonChico(_teamName: String, _chicos: int)-> void:

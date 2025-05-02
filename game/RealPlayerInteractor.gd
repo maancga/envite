@@ -7,7 +7,7 @@ signal dealVirado(player: String, card: ServerCard)
 signal sendCurrentPlayerTurnSignal(player: String)
 signal sendPlayerPlayedCardSignal(player: Dictionary, card: ServerCard, playedOrder: int, cardHandIndex: int)
 signal sendPlayerRoundWinnerSignal(player: String, roundScore: int)
-signal sendTeamWonPiedrasSignal(team: String, piedras: int)
+signal sendTeamWonPiedrasSignal(team: String, piedras: int, piedrasOnPlay: int)
 signal sendTeamWonChicoSignal(team: String, chicos: int)
 signal sendTeamWonSignal(team: String)
 signal informDealerSignal(dealer: String)
@@ -94,8 +94,8 @@ func informPlayerCouldNotPlayCardBecauseItsPlayedAlready(player: String)-> void:
 func informPlayerRoundWinner(player: String, roundScore: int) -> void:
 	sendPlayerRoundWinnerSignal.emit(player, roundScore)
 
-func informTeamWonPiedras(teamName: String, piedras: int) -> void:
-	sendTeamWonPiedrasSignal.emit(teamName, piedras)
+func informTeamWonPiedras(teamName: String, piedras: int, piedrasOnPlay: int) -> void:
+	sendTeamWonPiedrasSignal.emit(teamName, piedras, piedrasOnPlay)
 
 func informTeamWonChico(teamName: String, chicos: int)-> void:
 	sendTeamWonChicoSignal.emit(teamName, chicos)

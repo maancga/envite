@@ -155,13 +155,16 @@ func onPlayerRoundWinner(player: String, roundScore: int):
 	print("%s won the hand" % [gamePlayers.getTeam(player)])
 	rpc("receivePlayerRoundWinner", player, roundScore)
 
-func onTeamWonPiedras(teamName: String, piedras: int):
+func onTeamWonPiedras(teamName: String, piedras: int, piedrasOnPlay: int):
+	print("Team " + teamName + " won " + str(piedrasOnPlay) + " piedras, summing " + str(piedras) + " piedras")
 	rpc("receiveTeamWonPiedras", teamName, piedras)
 
 func onTeamWonChico(teamName: String, chicos: int):
+	print("Team " + teamName + " won a chico")
 	rpc("receiveTeamWonChico", teamName, chicos)
 
 func onTeamWon(teamName: String):
+	print("Team " + teamName + " won the game")
 	rpc("receiveTeamWon", teamName)
 
 func onGotDealer(dealer: String):

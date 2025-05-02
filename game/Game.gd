@@ -20,8 +20,10 @@ func _init(newGamePlayers: GamePlayers, newPlayerInteractor: PlayerInteractor, d
 	playerInteractor = newPlayerInteractor
 	cardDealer = CardDealer.new(newPlayerInteractor, newGamePlayers, deck)
 	dealerManager = DealerManager.new(gamePlayers, playerInteractor)
-	scoresManager = ScoresManager.new(playerInteractor, gamePlayers, self)
+	scoresManager = ScoresManager.new(playerInteractor, gamePlayers)
 	scoresManager.connect("teamWonGame", Callable(self, "teamWins"))
+	scoresManager.connect("wonRoundSignal", Callable(self, "setNewRound"))
+	scoresManager.connect("wonChicoSignal", Callable(self, "setNewRound"))
 	triumphHierarchy = _triumphHierarchy
 
 func changeState(newState: RoundState):
