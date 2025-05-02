@@ -18,7 +18,7 @@ signal receiveCardPlayedSignal(playerId, card, playedOrder)
 signal receivePlayerRoundWinnerSignal(playerId, card, playedOrder)
 signal receivedPlayersAndTeamsSignal(players, team1, team2)
 signal receivedPlayerAddedSignal(players, team1, team2)
-signal receiveTeamWonChicoPointsSignal(teamName, chicoPoints)
+signal receiveTeamWonPiedrasSignal(teamName, piedras)
 signal receiveTeamWonChicoSignal(teamName, chicos)
 signal receiveTeamWonSignal(teamName)
 signal informGotDealerSignal(dealer)
@@ -80,7 +80,7 @@ func connectPlayerInteractorSignals():
 	playerInteractor.connect("sendPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand"))
 	playerInteractor.connect("sendPlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsPlayedAlready"))
 	playerInteractor.connect("sendPlayerRoundWinnerSignal", Callable(self, "onPlayerRoundWinner"))
-	playerInteractor.connect("sendTeamWonChicoPointsSignal", Callable(self, "onTeamWonChicoPoints"))
+	playerInteractor.connect("sendTeamWonPiedrasSignal", Callable(self, "onTeamWonPiedras"))
 	playerInteractor.connect("sendTeamWonChicoSignal", Callable(self, "onTeamWonChico"))
 	playerInteractor.connect("sendTeamWonSignal", Callable(self, "onTeamWon"))
 	playerInteractor.connect("informDealerSignal", Callable(self, "onGotDealer"))
@@ -155,8 +155,8 @@ func onPlayerRoundWinner(player: String, roundScore: int):
 	print("%s won the hand" % [gamePlayers.getTeam(player)])
 	rpc("receivePlayerRoundWinner", player, roundScore)
 
-func onTeamWonChicoPoints(teamName: String, chicoPoints: int):
-	rpc("receiveTeamWonChicoPoints", teamName, chicoPoints)
+func onTeamWonPiedras(teamName: String, piedras: int):
+	rpc("receiveTeamWonPiedras", teamName, piedras)
 
 func onTeamWonChico(teamName: String, chicos: int):
 	rpc("receiveTeamWonChico", teamName, chicos)
@@ -253,28 +253,28 @@ func onClientChoosesName(chosenName: String):
 func onClientCalledVido():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
-	print("player %s attempts to call vido" % [playerId])
+	print("player %s attempts to call vido" % [gamePlayers.getPlayerName(playerId)])
 	game.callVido(playerId)
 
 @rpc("any_peer")
 func onClientAcceptedVido():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
-	print("player %s attempts to accepts the vido" % [playerId])
+	print("player %s attempts to accepts the vido" % [gamePlayers.getPlayerName(playerId)])
 	game.acceptVido(playerId)
 
 @rpc("any_peer")
 func onClientRejectedVido():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
-	print("player %s attempts to reject the vido" % [playerId])
+	print("player %s attempts to reject the vido" % [gamePlayers.getPlayerName(playerId)])
 	game.rejectVido(playerId)
 
 @rpc("any_peer")
 func onClientRaisedVido():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
-	print("player %s attempts to raise the vido" % [playerId])
+	print("player %s attempts to raise the vido" % [gamePlayers.getPlayerName(playerId)])
 	game.raiseVido(playerId)
 
 @rpc("any_peer")
@@ -339,8 +339,8 @@ func receivePlayerRoundWinner(player: String, roundScore: int):
 	receivePlayerRoundWinnerSignal.emit(player, roundScore)
 
 @rpc("authority")
-func receiveTeamWonChicoPoints(teamName: String, chicoPoints: int):
-	receiveTeamWonChicoPointsSignal.emit(teamName, chicoPoints)
+func receiveTeamWonPiedras(teamName: String, piedras: int):
+	receiveTeamWonPiedrasSignal.emit(teamName, piedras)
 
 @rpc("authority")
 func receiveTeamWonChico(teamName: String, chicos: int):

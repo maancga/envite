@@ -1,4 +1,6 @@
 extends Node2D
+class_name GameScene
+
 
 @onready var playersDisplay: HandDisplaysScript
 
@@ -7,6 +9,7 @@ signal vidoAcceptedSignal()
 signal vidoRejectedSignal()
 signal vidoRaisedSignal()
 signal playedCardSignal()
+
 
 
 var currentPlayerTurnId: String
@@ -52,15 +55,21 @@ func addPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
 
 func playerWonRound(player: String,  roundScore: int):
 	playersDisplay.playerWonRound(player, roundScore)
+	notificationsManager.showMessage(players[player]["name"] + " ganó la mano")
 
-func teamWonChicoPoints(teamName: String, chicoPoints: int):
-	playersDisplay.teamWonChicoPoints(teamName, chicoPoints)
+func teamWonPiedras(teamName: String, piedras: int):
+	playersDisplay.teamWonPiedras(teamName, piedras)
+	notificationsManager.showMessage("El equipo " + teamName + " ganó " + str(piedras) + " piedras")
+
 
 func teamWonChico(teamName: String, chicosScore: int):
 	playersDisplay.teamWonChico(teamName, chicosScore)
+	notificationsManager.showMessage("El equipo " + teamName + " ganó un chico")
+
 
 func teamWon(teamName: String):
 	playersDisplay.teamWon(teamName)
+	notificationsManager.showMessage("El equipo " + teamName + " ganó la partida")
 
 func setDealer(dealer: String):
 	currentDealerId = dealer

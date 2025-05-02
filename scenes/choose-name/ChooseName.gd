@@ -63,15 +63,12 @@ func configureTriumphs(triumphs: Array[Dictionary]):
 			0: 
 				goldPanel.get_node("MarginContainer/Label").text = CardData.new(triumphs[triumph]["value"], triumphs[triumph]["suit"]).getCardName()
 				goldPanel.visible = true
-				continue
 			1: 
 				silverPanel.get_node("MarginContainer/Label").text = CardData.new(triumphs[triumph]["value"], triumphs[triumph]["suit"]).getCardName()
 				silverPanel.visible = true
-				continue
 			2: 
 				bronzePanel.get_node("MarginContainer/Label").text = CardData.new(triumphs[triumph]["value"], triumphs[triumph]["suit"]).getCardName()
 				bronzePanel.visible = true
-				continue
 			_:
 				var container = PanelContainer.new()
 				container.theme = otherTriumphPanel.theme
@@ -79,13 +76,12 @@ func configureTriumphs(triumphs: Array[Dictionary]):
 				container.add_child(margin)
 				triumphsBlock.add_child(container)
 				toDeleteTriumphsNodes.push_back(container)
-				continue
-		var finalContainer = PanelContainer.new()
-		finalContainer.theme = otherTriumphPanel.theme
-		var finalMargin = getSettedMarginContainer("La mala (2 de lo virado)")
-		finalContainer.add_child(finalMargin)
-		triumphsBlock.add_child(finalContainer)
-		toDeleteTriumphsNodes.push_back(finalContainer)
+	var finalContainer = PanelContainer.new()
+	finalContainer.theme = otherTriumphPanel.theme
+	var finalMargin = getSettedMarginContainer("La mala (2 de lo virado)")
+	finalContainer.add_child(finalMargin)
+	triumphsBlock.add_child(finalContainer)
+	toDeleteTriumphsNodes.push_back(finalContainer)
 
 func getSettedMarginContainer(labelText: String):
 	var finalMargin = MarginContainer.new()
@@ -115,8 +111,8 @@ func cleanTriumphs():
 	otherTriumphPanel.visible = false
 
 	for node in toDeleteTriumphsNodes:
-		toDeleteTriumphsNodes.erase(node)
 		node.queue_free()
+	toDeleteTriumphsNodes.clear()
 
 
 

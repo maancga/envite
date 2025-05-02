@@ -62,7 +62,7 @@ func getInformPlayedCards():
 func informPlayerRoundWinner(_player: String, _roundScore: int) -> void:
 	pass
 
-func informTeamWonChicoPoints(_teamName: String, _chicoPoints: int) -> void:
+func informTeamWonPiedras(_teamName: String, _piedras: int) -> void:
 	pass
 
 func informTeamWonChico(_teamName: String, _chicos: int)-> void:

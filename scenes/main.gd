@@ -59,7 +59,7 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receivedPlayedTurnSignal", Callable(self, "onReceivedPlayedTurn"))
 	serverManager.connect("receiveCardPlayedSignal", Callable(self, "onReceivedPlayedCard"))
 	serverManager.connect("receivePlayerRoundWinnerSignal", Callable(self, "onReceivedRoundWinner"))
-	serverManager.connect("receiveTeamWonChicoPointsSignal", Callable(self, "onReceivedTeamWonChicoPoints"))
+	serverManager.connect("receiveTeamWonPiedrasSignal", Callable(self, "onReceivedTeamWonPiedras"))
 	serverManager.connect("receiveTeamWonChicoSignal", Callable(self, "onReceivedTeamWonChico"))
 	serverManager.connect("receiveTeamWonSignal", Callable(self, "onReceivedTeamWon"))
 	serverManager.connect("informGotDealerSignal", Callable(self, "onGotDealer"))
@@ -177,8 +177,8 @@ func onReceivedPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
 func onReceivedRoundWinner(player: String, roundScore: int):
 	gameScene.playerWonRound(player, roundScore)
 
-func onReceivedTeamWonChicoPoints(teamName: String, chicoPoints: int):
-	gameScene.teamWonChicoPoints(teamName, chicoPoints)
+func onReceivedTeamWonPiedras(teamName: String, piedras: int):
+	gameScene.teamWonPiedras(teamName, piedras)
 
 func onReceivedTeamWonChico(teamName: String, chicos: int):
 	gameScene.teamWonChico(teamName, chicos)

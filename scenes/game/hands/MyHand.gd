@@ -8,7 +8,8 @@ const HandCardScene = preload("res://scenes/game/cards/HandCard.tscn")
 @export var heightCurve: Curve
 var cards: Array[HandCard]
 
-func setInitialCards(card1: CardData, card2: CardData, card3: CardData):
+func setHand(card1: CardData, card2: CardData, card3: CardData):
+	cleanHand()
 	var firstHandCard = HandCardScene.instantiate()
 	addCard(firstHandCard)
 	firstHandCard.setCardData(card1.value, card1.suit)
@@ -67,3 +68,8 @@ func getRelativeRotation(elementInDistribution: float):
 
 func getRelativeX(elementInDistribution: float):
 	return spacingCurve.sample_baked(elementInDistribution)
+
+func cleanHand():
+	for card in cards:
+		card.queue_free()
+	cards.clear()

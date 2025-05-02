@@ -57,7 +57,7 @@ func setTeamLabels():
 
 
 func setHands(card1: CardData, card2: CardData, card3: CardData):
-	myHand.setInitialCards(card1, card2, card3)
+	myHand.setHand(card1, card2, card3)
 	resetOtherPlayersCards()
 	cleanPlayedCards()
 
@@ -193,16 +193,15 @@ func getTeam(player: String) -> String:
 	return "unknown"
 
 func playerWonRound(player: String,  roundScore: int):
-	print("Player %s won the round!" % [players[player]["name"]])
 	if getTeam(player) == "team1": teamScore.setTeam1Rondas(roundScore)
 	if getTeam(player) == "team2": teamScore.setTeam2Rondas(roundScore)
 	await get_tree().create_timer(2.0).timeout
 	cleanPlayedCards()
 
-func teamWonChicoPoints(teamName: String, chicoPoints: int):
+func teamWonPiedras(teamName: String, piedras: int):
 	print("Team %s won chico points!" % [teamName])
-	if teamName == "team1": teamScore.setTeam1Piedras(chicoPoints)
-	if teamName == "team2": teamScore.setTeam2Piedras(chicoPoints)
+	if teamName == "team1": teamScore.setTeam1Piedras(piedras)
+	if teamName == "team2": teamScore.setTeam2Piedras(piedras)
 	await get_tree().create_timer(2.0).timeout
 	resetRoundScore()
 
@@ -212,12 +211,12 @@ func resetRoundScore():
 
 func teamWonChico(teamName: String, chicosScore: int):
 	print("Team %s won a chico!" % [teamName])
-	if teamName == "team1": teamScore.setTeam1Piedras(chicosScore)
+	if teamName == "team1": teamScore.setTeam1Chicos(chicosScore)
 	if teamName == "team2": teamScore.setTeam2Chicos(chicosScore)
 	await get_tree().create_timer(2.0).timeout
-	resetChicoPointsScore()
+	resetPiedrasScore()
 
-func resetChicoPointsScore():
+func resetPiedrasScore():
 	teamScore.setTeam1Piedras(0)
 	teamScore.setTeam2Piedras(0)
 	resetRoundScore()
