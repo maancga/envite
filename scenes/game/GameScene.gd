@@ -135,3 +135,6 @@ func vidoCanOnlyBeCalledOnYourTurn():
 func onYourTurn():
 	$YourTurnSound.play()
 	notificationsManager.showMessage("Es tu turno!")
+
+func muteMusic():
+	$GameMusic.stop()

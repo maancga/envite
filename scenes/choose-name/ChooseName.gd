@@ -134,3 +134,9 @@ func showStartGameButton():
 	if(yourId != ownerId): startGameButton.disabled = true
 	if(yourId == ownerId): 
 		startGameButton.disabled = false
+
+func onChooseNameButtonAreaEntered() -> void:
+	$ButtonFocusedSound.play()
+
+func onStartGameButtonAreaEntered() -> void:
+	if not $CanvasLayer/Screen/PanelContainer/MarginContainer2/StartGameButton.disabled: $ButtonFocusedSound.play()

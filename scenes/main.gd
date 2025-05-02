@@ -3,6 +3,7 @@ extends Node
 var serverManager
 var gameScene
 var chooseNameScene
+var silence = false
 
 func _ready():
 	var args = OS.get_cmdline_args()
@@ -11,6 +12,8 @@ func _ready():
 		startServer()
 	else:
 		print("🎮 Starting in CLIENT mode")
+		if "--silence" in args:
+			silence = true
 		connectToServer()
 		setUpAndLoadChooseNameScene()
 		loadGameSceneInvisible()
@@ -36,6 +39,8 @@ func loadGameSceneInvisible():
 	gameScene.connect("vidoRejectedSignal", onClientCallsRejectVido)
 	gameScene.connect("vidoRaisedSignal", onClientCallsVidoRaise)
 	gameScene.connect("playedCardSignal", onClientCallsPlayCard)
+	if silence: gameScene.muteMusic()
+
 
 func connectToServer():
 	serverManager = ServerManager.new()

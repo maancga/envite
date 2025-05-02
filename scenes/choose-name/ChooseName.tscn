@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://bww4ax6xs0wcd"]
+[gd_scene load_steps=14 format=3 uid="uid://bww4ax6xs0wcd"]
 
 [ext_resource type="Script" uid="uid://conejyoe5mf" path="res://scenes/choose-name/ChooseName.gd" id="1_msssm"]
 [ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://scenes/all-scenes-assets/mesa_fondo.png" id="1_nlomy"]
+[ext_resource type="AudioStream" uid="uid://b36sqmf6x0114" path="res://audio/another_option_shorted.wav" id="2_2wdij"]
 [ext_resource type="Texture2D" uid="uid://darjyvxtq2y8b" path="res://scenes/choose-name/envilatro.png" id="2_acpur"]
 [ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/all-scenes-assets/ButtonTheme.tres" id="4_bauhr"]
 [ext_resource type="Theme" uid="uid://bvyw4cobof6rs" path="res://scenes/choose-name/PlayerNamesContainerTheme.tres" id="4_dyw15"]
@@ -21,6 +22,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_msssm")
+
+[node name="ButtonFocusedSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_2wdij")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -285,5 +289,7 @@ theme = ExtResource("4_bauhr")
 text = "Empezar 
 partida"
 
+[connection signal="mouse_entered" from="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameReadyButton" to="." method="onChooseNameButtonAreaEntered"]
 [connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameReadyButton" to="." method="_on_choose_a_name_ready_button_pressed"]
+[connection signal="mouse_entered" from="CanvasLayer/Screen/PanelContainer/MarginContainer2/StartGameButton" to="." method="onStartGameButtonAreaEntered"]
 [connection signal="pressed" from="CanvasLayer/Screen/PanelContainer/MarginContainer2/StartGameButton" to="." method="_on_button_pressed"]

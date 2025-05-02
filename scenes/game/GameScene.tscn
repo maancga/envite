@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://ctjy3u3ibtlhy"]
+[gd_scene load_steps=8 format=3 uid="uid://ctjy3u3ibtlhy"]
 
 [ext_resource type="Script" uid="uid://tpq35st4dp0n" path="res://scenes/game/GameScene.gd" id="1_xs4ih"]
+[ext_resource type="AudioStream" uid="uid://bxdbxc2gv78f3" path="res://audio/background/Battlegrounds.mp3" id="2_ks7xl"]
 [ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://scenes/all-scenes-assets/mesa_fondo.png" id="2_vijgj"]
 [ext_resource type="AudioStream" uid="uid://k0jobfsm12tt" path="res://audio/not_allowed_last_version.wav" id="3_vaave"]
 [ext_resource type="PackedScene" uid="uid://b07mqgsputswc" path="res://scenes/game/notifications/Notifications.tscn" id="4_vaave"]
@@ -9,6 +10,12 @@
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_xs4ih")
+
+[node name="GameMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_ks7xl")
+volume_db = -7.544
+autoplay = true
+parameters/looping = false
 
 [node name="MesaFondo" type="Sprite2D" parent="."]
 position = Vector2(575, 322.5)
