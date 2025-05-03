@@ -103,3 +103,24 @@ func informPlayerCalledVido(_playerId: String):
 
 func informVidoCanOnlyBeCalledOnYourTurn(_playerId: String):
 	push_error("⚠️ informVidoCanOnlyBeCalledOnYourTurn() must be implemented by subclass")
+
+func informCannNotCallVidoBecauseAlreadyCalled(_playerId: String):
+	push_error("⚠️ informCannNotCallVidoBecauseAlreadyCalled() must be implemented by subclass")
+
+func informCannNotCallVidoBecauseTumboIsBeingDecided(_playerId: String):
+	push_error("⚠️ informCannNotCallVidoBecauseTumboIsBeingDecided() must be implemented by subclass")
+
+func informCannNotPlayCardBecauseTumboIsBeingDecided(_playerId: String):
+	push_error("⚠️ informCannNotPlayCardBecauseTumboIsBeingDecided() must be implemented by subclass")
+
+func informTumboIsAccepted():
+	push_error("⚠️ informTumboIsAccepted() must be implemented by subclass")
+
+func informTumboIsRejected():
+	push_error("⚠️ informTumboIsRejected() must be implemented by subclass")
+
+func cannNotTakeThisDecisionIfNotInWaitingForTumbo():
+	push_error("⚠️ cannNotTakeThisDecisionIfNotInWaitingForTumbo() must be implemented by subclass")
+
+func informGameIsOnTumbo():
+	push_error("⚠️ informGameIsOnTumbo() must be implemented by subclass")

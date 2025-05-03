@@ -3,6 +3,9 @@ class_name ScoresManager
 signal teamWonGame(teamName: String)
 signal wonRoundSignal()
 signal wonChicoSignal()
+signal team1IsOnTumboSignal()
+signal team2IsOnTumboSignal()
+
 
 var team1Score: TeamScore
 var team2Score: TeamScore
@@ -18,10 +21,10 @@ func _init(_playerInteractor: PlayerInteractor, _gamePlayers: GamePlayers) -> vo
 	team2Score = TeamScore.new(_playerInteractor, "team2")
 	team1Score.connect("wonGameSignal", onTeamWonGame)
 	team1Score.connect("wonChicoSignal", onTeamWonChico)
-	team1Score.connect("teamIsOnTumboSignal", onTeamIsOnTumbo)
+	team1Score.connect("teamIsOnTumboSignal", onTeam1IsOnTumbo)
 	team2Score.connect("wonGameSignal", onTeamWonGame)
 	team2Score.connect("wonChicoSignal", onTeamWonChico)
-	team2Score.connect("teamIsOnTumboSignal", onTeamIsOnTumbo)
+	team2Score.connect("teamIsOnTumboSignal", onTeam2IsOnTumbo)
 	
 	gamePlayers = _gamePlayers
 	playerInteractor = _playerInteractor
@@ -80,8 +83,13 @@ func onTeamWonChico() -> void:
 	resetsVidos()
 	wonChicoSignal.emit()
 
-func onTeamIsOnTumbo() -> void:
+func onTeam1IsOnTumbo() -> void:
 	piedrasOnPlay = 3
+	team1IsOnTumboSignal.emit()
+
+func onTeam2IsOnTumbo() -> void:
+	piedrasOnPlay = 3
+	team2IsOnTumboSignal.emit()
 
 func setPiedrasOnPlay(piedras: int):
 	piedrasOnPlay = piedras

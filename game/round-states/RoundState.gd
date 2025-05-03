@@ -20,3 +20,12 @@ func acceptVido(_id: String):
 
 func raiseVido(_id: String):
 	pass
+
+func takeTumbo(_playerId: String):
+	pass
+
+func notTakeTumbo(_playerId: String):
+	pass
+
+func getStateName():
+	pass

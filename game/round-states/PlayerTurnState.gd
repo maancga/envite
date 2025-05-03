@@ -1,6 +1,5 @@
 class_name PlayerTurnState extends RoundState
 
-var currentPlayerTurn: String
 var hands: RoundHands
 var playerInteractor: PlayerInteractor
 var playedCards: PlayedCards
@@ -8,8 +7,7 @@ var game: Game
 var scoresManager: ScoresManager
 var gamePlayers: GamePlayers
 
-func _init(_game: Game, _currentPlayerTurn: String, _hands: RoundHands, _playerInteractor: PlayerInteractor, _playedCards: PlayedCards, _scoresManager: ScoresManager, _gamePlayers: GamePlayers) -> void:
-	currentPlayerTurn = _currentPlayerTurn
+func _init(_game: Game, _hands: RoundHands, _playerInteractor: PlayerInteractor, _playedCards: PlayedCards, _scoresManager: ScoresManager, _gamePlayers: GamePlayers) -> void:
 	hands = _hands
 	playerInteractor = _playerInteractor
 	playedCards = _playedCards
@@ -19,20 +17,15 @@ func _init(_game: Game, _currentPlayerTurn: String, _hands: RoundHands, _playerI
 
 func playFirstCard(playerId: String):
 	game.roundManager.playFirstCard(playerId)
-	game.changeState(PlayerTurnState.new(game, gamePlayers.getNextPlayer(currentPlayerTurn), hands, playerInteractor, playedCards, scoresManager, gamePlayers))
 
-	
 func playSecondCard(playerId: String):
 	game.roundManager.playSecondCard(playerId)
-	game.changeState(PlayerTurnState.new(game, gamePlayers.getNextPlayer(currentPlayerTurn), hands, playerInteractor, playedCards, scoresManager, gamePlayers))
 
 func playThirdCard(playerId: String):
 	game.roundManager.playThirdCard(playerId)
-	game.changeState(PlayerTurnState.new(game, gamePlayers.getNextPlayer(currentPlayerTurn), hands, playerInteractor, playedCards, scoresManager, gamePlayers))
-
 
 func callVido(playerId: String):
-	if(playerId != currentPlayerTurn):
+	if(playerId != game.roundManager.currentPlayerTurn):
 		playerInteractor.informVidoCanOnlyBeCalledOnYourTurn(playerId)
 		return 
 	game.changeState(VidoFor4PiedrasState.new(playerInteractor, game, scoresManager, playerId, gamePlayers ))
@@ -49,3 +42,14 @@ func acceptVido(playerId: String):
 func raiseVido(playerId: String):
 	playerInteractor.cannotRaiseVidoBecauseThereIsNoVidoCalled(playerId)
 	return
+
+func takeTumbo(_playerId: String):
+	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo()
+	return
+
+func notTakeTumbo(_playerId: String):
+	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo()
+	return
+
+func getStateName():
+	return "Player turn"

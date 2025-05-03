@@ -9,11 +9,9 @@ var gameState: RoundState
 var lastPlayerState: RoundState
 var scoresManager: ScoresManager
 var triumphHierarchy: TriumphHierarchy
+var team1IsOnTumbo = false
+var team2IsOnTumbo = false
 
-const DEFAULT_PIEDRAS_WINS = 2
-var piedrasOnPlay = 2
-var viradoForChico = false
-var viradoForGame = false
 
 func _init(newGamePlayers: GamePlayers, newPlayerInteractor: PlayerInteractor, deck: Deck, _triumphHierarchy: TriumphHierarchy):
 	gamePlayers = newGamePlayers
@@ -24,6 +22,9 @@ func _init(newGamePlayers: GamePlayers, newPlayerInteractor: PlayerInteractor, d
 	scoresManager.connect("teamWonGame", Callable(self, "teamWins"))
 	scoresManager.connect("wonRoundSignal", Callable(self, "setNewRound"))
 	scoresManager.connect("wonChicoSignal", Callable(self, "setNewRound"))
+	scoresManager.connect("team1IsOnTumboSignal", Callable(self, "onTeam1IsOnTumbo"))
+	scoresManager.connect("team2IsOnTumboSignal", Callable(self, "onTeam2IsOnTumbo"))
+
 	triumphHierarchy = _triumphHierarchy
 
 func changeState(newState: RoundState):
@@ -39,7 +40,13 @@ func setNewRound():
 func startRound():
 	roundManager = RoundManager.new(cardDealer, gamePlayers, playerInteractor, scoresManager, triumphHierarchy)
 	roundManager.deal(dealerManager.getCurrentDealer())
-	gameState = PlayerTurnState.new(self, gamePlayers.getNextPlayer(dealerManager.getCurrentDealer()), roundManager.hands, playerInteractor, roundManager.playedCards, scoresManager, gamePlayers)
+	if (not gameIsOnTumbo()):
+		gameState = PlayerTurnState.new(self, roundManager.hands, playerInteractor, roundManager.playedCards, scoresManager, gamePlayers)
+	else:
+		print("No me jodas")
+		playerInteractor.informGameIsOnTumbo()
+		gameState = PendingTumboState.new(self, gamePlayers.getNextPlayer(dealerManager.getCurrentDealer()), roundManager.hands, playerInteractor, roundManager.playedCards, scoresManager, gamePlayers, team1IsOnTumbo, team2IsOnTumbo)
+		gameState.getStateName()
 
 func newGame():
 	playerInteractor.informPlayersAndTeams(gamePlayers.toDictionary())
@@ -72,5 +79,22 @@ func acceptVido(id: String):
 
 func raiseVido(id: String):
 	gameState.raiseVido(id)
+
+func takeTumbo(id: String):
+	gameState.takeTumbo(id)
+
+func notTakeTumbo(id: String):
+	print(gameState.get_class())
+	gameState.notTakeTumbo(id)
+
+func onTeam1IsOnTumbo():
+	team1IsOnTumbo = true
+
+func onTeam2IsOnTumbo():
+	team2IsOnTumbo = true
+
+func gameIsOnTumbo():
+	return team1IsOnTumbo || team2IsOnTumbo
+
 
 	

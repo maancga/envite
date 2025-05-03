@@ -20,3 +20,6 @@ func play() -> void:
 
 func isPlayed() -> bool:
 	return card.isPlayed()
+
+func getCardName() -> String:
+	return card.getCardName()

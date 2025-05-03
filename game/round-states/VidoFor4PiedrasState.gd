@@ -59,3 +59,14 @@ func checkIsOtherTeamLeader(playerId: String):
 		playerInteractor.informOnlyLeaderCanTakeThisDecision(playerId)
 		return
 	return true
+
+func takeTumbo(_playerId: String):
+	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo()
+	return
+
+func notTakeTumbo(_playerId: String):
+	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo()
+	return
+
+func getStateName():
+	return "Vido de 4 piedras"
