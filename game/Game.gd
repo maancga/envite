@@ -21,7 +21,7 @@ func _init(newGamePlayers: GamePlayers, newPlayerInteractor: PlayerInteractor, d
 	scoresManager = ScoresManager.new(playerInteractor, gamePlayers)
 	scoresManager.connect("teamWonGame", Callable(self, "teamWins"))
 	scoresManager.connect("wonRoundSignal", Callable(self, "setNewRound"))
-	scoresManager.connect("wonChicoSignal", Callable(self, "setNewRound"))
+	scoresManager.connect("wonChicoSignal", Callable(self, "onChicoWon"))
 	scoresManager.connect("team1IsOnTumboSignal", Callable(self, "onTeam1IsOnTumbo"))
 	scoresManager.connect("team2IsOnTumboSignal", Callable(self, "onTeam2IsOnTumbo"))
 
@@ -33,6 +33,11 @@ func changeState(newState: RoundState):
 func hasPlayers(amount: int):
 	return gamePlayers.hasPlayers(amount)
 
+func onChicoWon():
+	team1IsOnTumbo = false
+	team2IsOnTumbo = false
+	setNewRound()
+
 func setNewRound():
 	dealerManager.setNewDealer()
 	startRound()
@@ -43,10 +48,8 @@ func startRound():
 	if (not gameIsOnTumbo()):
 		gameState = PlayerTurnState.new(self, roundManager.hands, playerInteractor, roundManager.playedCards, scoresManager, gamePlayers)
 	else:
-		print("No me jodas")
 		playerInteractor.informGameIsOnTumbo()
 		gameState = PendingTumboState.new(self, gamePlayers.getNextPlayer(dealerManager.getCurrentDealer()), roundManager.hands, playerInteractor, roundManager.playedCards, scoresManager, gamePlayers, team1IsOnTumbo, team2IsOnTumbo)
-		gameState.getStateName()
 
 func newGame():
 	playerInteractor.informPlayersAndTeams(gamePlayers.toDictionary())
@@ -84,7 +87,6 @@ func takeTumbo(id: String):
 	gameState.takeTumbo(id)
 
 func notTakeTumbo(id: String):
-	print(gameState.get_class())
 	gameState.notTakeTumbo(id)
 
 func onTeam1IsOnTumbo():

@@ -151,3 +151,6 @@ func informPlayerCalledVido(_playerId: String):
 
 func informVidoCanOnlyBeCalledOnYourTurn(_playerId: String):
 	informVidoCanOnlyBeCalledOnYourTurnSignal.emit(_playerId)
+
+func informCannNotPlayCardBecauseTumboIsBeingDecided(_playerId: String):
+	print(_playerId)

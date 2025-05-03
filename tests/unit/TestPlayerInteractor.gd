@@ -23,6 +23,7 @@ var team1PiedrasLastUpdate = 0
 var team2PiedrasLastUpdate = 0
 var team1ChicosLastUpdate = 0
 var team2ChicosLastUpdate = 0
+var lastCalledPlayerTurn = ""
 
 
 func dealHandToPlayer(player: String, _hand: ServerHand) -> void:
@@ -51,6 +52,7 @@ func informPlayersAndTeams(_players: Dictionary) -> void:
 func informPlayerTurn(_player: String) -> void:
 	countInformPlayerTurnCalls += 1
 	informPlayerTurnArgs.append(_player)
+	lastCalledPlayerTurn = _player
 
 func getLastInformPlayerTurnCall() -> String:
 	return informPlayerTurnArgs[informPlayerTurnArgs.size() - 1]
@@ -192,4 +194,7 @@ func informTumboIsAccepted():
 	pass
 
 func informTumboIsRejected():
+	pass
+
+func informCannNotPlayCardBecauseTumboIsBeingDecided(_playerId: String):
 	pass

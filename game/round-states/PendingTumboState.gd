@@ -60,10 +60,6 @@ func takeTumbo(playerId: String):
 		playerInteractor.informTumboIsAccepted()
 
 func notTakeTumbo(playerId: String):
-	print("tururur")
-	print("team1 tumbo" + str(team1IsOnTumbo))
-	print("team2 tumbo" + str(team2IsOnTumbo))
-
 	if not gamePlayers.isLeader(playerId): playerInteractor.informOnlyLeaderCanTakeThisDecision(playerId)
 	if team1IsOnTumbo && gamePlayers.getTeam(playerId) == "team1":
 		scoresManager.teamOneRejectsTumbo()
