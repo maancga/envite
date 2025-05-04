@@ -40,10 +40,13 @@ signal receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal()
 signal receivePlayerIsGameOwnerSignal(playerId)
 signal receiveTriumphsConfigurationSignal(triumphs)
 signal receiveCannNotPlayCardBecauseTumboIsBeingDecidedSignal()
+signal receiveCannNotCallVidoBecauseTumboIsBeingDecidedSignal()
 signal receiveTeam1IsOnTumboSignal()
 signal receiveTeam2IsOnTumboSignal()
 signal receiveCannNotTakeThisDecisionIfNotInWaitingForTumboSignal()
 signal receiveTumboIsAcceptedSignal()
+signal receiveTumboIsRejectedSignal()
+signal receiveCanNotMakeTheActionAfterTheGameEndedSignal()
 
 var preGame: PreGame
 var game: Game
@@ -105,10 +108,13 @@ func connectPlayerInteractorSignals():
 	playerInteractor.connect("informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal", Callable(self, "onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached"))
 	playerInteractor.connect("informTriumphsConfigurationSignal", Callable(self, "onInformTriumphsConfiguration"))
 	playerInteractor.connect("informCannNotPlayCardBecauseTumboIsBeingDecidedSignal", Callable(self, "onInformCannNotPlayCardBecauseTumboIsBeingDecided"))
+	playerInteractor.connect("informCannNotCallVidoBecauseTumboIsBeingDecidedSignal", Callable(self, "onInformCannNotCallVidoBecauseTumboIsBeingDecided"))
 	playerInteractor.connect("informTeam1IsOnTumboSignal", Callable(self, "onInformTeam1IsOnTumbo"))
 	playerInteractor.connect("informTeam2IsOnTumboSignal", Callable(self, "onInformTeam2IsOnTumbo"))
 	playerInteractor.connect("informCannNoTakeThisDecisionIfNotInWaitingForTumboSignal", Callable(self, "onInformCannNoTakeThisDecisionIfNotInWaitingForTumbo"))
 	playerInteractor.connect("informTumboIsAcceptedSignal", Callable(self, "onInformTumboIsAccepted"))
+	playerInteractor.connect("informTumboIsRejectedSignal", Callable(self, "onInformTumboIsRejected"))
+	playerInteractor.connect("informCanNotMakeTheActionAfterTheGameEndedSignal", Callable(self, "onInformCanNotMakeTheActionAfterTheGameEnded"))
 
 func onClientConnected(id):
 	print("🟢 Client connected with id: ", id)
@@ -246,7 +252,10 @@ func onInformTriumphsConfiguration(triumphs: Array[Dictionary]):
 	rpc("receiveTriumphsConfiguration", triumphs)
 
 func onInformCannNotPlayCardBecauseTumboIsBeingDecided(playerId: String):
-	rpc_id(int(playerId), "receiveCannNotPlayCardBecauseTumboIsBeingDecided", playerId)
+	rpc_id(int(playerId), "receiveCannNotPlayCardBecauseTumboIsBeingDecided")
+
+func onInformCannNotCallVidoBecauseTumboIsBeingDecided(playerId: String):
+	rpc_id(int(playerId), "receiveCannNotCallVidoBecauseTumboIsBeingDecided")
 
 func onInformTeam1IsOnTumbo():
 	rpc("receiveTeam1IsOnTumbo")
@@ -259,6 +268,12 @@ func onInformCannNoTakeThisDecisionIfNotInWaitingForTumbo(playerId: String):
 
 func onInformTumboIsAccepted():
 	rpc("receiveTumboIsAccepted")
+
+func onInformTumboIsRejected():
+	rpc("receiveTumboIsRejected")
+
+func onInformCanNotMakeTheActionAfterTheGameEnded(playerId: String):
+	rpc_id(int(playerId), "receiveCanNotMakeTheActionAfterTheGameEnded")
 
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
@@ -322,10 +337,10 @@ func onClientTumbar():
 	game.takeTumbo(playerId)
 
 @rpc("any_peer")
-func onClientIrse():
+func onClientAchicarse():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
-	game.notTakeTumbo(playerId)
+	game.achicarse(playerId)
 
 ################ CLIENT
 
@@ -466,6 +481,10 @@ func receiveCannNotPlayCardBecauseTumboIsBeingDecided():
 	receiveCannNotPlayCardBecauseTumboIsBeingDecidedSignal.emit()
 
 @rpc("authority")
+func receiveCannNotCallVidoBecauseTumboIsBeingDecided():
+	receiveCannNotCallVidoBecauseTumboIsBeingDecidedSignal.emit()
+
+@rpc("authority")
 func receiveTeam1IsOnTumbo():
 	receiveTeam1IsOnTumboSignal.emit()
 
@@ -480,6 +499,14 @@ func receiveCannNotTakeThisDecisionIfNotInWaitingForTumbo():
 @rpc("authority")
 func receiveTumboIsAccepted():
 	receiveTumboIsAcceptedSignal.emit()
+
+@rpc("authority")
+func receiveTumboIsRejected():
+	receiveTumboIsRejectedSignal.emit()
+
+@rpc("authority")
+func receiveCanNotMakeTheActionAfterTheGameEnded():
+	receiveCanNotMakeTheActionAfterTheGameEndedSignal.emit()
 
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():
@@ -508,5 +535,5 @@ func startGame() -> void:
 func tumbar() -> void:
 	rpc_id(1, "onClientTumbar")
 
-func irse() -> void:
-	rpc_id(1, "onClientIrse")
+func achicarse() -> void:
+	rpc_id(1, "onClientAchicarse")

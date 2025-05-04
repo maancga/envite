@@ -155,17 +155,17 @@ func test_gets_to_tumbo_rejects_it_multiple_times():
 	var game: Game = result[0]
 	var spy = result[1]
 
-	game.notTakeTumbo("2")
+	game.achicarse("2")
 
 	assert_eq(spy.team2PiedrasLastUpdate == 11, true)
 	assert_eq(spy.team1PiedrasLastUpdate == 1, true)
 
-	game.notTakeTumbo("2")
+	game.achicarse("2")
 
 	assert_eq(spy.team2PiedrasLastUpdate == 11, true)
 	assert_eq(spy.team1PiedrasLastUpdate == 2, true)
 
-	game.notTakeTumbo("2")
+	game.achicarse("2")
 
 	assert_eq(spy.team2PiedrasLastUpdate == 11, true)
 	assert_eq(spy.team1PiedrasLastUpdate == 3, true)
@@ -175,13 +175,13 @@ func test_changes_turn_when_tumbo_is_rejected():
 	var game : Game = result[0]
 	var spy = result[1]
 
-	game.notTakeTumbo("2")
+	game.achicarse("2")
 
 	assert_true(spy.team2PiedrasLastUpdate == 11)
 	assert_true(spy.team1PiedrasLastUpdate == 1)
 	assert_true(spy.lastCalledPlayerTurn == "1")
 
-	game.notTakeTumbo("2")
+	game.achicarse("2")
 
 	assert_true(spy.team2PiedrasLastUpdate == 11)
 	assert_true(spy.team1PiedrasLastUpdate == 2)
@@ -193,9 +193,9 @@ func test_rejects_2_tumbos_and_then_accepts_and_wins():
 	var spy: TestPlayerInteractor = result[1]
 	var deck: TestDeck = result[2]
 
-	game.notTakeTumbo("2")
+	game.achicarse("2")
 	deck.setTopCards(getFixedTopCards())
-	game.notTakeTumbo("2")
+	game.achicarse("2")
 	game.takeTumbo("2")
 
 	game.playFirstCard("2")
@@ -218,7 +218,7 @@ func test_rejects_a_tumbo_and_then_accepts_and_the_other_team_wins_3_piedras():
 	var deck: TestDeck = result[2]
 
 	deck.setTopCards(getFixedTopCards())
-	game.notTakeTumbo("2")
+	game.achicarse("2")
 	game.takeTumbo("2")
 
 	game.playFirstCard("1")

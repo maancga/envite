@@ -9,7 +9,7 @@ signal vidoRejectedSignal()
 signal vidoRaisedSignal()
 signal playedCardSignal()
 signal tumbarSignal()
-signal irseSignal()
+signal achicarseSignal()
 
 var currentPlayerTurnId: String
 var players : Dictionary
@@ -50,7 +50,7 @@ func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 	playersDisplay.connect("droppedCardSignal", onDroppedCard)
 	playersDisplay.connect("yourTurnSignal", onYourTurn)
 	playersDisplay.connect("tumbarSignal", onTumbar)
-	playersDisplay.connect("irseSignal", onIrse)
+	playersDisplay.connect("achicarseSignal", onAchicarse)
 
 func setPlayerTurn(newPlayerId: String):
 	playersDisplay.setTurnTo(newPlayerId)
@@ -120,8 +120,8 @@ func onVidoRaised():
 func onTumbar():
 	tumbarSignal.emit()
 
-func onIrse():
-	irseSignal.emit()
+func onAchicarse():
+	achicarseSignal.emit()
 
 func onDroppedCard(cardIndex: String):
 	playedCardSignal.emit(cardIndex)
@@ -161,13 +161,17 @@ func cannNotPlayBecauseTumboIsBeingDecided():
 	$WrongActionSound.play()
 	notificationsManager.showMessage("No puedes jugar porque se está decidiendo el tumbo!")
 
+func cannNotCallVidoBecauseTumboIsBeingDecided():
+	$WrongActionSound.play()
+	notificationsManager.showMessage("No puedes vidar porque se está decidiendo el tumbo!")
+
 func notifyTeam1IsOnTumbo():
 	playersDisplay.team1OnTumboView()
 	if playerId in team2: 
 		notificationsManager.showMessage("El equipo 1 está decidiendo el tumbo")
 		return
 	if not (team1Leader == playerId):
-		notificationsManager.showMessage(players[team1Leader]["name"] + "tiene que seleccionar el tumbo")
+		notificationsManager.showMessage(players[team1Leader]["name"] + " tiene que elegir si tumbar")
 		return
 	if (team1Leader == playerId):
 		notificationsManager.showMessage("Tienes que seleccionar el tumbo")
@@ -190,4 +194,8 @@ func notifyTumboIsAccepted():
 	notificationsManager.showMessage("¡Tumbo!")
 	playersDisplay.acceptedTumbo()
 
-	
+func notifyTumboIsRejected():
+	notificationsManager.showMessage("Se achican")
+
+func notifyCanNotMakeTheActionAfterTheGameEnded():
+	notificationsManager.showMessage("No se puede hacer la acción porque la partida ya terminó.")

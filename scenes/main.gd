@@ -40,7 +40,7 @@ func loadGameSceneInvisible():
 	gameScene.connect("vidoRaisedSignal", onClientCallsVidoRaise)
 	gameScene.connect("playedCardSignal", onClientCallsPlayCard)
 	gameScene.connect("tumbarSignal", onClientTumbar)
-	gameScene.connect("irseSignal", onClienteIrse)
+	gameScene.connect("achicarseSignal", onClientAchicarse)
 	if silence: gameScene.muteMusic()
 
 
@@ -83,10 +83,13 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receiveClientIdSignal", onReceivedClientId)
 	serverManager.connect("receiveTriumphsConfigurationSignal", Callable(self, "onReceivedTriumphsConfiguration"))
 	serverManager.connect("receiveCannNotPlayCardBecauseTumboIsBeingDecidedSignal", Callable(self, "onReceiveCannNotPlayCardBecauseTumboIsBeingDecided"))
+	serverManager.connect("receiveCannNotCallVidoBecauseTumboIsBeingDecidedSignal", Callable(self, "onReceiveCannNotCallVidoBecauseTumboIsBeingDecided"))
 	serverManager.connect("receiveTeam1IsOnTumboSignal", Callable(self, "onReceiveTeam1IsOnTumboSignal"))
 	serverManager.connect("receiveTeam2IsOnTumboSignal", Callable(self, "onReceiveTeam2IsOnTumboSignal"))
 	serverManager.connect("receiveCannNotTakeThisDecisionIfNotInWaitingForTumboSignal", Callable(self, "onReceiveCannNotTakeThisDecisionIfNotInWaitingForTumbo"))
 	serverManager.connect("receiveTumboIsAcceptedSignal", Callable(self, "onReceiveTumboIsAccepted"))
+	serverManager.connect("receiveTumboIsRejectedSignal", Callable(self, "onReceiveTumboIsRejected"))
+	serverManager.connect("receiveCanNotMakeTheActionAfterTheGameEndedSignal", Callable(self, "onReceiveCanNotMakeTheActionAfterTheGameEnded"))
 
 
 
@@ -148,8 +151,8 @@ func onClientCallsRejectVido():
 func onClientTumbar():
 	serverManager.tumbar()
 
-func onClienteIrse():
-	serverManager.irse()
+func onClientAchicarse():
+	serverManager.achicarse()
 
 func onClientCallsVidoRaise():
 	serverManager.raisedVido()
@@ -223,6 +226,9 @@ func onVidoCanOnlyBeCalledOnYourTurn():
 func onReceiveCannNotPlayCardBecauseTumboIsBeingDecided():
 	gameScene.cannNotPlayBecauseTumboIsBeingDecided()
 
+func onReceiveCannNotCallVidoBecauseTumboIsBeingDecided():
+	gameScene.cannNotCallVidoBecauseTumboIsBeingDecided()
+
 func onReceiveTeam1IsOnTumboSignal():
 	gameScene.notifyTeam1IsOnTumbo()
 
@@ -234,6 +240,12 @@ func onReceiveCannNotTakeThisDecisionIfNotInWaitingForTumbo():
 	
 func onReceiveTumboIsAccepted():
 	gameScene.notifyTumboIsAccepted()
+
+func onReceiveTumboIsRejected():
+	gameScene.notifyTumboIsRejected()
+
+func onReceiveCanNotMakeTheActionAfterTheGameEnded():
+	gameScene.notifyCanNotMakeTheActionAfterTheGameEnded()
 
 func onReceiveOnlyLeaderCanTakeThisDecision():
 	print("Only leader can make this decision")

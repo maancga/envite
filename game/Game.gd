@@ -57,6 +57,7 @@ func newGame():
 	startRound()
 
 func teamWins(teamName: String):
+	gameState = GameEndedState.new(playerInteractor)
 	playerInteractor.informTeamWon(teamName)
 
 func playFirstCard(id: String):
@@ -87,8 +88,8 @@ func raiseVido(id: String):
 func takeTumbo(id: String):
 	gameState.takeTumbo(id)
 
-func notTakeTumbo(id: String):
-	gameState.notTakeTumbo(id)
+func achicarse(id: String):
+	gameState.achicarse(id)
 
 func onTeam1IsOnTumbo():
 	team1IsOnTumbo = true

@@ -127,3 +127,6 @@ func informTeam1IsOnTumbo():
 
 func informTeam2IsOnTumbo():
 	push_error("⚠️ informTeam2IsOnTumbo() must be implemented by subclass")
+
+func canNotMakeTheActionAfterTheGameEnded(_playerId: String):
+	push_error("⚠️ canNotMakeTheActionAfterTheGameEnded() must be implemented by subclass")

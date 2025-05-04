@@ -21,7 +21,7 @@ signal vidoRaisedSignal()
 signal droppedCardSignal(card: String)
 signal yourTurnSignal()
 signal tumbarSignal()
-signal irseSignal()
+signal achicarseSignal()
 
 var currentPlayerTurnId: String
 var players : Dictionary
@@ -39,7 +39,7 @@ func _ready() -> void:
 	vidoElectionScene.connect("raisedButtonPressedSignal", onVidoRaised)
 	tumboElectionScene.visible = false
 	tumboElectionScene.connect("tumbarButtonPressedSignal", onTumbarButtonPressed)
-	tumboElectionScene.connect("irseButtonPressedSignal", onIrseButtonPressed)
+	tumboElectionScene.connect("achicarseButtonPressedSignal", onAchicarseButtonPressed)
 	playingButtonsDisplay.connect("callVidoButtonPressedSignal", onVidoCalledButtonPressed)
 	dropZone.connect("cardDroppedSignal", onCardDroppedSignal)
 
@@ -195,8 +195,8 @@ func onVidoRaised():
 func onTumbarButtonPressed():
 	tumbarSignal.emit()
 
-func onIrseButtonPressed():
-	irseSignal.emit()
+func onAchicarseButtonPressed():
+	achicarseSignal.emit()
 
 func getTeam(player: String) -> String:
 	if player in team1: return "team1"

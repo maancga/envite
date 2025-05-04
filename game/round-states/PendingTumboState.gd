@@ -59,7 +59,7 @@ func takeTumbo(playerId: String):
 		game.changeState(PlayerTurnState.new(game, hands, playerInteractor, playedCards, scoresManager, gamePlayers))
 		playerInteractor.informTumboIsAccepted()
 
-func notTakeTumbo(playerId: String):
+func achicarse(playerId: String):
 	if not gamePlayers.isLeader(playerId): playerInteractor.informOnlyLeaderCanTakeThisDecision(playerId)
 	if team1IsOnTumbo && gamePlayers.getTeam(playerId) == "team1":
 		scoresManager.teamOneRejectsTumbo()

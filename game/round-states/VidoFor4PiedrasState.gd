@@ -64,7 +64,7 @@ func takeTumbo(_playerId: String):
 	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo(_playerId)
 	return
 
-func notTakeTumbo(_playerId: String):
+func achicarse(_playerId: String):
 	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo(_playerId)
 	return
 

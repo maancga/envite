@@ -12,12 +12,12 @@ offset_bottom = 45.0
 theme = ExtResource("2_b46cn")
 text = "Tumbar"
 
-[node name="IrseButton" type="Button" parent="."]
+[node name="AchicarseButton" type="Button" parent="."]
 offset_top = 62.0
 offset_right = 116.0
 offset_bottom = 107.0
 theme = ExtResource("2_b46cn")
-text = "Irse"
+text = "Achicarse"
 
 [connection signal="pressed" from="TumbarButton" to="." method="onTumbarButtonPressed"]
-[connection signal="pressed" from="IrseButton" to="." method="onIrseButtonPressed"]
+[connection signal="pressed" from="AchicarseButton" to="." method="onAchicarseButtonPressed"]

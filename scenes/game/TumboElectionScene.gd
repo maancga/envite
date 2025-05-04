@@ -3,10 +3,10 @@ extends Node2D
 class_name TumboElectionScene
 
 signal tumbarButtonPressedSignal()
-signal irseButtonPressedSignal()
+signal achicarseButtonPressedSignal()
 
 func onTumbarButtonPressed() -> void:
 	tumbarButtonPressedSignal.emit()
 
-func onIrseButtonPressed() -> void:
-	irseButtonPressedSignal.emit()
+func onAchicarseButtonPressed() -> void:
+	achicarseButtonPressedSignal.emit()

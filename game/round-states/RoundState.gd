@@ -24,7 +24,7 @@ func raiseVido(_id: String):
 func takeTumbo(_playerId: String):
 	pass
 
-func notTakeTumbo(_playerId: String):
+func achicarse(_playerId: String):
 	pass
 
 func getStateName():

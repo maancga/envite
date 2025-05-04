@@ -185,7 +185,7 @@ func informVidoCanOnlyBeCalledOnYourTurn(_playerId: String):
 func informOnlyLeaderCanTakeThisDecision(_player: String):
 	pass
 
-func cannNotTakeThisDecisionIfNotInWaitingForTumbo():
+func cannNotTakeThisDecisionIfNotInWaitingForTumbo(_player: String):
 	pass
 
 func informTeam1IsOnTumbo():
@@ -201,4 +201,7 @@ func informTumboIsRejected():
 	pass
 
 func informCannNotPlayCardBecauseTumboIsBeingDecided(_playerId: String):
+	pass
+
+func canNotMakeTheActionAfterTheGameEnded(_playerId: String):
 	pass
