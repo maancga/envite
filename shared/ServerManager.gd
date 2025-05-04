@@ -47,15 +47,10 @@ signal receiveCannNotTakeThisDecisionIfNotInWaitingForTumboSignal()
 signal receiveTumboIsAcceptedSignal()
 signal receiveTumboIsRejectedSignal()
 signal receiveCanNotMakeTheActionAfterTheGameEndedSignal()
+signal receivedGameAssignedSignal(gameId: String)
 
-var preGame: PreGame
-var game: Game
-var gamePlayers: GamePlayers
-var playerInteractor: PlayerInteractor
-var hasGameStarted = false
-
-func _init() -> void:
-	gamePlayers = GamePlayers.new()
+var games := {} # game_id -> { preGame, game, interactor, players }
+var playersToGameMap := {} # peer_id -> game_id
 
 ############## SERVER
 
@@ -68,87 +63,91 @@ func startServer(port = 9000):
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(onClientConnected)
 	print("🟢 Server running on port", port)
-	playerInteractor = RealPlayerInteractor.new()
-	connectPlayerInteractorSignals()
 
-	playerInteractor.name = "Interactor"
-	add_child(playerInteractor)
-	preGame = PreGame.new(playerInteractor, gamePlayers)
-	preGame.name = "Pregame"
-	add_child(preGame)
-
-func connectPlayerInteractorSignals():
-	playerInteractor.connect("sendPlayersAndTeamsSignal", Callable(self, "onReceivedPlayersAndTeams", ))
-	playerInteractor.connect("sendPlayerAddedSignal", Callable(self, "onPlayerAdded", ))
-	playerInteractor.connect("dealHandToPlayerSignal", Callable(self, "onDealtHand", ))
-	playerInteractor.connect("dealVirado", Callable(self, "onDealtVirado", ))
-	playerInteractor.connect("sendCurrentPlayerTurnSignal", Callable(self, "onPlayerTurn"))
-	playerInteractor.connect("sendPlayerPlayedCardSignal", Callable(self, "onPlayedCard"))
-	playerInteractor.connect("sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsNotTurn"))
-	playerInteractor.connect("sendPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand"))
-	playerInteractor.connect("sendPlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsPlayedAlready"))
-	playerInteractor.connect("sendPlayerRoundWinnerSignal", Callable(self, "onPlayerRoundWinner"))
-	playerInteractor.connect("sendTeamWonPiedrasSignal", Callable(self, "onTeamWonPiedras"))
-	playerInteractor.connect("sendTeamWonChicoSignal", Callable(self, "onTeamWonChico"))
-	playerInteractor.connect("sendTeamWonSignal", Callable(self, "onTeamWon"))
-	playerInteractor.connect("informDealerSignal", Callable(self, "onGotDealer"))
-	playerInteractor.connect("informPlayerFromSameTeamCanNotTakeDecisionSignal", Callable(self, "onPlayerFromSameTeamCanNotTakeDecision"))
-	playerInteractor.connect("informOnlyLeaderCanTakeThisDecisionSignal", Callable(self, "onOnlyLeaderCanTakeThisDecision"))
-	playerInteractor.connect("sendPlayerCalledVidoSignal", Callable(self, "onPlayerCalledVido"))
-	playerInteractor.connect("sendPlayerRefusedVidoSignal", Callable(self, "onPlayerRefusedVido"))
-	playerInteractor.connect("sendVidoRaisedFor7PiedrasSignal", Callable(self, "onVidoRaisedFor7Piedras"))
-	playerInteractor.connect("sendVidoRaisedFor9PiedrasSignal", Callable(self, "onVidoRaisedFor9Piedras"))
-	playerInteractor.connect("sendVidoRaisedForChicoSignal", Callable(self, "onVidoRaisedForChico"))
-	playerInteractor.connect("sendVidoRaisedForGameSignal", Callable(self, "onVidoRaisedForGame"))
-	playerInteractor.connect("informVidoCanOnlyBeCalledOnYourTurnSignal", Callable(self, "onVidoCanOnlyBeCalledOnYourTurn"))
-	playerInteractor.connect("sendPlayerAcceptedVidoSignal", Callable(self, "onPlayerAcceptedVido"))
-	playerInteractor.connect("informPlayerCantBeAddedSinceMaxIsReachedSignal", Callable(self, "onInformPlayerCantBeAddedSinceMaxIsReached"))
-	playerInteractor.connect("informGameCanNotStartSinceItsNotOwnerSignal", Callable(self, "onInformGameCanNotStartSinceItsNotOwner"))
-	playerInteractor.connect("informIsGameOwnerSignal", Callable(self, "onInformIsGameOwner"))
-	playerInteractor.connect("informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal", Callable(self, "onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached"))
-	playerInteractor.connect("informTriumphsConfigurationSignal", Callable(self, "onInformTriumphsConfiguration"))
-	playerInteractor.connect("informCannNotPlayCardBecauseTumboIsBeingDecidedSignal", Callable(self, "onInformCannNotPlayCardBecauseTumboIsBeingDecided"))
-	playerInteractor.connect("informCannNotCallVidoBecauseTumboIsBeingDecidedSignal", Callable(self, "onInformCannNotCallVidoBecauseTumboIsBeingDecided"))
-	playerInteractor.connect("informTeam1IsOnTumboSignal", Callable(self, "onInformTeam1IsOnTumbo"))
-	playerInteractor.connect("informTeam2IsOnTumboSignal", Callable(self, "onInformTeam2IsOnTumbo"))
-	playerInteractor.connect("informCannNoTakeThisDecisionIfNotInWaitingForTumboSignal", Callable(self, "onInformCannNoTakeThisDecisionIfNotInWaitingForTumbo"))
-	playerInteractor.connect("informTumboIsAcceptedSignal", Callable(self, "onInformTumboIsAccepted"))
-	playerInteractor.connect("informTumboIsRejectedSignal", Callable(self, "onInformTumboIsRejected"))
-	playerInteractor.connect("informCanNotMakeTheActionAfterTheGameEndedSignal", Callable(self, "onInformCanNotMakeTheActionAfterTheGameEnded"))
+func connectPlayerInteractorSignals(interactor: PlayerInteractor):
+	interactor.connect("sendPlayersAndTeamsSignal", Callable(self, "onReceivedPlayersAndTeams", ))
+	interactor.connect("sendPlayerAddedSignal", Callable(self, "onPlayerAdded", ))
+	interactor.connect("dealHandToPlayerSignal", Callable(self, "onDealtHand", ))
+	interactor.connect("dealVirado", Callable(self, "onDealtVirado", ))
+	interactor.connect("sendCurrentPlayerTurnSignal", Callable(self, "onPlayerTurn"))
+	interactor.connect("sendPlayerPlayedCardSignal", Callable(self, "onPlayedCard"))
+	interactor.connect("sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsNotTurn"))
+	interactor.connect("sendPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand"))
+	interactor.connect("sendPlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsPlayedAlready"))
+	interactor.connect("sendPlayerRoundWinnerSignal", Callable(self, "onPlayerRoundWinner"))
+	interactor.connect("sendTeamWonPiedrasSignal", Callable(self, "onTeamWonPiedras"))
+	interactor.connect("sendTeamWonChicoSignal", Callable(self, "onTeamWonChico"))
+	interactor.connect("sendTeamWonSignal", Callable(self, "onTeamWon"))
+	interactor.connect("informDealerSignal", Callable(self, "onGotDealer"))
+	interactor.connect("informPlayerFromSameTeamCanNotTakeDecisionSignal", Callable(self, "onPlayerFromSameTeamCanNotTakeDecision"))
+	interactor.connect("informOnlyLeaderCanTakeThisDecisionSignal", Callable(self, "onOnlyLeaderCanTakeThisDecision"))
+	interactor.connect("sendPlayerCalledVidoSignal", Callable(self, "onPlayerCalledVido"))
+	interactor.connect("sendPlayerRefusedVidoSignal", Callable(self, "onPlayerRefusedVido"))
+	interactor.connect("sendVidoRaisedFor7PiedrasSignal", Callable(self, "onVidoRaisedFor7Piedras"))
+	interactor.connect("sendVidoRaisedFor9PiedrasSignal", Callable(self, "onVidoRaisedFor9Piedras"))
+	interactor.connect("sendVidoRaisedForChicoSignal", Callable(self, "onVidoRaisedForChico"))
+	interactor.connect("sendVidoRaisedForGameSignal", Callable(self, "onVidoRaisedForGame"))
+	interactor.connect("informVidoCanOnlyBeCalledOnYourTurnSignal", Callable(self, "onVidoCanOnlyBeCalledOnYourTurn"))
+	interactor.connect("sendPlayerAcceptedVidoSignal", Callable(self, "onPlayerAcceptedVido"))
+	interactor.connect("informPlayerCantBeAddedSinceMaxIsReachedSignal", Callable(self, "onInformPlayerCantBeAddedSinceMaxIsReached"))
+	interactor.connect("informGameCanNotStartSinceItsNotOwnerSignal", Callable(self, "onInformGameCanNotStartSinceItsNotOwner"))
+	interactor.connect("informIsGameOwnerSignal", Callable(self, "onInformIsGameOwner"))
+	interactor.connect("informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal", Callable(self, "onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached"))
+	interactor.connect("informTriumphsConfigurationSignal", Callable(self, "onInformTriumphsConfiguration"))
+	interactor.connect("informCannNotPlayCardBecauseTumboIsBeingDecidedSignal", Callable(self, "onInformCannNotPlayCardBecauseTumboIsBeingDecided"))
+	interactor.connect("informCannNotCallVidoBecauseTumboIsBeingDecidedSignal", Callable(self, "onInformCannNotCallVidoBecauseTumboIsBeingDecided"))
+	interactor.connect("informTeam1IsOnTumboSignal", Callable(self, "onInformTeam1IsOnTumbo"))
+	interactor.connect("informTeam2IsOnTumboSignal", Callable(self, "onInformTeam2IsOnTumbo"))
+	interactor.connect("informCannNoTakeThisDecisionIfNotInWaitingForTumboSignal", Callable(self, "onInformCannNoTakeThisDecisionIfNotInWaitingForTumbo"))
+	interactor.connect("informTumboIsAcceptedSignal", Callable(self, "onInformTumboIsAccepted"))
+	interactor.connect("informTumboIsRejectedSignal", Callable(self, "onInformTumboIsRejected"))
+	interactor.connect("informCanNotMakeTheActionAfterTheGameEndedSignal", Callable(self, "onInformCanNotMakeTheActionAfterTheGameEnded"))
 
 func onClientConnected(id):
 	print("🟢 Client connected with id: ", id)
 	rpc_id(id, "receiveClientId", str(id))
 
-func onReceivedPlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
+func onReceivedPlayersAndTeams(gameId: String, players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
 	print("Sending players and teams...")
 	print("players: ", players)
 	print("team1: ", team1)
 	print("team2: ", team2)
 	print("teamLeader1: ", team1Leader)
 	print("teamLeader2: ", team2Leader )
-	rpc("receivePlayersAndTeams", players, team1, team2, team1Leader, team2Leader)
+	var gamePlayers = getPlayersFromGameId(gameId)
+	for currentPlayer in gamePlayers.playerIds:
+		rpc_id(int(currentPlayer), "receivePlayersAndTeams", players, team1, team2, team1Leader, team2Leader)
 
-func onPlayerAdded(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
-	print("Sending players and teams...")
-	print("players: ", players)
-	print("team1: ", team1)
-	print("team2: ", team2)
-	print("teamLeader1: ", team1Leader)
-	print("teamLeader2: ", team2Leader )
-	rpc("receivePlayerAdded", players, team1, team2, team1Leader, team2Leader)
+func onPlayerAdded(gameId: String, players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
+	var preGame: PreGame = games[gameId].preGame
+	for player in preGame.gamePlayers.playerIds:
+		rpc_id(int(player), "receivePlayerAdded", players, team1, team2, team1Leader, team2Leader)
 
-func onDealtHand(player: String, hand: ServerHand):
+func getPlayersFromGameId(gameId: String) -> GamePlayers:
+	return games[gameId].players
+
+func getGameFromGameId(gameId: String) -> Game:
+	return games[gameId].game
+
+func getPreGameFromGameId(gameId: String) -> PreGame:
+	return games[gameId].preGame
+
+func onDealtHand(gameId: String, player: String, hand: ServerHand):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Dealt hand to player ", gamePlayers.getPlayerName(player), " with cards: ", hand.to_dict())
 	rpc_id(int(player),"receiveHand", hand.to_dict())
 
-func onDealtVirado(card: ServerCard):
+func onDealtVirado(gameId: String, card: ServerCard):
 	print("Dealt virado: ", card.getCardName())
-	rpc("receiveVirado", card.to_dict())
+	var gamePlayers = getPlayersFromGameId(gameId)
+	for currentPlayer in gamePlayers.playerIds:
+		rpc_id(int(currentPlayer), "receiveVirado", card.to_dict())
 
-func onPlayerTurn(player: String):
+func onPlayerTurn(gameId: String, player: String):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Player ", gamePlayers.getPlayerName(player), " turn")
-	rpc("receivePlayerTurn", player)
+	for currentPlayer in gamePlayers.playerIds:
+		rpc_id(int(currentPlayer), "receivePlayerTurn", player)
 
 func onPlayerCouldNotPlayCardBecauseItsNotTurn(player: String):	
 	print("can not play since its not its turn")
@@ -162,94 +161,131 @@ func onPlayerCouldNotPlayCardBecauseItsPlayedAlready(player: String):
 	print("can not play since it has already played that card")
 	rpc_id(int(player), "receivePlayerCouldNotPlayCardBecauseItsPlayedAlready")
 
-func onPlayedCard(player: String, card: ServerCard, playedOrder: int, cardHandIndex: int):
+func onPlayedCard(gameId: String, player: String, card: ServerCard, playedOrder: int, cardHandIndex: int):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Player ", gamePlayers.getPlayerName(player), " played its ", cardHandIndex, " card: ", card.getCardName(), " with order: ", playedOrder)
-	rpc("receiveCardPlayed", player, card.to_dict(), cardHandIndex)
+	for currentPlayer in gamePlayers.playerIds:
+		rpc_id(int(currentPlayer), "receiveCardPlayed", player, card.to_dict(), cardHandIndex)
 
-func onPlayerRoundWinner(player: String, roundScore: int):
+func onPlayerRoundWinner(gameId: String, player: String, roundScore: int):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Hand winner is %s" % [gamePlayers.getPlayerName(player)])
 	print("%s won the hand" % [gamePlayers.getTeam(player)])
-	rpc("receivePlayerRoundWinner", player, roundScore)
+	for currentPlayer in gamePlayers.playerIds:
+		rpc_id(int(currentPlayer), "receivePlayerRoundWinner", player, roundScore)
 
-func onTeamWonPiedras(teamName: String, piedras: int, piedrasOnPlay: int):
+func onTeamWonPiedras(gameId: String, teamName: String, piedras: int, piedrasOnPlay: int):
 	print("Team " + teamName + " won " + str(piedrasOnPlay) + " piedras, summing " + str(piedras) + " piedras")
-	rpc("receiveTeamWonPiedras", teamName, piedras)
+	var gamePlayers = getPlayersFromGameId(gameId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receiveTeamWonPiedras", teamName, piedras)
 
-func onTeamWonChico(teamName: String, chicos: int):
+func onTeamWonChico(gameId: String, teamName: String, chicos: int):
 	print("Team " + teamName + " won a chico")
-	rpc("receiveTeamWonChico", teamName, chicos)
+	var gamePlayers = getPlayersFromGameId(gameId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receiveTeamWonChico", teamName, chicos)
 
-func onTeamWon(teamName: String):
+func onTeamWon(gameId: String, teamName: String):
 	print("Team " + teamName + " won the game")
-	rpc("receiveTeamWon", teamName)
+	var gamePlayers = getPlayersFromGameId(gameId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receiveTeamWon", teamName)
 
-func onGotDealer(dealer: String):
-	rpc("receiveDealer", dealer)
+func onGotDealer(gameId: String, dealer: String):
+	var gamePlayers = getPlayersFromGameId(gameId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receiveDealer", dealer)
 
-func onPlayerCalledVido(playerId: String):
+func onPlayerCalledVido(gameId: String, playerId: String):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s called vido" %  [gamePlayers.getPlayerName(playerId)])
-	rpc("receivePlayerCalledVido", playerId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receivePlayerCalledVido", playerId)
 
-func onVidoRaisedFor7Piedras(playerId):
+func onVidoRaisedFor7Piedras(gameId: String, playerId):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido to 7 piedras" % [gamePlayers.getPlayerName(playerId)])
-	rpc("receivePlayerRaisedVidoTo7Piedras", playerId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receivePlayerRaisedVidoTo7Piedras", playerId)
 
-func onVidoRaisedFor9Piedras(playerId):
+func onVidoRaisedFor9Piedras(gameId: String, playerId):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido to 9 piedras" % [gamePlayers.getPlayerName(playerId)])
-	rpc("receivePlayerRaisedVidoTo9Piedras", playerId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receivePlayerRaisedVidoTo9Piedras", playerId)
 
-func onVidoRaisedForChico(playerId):
+func onVidoRaisedForChico(gameId: String, playerId):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido to chico" % [gamePlayers.getPlayerName(playerId)])
-	rpc("receivePlayerRaisedVidoToChico", playerId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player),"receivePlayerRaisedVidoToChico", playerId)
 
-func onVidoRaisedForGame(playerId):
+func onVidoRaisedForGame(gameId: String, playerId):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido to game" % [gamePlayers.getPlayerName(playerId)])
-	rpc("receivePlayerRaisedVidoToGame", playerId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receivePlayerRaisedVidoToGame", playerId)
 
-func onPlayerRefusedVido(playerId):
+func onPlayerRefusedVido(gameId: String, playerId):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s refused vido" % [gamePlayers.getPlayerName(playerId)])
-	rpc("receivePlayerRefusedVido", playerId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receivePlayerRefusedVido", playerId)
 
-func onPlayerAcceptedVido(playerId):
+func onPlayerAcceptedVido(gameId: String, playerId):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s accepted vido" % [gamePlayers.getPlayerName(playerId)])
-	rpc("receivePlayerAcceptedVido", playerId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receivePlayerAcceptedVido", playerId)
 
-func onPlayerRaisedVido(playerId):
+func onPlayerRaisedVido(gameId: String, playerId):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido" % [gamePlayers.getPlayerName(playerId)])
-	rpc("receivePlayerRaisedVido", playerId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receivePlayerRaisedVido", playerId)
 
-func onPlayerFromSameTeamCanNotTakeDecision(playerId: String):
+func onPlayerFromSameTeamCanNotTakeDecision(gameId: String, playerId: String):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Player %s can not take the decision since it is from the same team" % [gamePlayers.getPlayerName(playerId)])
 	rpc_id(int(playerId), "receivePlayerFromSameTeamCanNotTakeDecision")
 
-func onOnlyLeaderCanTakeThisDecision(playerId: String):
+func onOnlyLeaderCanTakeThisDecision(gameId: String, playerId: String):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Player %s can not take the decision since it is not the leader" % [gamePlayers.getPlayerName(playerId)])
 	rpc_id(int(playerId), "receiveOnlyLeaderCanTakeThisDecision")
 
-func onVidoCanOnlyBeCalledOnYourTurn(playerId: String):
+func onVidoCanOnlyBeCalledOnYourTurn(gameId: String, playerId: String):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Player %s can not call the vido since its not its turn" % [gamePlayers.getPlayerName(playerId)])
 	rpc_id(int(playerId), "receiveVidoCanOnlyBeCalledOnYourTurn")
 
-func onInformPlayerCantBeAddedSinceMaxIsReached(playerId: String):
+func onInformPlayerCantBeAddedSinceMaxIsReached(gameId: String, playerId: String):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Player %s can not be added since max players is reached" % [gamePlayers.getPlayerName(playerId)])
 	rpc_id(int(playerId), "receivePlayerCantBeAddedSinceMaxIsReached")
 
-func onInformGameCanNotStartSinceItsNotOwner(playerId: String):
+func onInformGameCanNotStartSinceItsNotOwner(gameId: String, playerId: String):
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Player %s can not start the game since it is not the owner" % [gamePlayers.getPlayerName(playerId)])
 
-func onInformIsGameOwner(playerId: String):
+func onInformIsGameOwner(gameId: String, playerId: String):
+	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
 	print("Informing that %s is the game owner" % [gamePlayers.getPlayerName(playerId)])
-	rpc("receivePlayerIsGameOwner", playerId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receivePlayerIsGameOwner", playerId)
 
 func onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(playerId):
 	print("Game can not start since the minimum of players is not reached")
 	rpc_id(int(playerId), "receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached")
 
-func onInformTriumphsConfiguration(triumphs: Array[Dictionary]):
+func onInformTriumphsConfiguration(gameId: String, triumphs: Array[Dictionary]):
 	print("Informing current triumphs configuration")
 	for triumph in triumphs:
 		print(triumph)
-	rpc("receiveTriumphsConfiguration", triumphs)
+	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receiveTriumphsConfiguration", triumphs)
 
 func onInformCannNotPlayCardBecauseTumboIsBeingDecided(playerId: String):
 	rpc_id(int(playerId), "receiveCannNotPlayCardBecauseTumboIsBeingDecided")
@@ -257,20 +293,28 @@ func onInformCannNotPlayCardBecauseTumboIsBeingDecided(playerId: String):
 func onInformCannNotCallVidoBecauseTumboIsBeingDecided(playerId: String):
 	rpc_id(int(playerId), "receiveCannNotCallVidoBecauseTumboIsBeingDecided")
 
-func onInformTeam1IsOnTumbo():
-	rpc("receiveTeam1IsOnTumbo")
+func onInformTeam1IsOnTumbo(gameId: String):
+	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receiveTeam1IsOnTumbo")
 
-func onInformTeam2IsOnTumbo():
-	rpc("receiveTeam2IsOnTumbo")
+func onInformTeam2IsOnTumbo(gameId: String):
+	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receiveTeam2IsOnTumbo")
 
 func onInformCannNoTakeThisDecisionIfNotInWaitingForTumbo(playerId: String):
 	rpc_id(int(playerId), "receiveCannNotTakeThisDecisionIfNotInWaitingForTumbo")
 
-func onInformTumboIsAccepted():
-	rpc("receiveTumboIsAccepted")
+func onInformTumboIsAccepted(gameId: String):
+	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receiveTumboIsAccepted")
 
-func onInformTumboIsRejected():
-	rpc("receiveTumboIsRejected")
+func onInformTumboIsRejected(gameId: String):
+	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
+	for player in gamePlayers.playerIds:
+		rpc_id(int(player), "receiveTumboIsRejected")
 
 func onInformCanNotMakeTheActionAfterTheGameEnded(playerId: String):
 	rpc_id(int(playerId), "receiveCanNotMakeTheActionAfterTheGameEnded")
@@ -278,24 +322,44 @@ func onInformCanNotMakeTheActionAfterTheGameEnded(playerId: String):
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
 	var sender = multiplayer.get_remote_sender_id()
-	var playerId = str(sender)
-	print("Player ", gamePlayers.getPlayerName(playerId), " attempted to play its ", cardIndex," card.")
-	if cardIndex == "1": game.playFirstCard(playerId)
-	if cardIndex == "2": game.playSecondCard(playerId)
-	if cardIndex == "3": game.playThirdCard(playerId)
+	var gameId = playersToGameMap.get(sender, null)
+	if not gameId or not games.has(gameId):
+		print("❌ Partida no encontrada para jugador ", sender)
+		return
+	
+	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
+	var game = getGameFromGameId(gameId)
+	if game:
+		var playerId = str(sender)
+		print("Player ", gamePlayers.getPlayerName(playerId), " attempted to play its ", cardIndex," card.")
+		match cardIndex:
+			"1": game.playFirstCard(playerId)
+			"2": game.playSecondCard(playerId)
+			"3": game.playThirdCard(playerId)
 
 @rpc("any_peer")
 func onClientChoosesName(chosenName: String):
 	var sender = multiplayer.get_remote_sender_id()
+	var game_id = playersToGameMap.get(sender, null)
+	if not game_id or not games.has(game_id):
+		print("❌ No hay ninguna partida asociada con el jugador ", sender)
+		return
+	
+	var foundPreGame = games[game_id]["preGame"]
 	var playerId = str(sender)
-	if gamePlayers.playerExists(playerId): return
-	print("Player ", playerId, " chose name: ", chosenName)
-	preGame.addPlayer(str(sender), chosenName)
+	if foundPreGame:
+		if foundPreGame.gamePlayers.playerExists(playerId): return
+		foundPreGame.addPlayer(str(sender), chosenName)
+		print("Player ", playerId, " chose name: ", chosenName)
+
 
 @rpc("any_peer")
 func onClientCalledVido():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
+	var gameId = playersToGameMap.get(sender)
+	var game = getGameFromGameId(gameId)
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s attempts to call vido" % [gamePlayers.getPlayerName(playerId)])
 	game.callVido(playerId)
 
@@ -303,6 +367,9 @@ func onClientCalledVido():
 func onClientAcceptedVido():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
+	var gameId = playersToGameMap.get(sender)
+	var game = getGameFromGameId(gameId)
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s attempts to accepts the vido" % [gamePlayers.getPlayerName(playerId)])
 	game.acceptVido(playerId)
 
@@ -310,6 +377,9 @@ func onClientAcceptedVido():
 func onClientRejectedVido():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
+	var gameId = playersToGameMap.get(sender)
+	var game = getGameFromGameId(gameId)
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s attempts to reject the vido" % [gamePlayers.getPlayerName(playerId)])
 	game.rejectVido(playerId)
 
@@ -317,6 +387,9 @@ func onClientRejectedVido():
 func onClientRaisedVido():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
+	var gameId = playersToGameMap.get(sender)
+	var game = getGameFromGameId(gameId)
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s attempts to raise the vido" % [gamePlayers.getPlayerName(playerId)])
 	game.raiseVido(playerId)
 
@@ -324,9 +397,13 @@ func onClientRaisedVido():
 func onClientStartedGame():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
-	game = preGame.start(playerId)
+	var gameId = playersToGameMap.get(sender)
+	var preGame = getPreGameFromGameId(gameId)
+	var gamePlayers = getPlayersFromGameId(gameId)
+	var game = preGame.start(playerId)
 	if game is Game:
 		game.newGame()
+		games[gameId]["game"] = game
 		for player in gamePlayers.playerIds:
 			rpc_id(int(player), "gameStarted")
 
@@ -334,14 +411,54 @@ func onClientStartedGame():
 func onClientTumbar():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
+	var gameId = playersToGameMap.get(sender)
+	var game = getGameFromGameId(gameId)
 	game.takeTumbo(playerId)
 
 @rpc("any_peer")
 func onClientAchicarse():
 	var sender = multiplayer.get_remote_sender_id()
 	var playerId = str(sender)
+	var gameId = playersToGameMap.get(sender)
+	var game = getGameFromGameId(gameId)
 	game.achicarse(playerId)
 
+@rpc("any_peer")
+func onClientRequestsCreateGame():
+	var sender = multiplayer.get_remote_sender_id()
+	var gameId = str("game_" + str(games.size()))
+
+	var gamePlayers = GamePlayers.new()
+	var interactor = RealPlayerInteractor.new(gameId)
+	add_child(interactor)
+
+	var preGame = PreGame.new(interactor, gamePlayers)
+	
+	games[gameId] = {
+		"preGame": preGame,
+		"game": null,
+		"interactor": interactor,
+		"players": gamePlayers
+	}
+	connectPlayerInteractorSignals(interactor)
+	playersToGameMap[sender] = gameId
+	
+	print("✅ Nueva partida creada con ID:", gameId)
+	print("🟢 Jugador ", sender, " creó y se unió a la partida ",gameId)
+	rpc_id(sender, "receiveGameAssigned", gameId) 
+
+@rpc("any_peer")
+func onClientRequestsJoinGame(gameId):
+	var sender = multiplayer.get_remote_sender_id()
+	if not games.has(gameId):
+		print("❌ Partida no encontrada:", gameId)
+		rpc_id(sender, "receiveGameJoinFailed", "No existe esa partida.")
+		return
+
+	playersToGameMap[sender] = gameId
+
+	print("🟢 Jugador ", sender, " se unió a la partida ", gameId)
+	rpc_id(sender, "receiveGameAssigned", gameId)
 ################ CLIENT
 
 func connectClient(ip = "127.0.0.1", port = 9000):
@@ -508,6 +625,11 @@ func receiveTumboIsRejected():
 func receiveCanNotMakeTheActionAfterTheGameEnded():
 	receiveCanNotMakeTheActionAfterTheGameEndedSignal.emit()
 
+@rpc("authority")
+func receiveGameAssigned(gameId: String):
+	receivedGameAssignedSignal.emit(gameId)
+
+
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():
 		push_error("Invalid cardIndex: " + cardIndex)
@@ -537,3 +659,9 @@ func tumbar() -> void:
 
 func achicarse() -> void:
 	rpc_id(1, "onClientAchicarse")
+
+func clientRequestsCreateGame() -> void:
+	rpc_id(1, "onClientRequestsCreateGame")
+
+func clientRequestsJoinGame(gameId: String) -> void:
+	rpc_id(1, "onClientRequestsJoinGame", gameId)

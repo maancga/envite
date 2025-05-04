@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://darjyvxtq2y8b"
-path="res://.godot/imported/envilatro.png-4c8372bfe8e292a8fadec548b1598c79.ctex"
+path="res://.godot/imported/envilatro.png-cac3c3448f5b45d9cb4aa25d139bbba6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/choose-name/envilatro.png"
-dest_files=["res://.godot/imported/envilatro.png-4c8372bfe8e292a8fadec548b1598c79.ctex"]
+source_file="res://scenes/all-scenes-assets/envilatro.png"
+dest_files=["res://.godot/imported/envilatro.png-cac3c3448f5b45d9cb4aa25d139bbba6.ctex"]
 
 [params]
 

@@ -4,6 +4,10 @@ var serverManager
 var gameScene
 var chooseNameScene
 var silence = false
+var yourId: String
+var optionsCanvasReference
+var menuCanvasReference
+var menuSceneReference: Menu
 
 func _ready():
 	var args = OS.get_cmdline_args()
@@ -14,9 +18,17 @@ func _ready():
 		print("🎮 Starting in CLIENT mode")
 		if "--silence" in args:
 			silence = true
+		var menuScene = preload("res://scenes/main-menu/Menu.tscn").instantiate()
+		menuSceneReference = menuScene
+		var canvas = CanvasLayer.new()
+		canvas.add_child(menuScene)
+		add_child(canvas)
+		menuScene.connect("createGameSignal", onCreateGame)
+		menuScene.connect("joinGameSignal", onJoinGame)
+		menuScene.connect("openOptionsSignal", onOpenOptions)
+		menuScene.connect("exitGameSignal", onExitGame)
+		menuCanvasReference = canvas
 		connectToServer()
-		setUpAndLoadChooseNameScene()
-		loadGameSceneInvisible()
 
 func startServer():
 	var server =  ServerManager.new()
@@ -24,11 +36,39 @@ func startServer():
 	add_child(server)
 	server.startServer()
 
+func onExitGame():
+	get_tree().quit()
+
+func onCreateGame():
+	setUpAndLoadChooseNameScene()
+	serverManager.clientRequestsCreateGame()
+	loadGameSceneInvisible()
+
+func onJoinGame():
+	setUpAndLoadChooseNameScene()
+	serverManager.clientRequestsJoinGame(menuSceneReference.inputText.text)
+	loadGameSceneInvisible()
+	
+func onOpenOptions():
+	var optionsScene = preload("res://scenes/options/Options.tscn").instantiate()
+	var canvas = CanvasLayer.new()
+	canvas.add_child(optionsScene)
+	add_child(canvas)
+	optionsScene.connect("exitOptionsButtonPressedSignal", onCloseOptions)
+	optionsCanvasReference = canvas
+
+func onCloseOptions():
+	optionsCanvasReference.queue_free()
+
 func setUpAndLoadChooseNameScene():
 	chooseNameScene = preload("res://scenes/choose-name/ChooseName.tscn").instantiate()
 	chooseNameScene.connect("nameChosenSignal", onNameChosen)
 	chooseNameScene.connect("startGameSignal", onClientCallsStartsGame)
 	add_child(chooseNameScene)
+	chooseNameScene.setId(yourId)
+	chooseNameScene.setLobbyName('123')
+
+
 
 func loadGameSceneInvisible():
 	gameScene = preload("res://scenes/game/GameScene.tscn").instantiate()
@@ -48,7 +88,6 @@ func connectToServer():
 	serverManager = ServerManager.new()
 	serverManager.name = "ServerManager"
 	add_child(serverManager)
-
 	connectServerManagerSignals()
 	serverManager.connectClient()
 
@@ -90,17 +129,17 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receiveTumboIsAcceptedSignal", Callable(self, "onReceiveTumboIsAccepted"))
 	serverManager.connect("receiveTumboIsRejectedSignal", Callable(self, "onReceiveTumboIsRejected"))
 	serverManager.connect("receiveCanNotMakeTheActionAfterTheGameEndedSignal", Callable(self, "onReceiveCanNotMakeTheActionAfterTheGameEnded"))
-
-
+	serverManager.connect("receivedGameAssignedSignal", Callable(self, "onReceiveGameAssigned"))
 
 func onNameChosen(userName):
 	serverManager.chooseName(userName)
 
 func onGameHasStarted():
-		showGameScene()
+	menuCanvasReference.visible = false
+	showGameScene()
 
 func onReceivedClientId(playerId: String):
-	chooseNameScene.setId(playerId)
+	yourId = playerId
 
 func onReceivedPlayersAndTeams(newPlayers, newTeam1, newTeam2, team1Leader, team2Leader):
 	var playerId = multiplayer.get_unique_id()
@@ -136,7 +175,7 @@ func onReceivedVirado(newVirado):
 		CardData.new(newVirado.value, newVirado.suit)
 	)
 
-func onClientCallsPlayCard(cardIndex: String):	
+func onClientCallsPlayCard(cardIndex: String):
 	serverManager.playCard(cardIndex)
 
 func onClientCallsVido():
@@ -246,6 +285,9 @@ func onReceiveTumboIsRejected():
 
 func onReceiveCanNotMakeTheActionAfterTheGameEnded():
 	gameScene.notifyCanNotMakeTheActionAfterTheGameEnded()
+
+func onReceiveGameAssigned(gameId: String):
+	chooseNameScene.setLobbyName(gameId)
 
 func onReceiveOnlyLeaderCanTakeThisDecision():
 	print("Only leader can make this decision")

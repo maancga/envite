@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://conejyoe5mf" path="res://scenes/choose-name/ChooseName.gd" id="1_msssm"]
 [ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://scenes/all-scenes-assets/mesa_fondo.png" id="1_nlomy"]
 [ext_resource type="AudioStream" uid="uid://b36sqmf6x0114" path="res://audio/another_option_shorted.wav" id="2_2wdij"]
-[ext_resource type="Texture2D" uid="uid://darjyvxtq2y8b" path="res://scenes/choose-name/envilatro.png" id="2_acpur"]
+[ext_resource type="Texture2D" uid="uid://darjyvxtq2y8b" path="res://scenes/all-scenes-assets/envilatro.png" id="2_acpur"]
 [ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/all-scenes-assets/ButtonTheme.tres" id="4_bauhr"]
 [ext_resource type="Theme" uid="uid://bvyw4cobof6rs" path="res://scenes/choose-name/PlayerNamesContainerTheme.tres" id="4_dyw15"]
 [ext_resource type="Theme" uid="uid://cvmvdbnwechh" path="res://scenes/choose-name/PlayerNameLabelThemeTeam1.tres" id="4_kh8il"]
@@ -288,6 +288,12 @@ size_flags_vertical = 8
 theme = ExtResource("4_bauhr")
 text = "Empezar 
 partida"
+
+[node name="NombreDeLaPartida" type="Label" parent="CanvasLayer/Screen"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "12332131"
 
 [connection signal="mouse_entered" from="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameReadyButton" to="." method="onChooseNameButtonAreaEntered"]
 [connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameReadyButton" to="." method="_on_choose_a_name_ready_button_pressed"]

@@ -114,8 +114,6 @@ func cleanTriumphs():
 		node.queue_free()
 	toDeleteTriumphsNodes.clear()
 
-
-
 func _on_button_pressed() -> void:
 	startGameSignal.emit()
 
@@ -136,3 +134,6 @@ func onChooseNameButtonAreaEntered() -> void:
 
 func onStartGameButtonAreaEntered() -> void:
 	if not $CanvasLayer/Screen/PanelContainer/MarginContainer2/StartGameButton.disabled: $ButtonFocusedSound.play()
+
+func setLobbyName(lobbyName: String):
+	$CanvasLayer/Screen/NombreDeLaPartida.text = lobbyName

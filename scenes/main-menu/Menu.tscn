@@ -1,0 +1,102 @@
+[gd_scene load_steps=5 format=3 uid="uid://7rucdkr6ataa"]
+
+[ext_resource type="Script" uid="uid://cns2eifhesfut" path="res://scenes/main-menu/Menu.gd" id="1_it6hg"]
+[ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://scenes/all-scenes-assets/mesa_fondo.png" id="1_s5tvt"]
+[ext_resource type="Texture2D" uid="uid://darjyvxtq2y8b" path="res://scenes/all-scenes-assets/envilatro.png" id="2_ha6o8"]
+[ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/all-scenes-assets/ButtonTheme.tres" id="3_33eh7"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_it6hg")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_s5tvt")
+expand_mode = 1
+
+[node name="Envilatro" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 0
+offset_left = 451.0
+offset_right = 701.0
+offset_bottom = 250.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("2_ha6o8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -179.0
+offset_right = 100.0
+offset_bottom = 179.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HSeparator" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="CrearPartidaButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_33eh7")
+text = "Crear partida"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="UnirseAPartidaButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_33eh7")
+text = "Unirse a partida"
+
+[node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Opciones" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_33eh7")
+text = "Opciones"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Salir" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_33eh7")
+text = "Salir"
+
+[node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="LobbyName" type="TextEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Lobby name"
+
+[connection signal="pressed" from="VBoxContainer/CrearPartidaButton" to="." method="onCrearPartidaButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/UnirseAPartidaButton" to="." method="onUnirseAPartidaButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/Opciones" to="." method="onOpcionesButtonPressed"]
+[connection signal="pressed" from="VBoxContainer/Salir" to="." method="onSalirButtonPressed"]
