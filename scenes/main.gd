@@ -39,6 +39,8 @@ func loadGameSceneInvisible():
 	gameScene.connect("vidoRejectedSignal", onClientCallsRejectVido)
 	gameScene.connect("vidoRaisedSignal", onClientCallsVidoRaise)
 	gameScene.connect("playedCardSignal", onClientCallsPlayCard)
+	gameScene.connect("tumbarSignal", onClientTumbar)
+	gameScene.connect("irseSignal", onClienteIrse)
 	if silence: gameScene.muteMusic()
 
 
@@ -80,6 +82,12 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receivePlayerIsGameOwnerSignal", Callable(self, "onAssignPlayerOwner"))
 	serverManager.connect("receiveClientIdSignal", onReceivedClientId)
 	serverManager.connect("receiveTriumphsConfigurationSignal", Callable(self, "onReceivedTriumphsConfiguration"))
+	serverManager.connect("receiveCannNotPlayCardBecauseTumboIsBeingDecidedSignal", Callable(self, "onReceiveCannNotPlayCardBecauseTumboIsBeingDecided"))
+	serverManager.connect("receiveTeam1IsOnTumboSignal", Callable(self, "onReceiveTeam1IsOnTumboSignal"))
+	serverManager.connect("receiveTeam2IsOnTumboSignal", Callable(self, "onReceiveTeam2IsOnTumboSignal"))
+	serverManager.connect("receiveCannNotTakeThisDecisionIfNotInWaitingForTumboSignal", Callable(self, "onReceiveCannNotTakeThisDecisionIfNotInWaitingForTumbo"))
+	serverManager.connect("receiveTumboIsAcceptedSignal", Callable(self, "onReceiveTumboIsAccepted"))
+
 
 
 func onNameChosen(userName):
@@ -137,11 +145,23 @@ func onClientCallsAcceptVido():
 func onClientCallsRejectVido():
 	serverManager.rejectVido()
 
+func onClientTumbar():
+	serverManager.tumbar()
+
+func onClienteIrse():
+	serverManager.irse()
+
 func onClientCallsVidoRaise():
 	serverManager.raisedVido()
 
 func onClientCallsStartsGame():
 	serverManager.startGame()
+
+func onAssignPlayerOwner(playerId: String):
+	chooseNameScene.addPlayerOwner(playerId)
+
+func onReceivedTriumphsConfiguration(triumphs: Array[Dictionary]):
+	chooseNameScene.configureTriumphs(triumphs)
 
 func onReceivedPlayerCalledVido(player: String):
 	gameScene.setPlayerCalledVido(player)
@@ -200,11 +220,20 @@ func onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand():
 func onVidoCanOnlyBeCalledOnYourTurn():
 	gameScene.vidoCanOnlyBeCalledOnYourTurn()
 
-func onAssignPlayerOwner(playerId: String):
-	chooseNameScene.addPlayerOwner(playerId)
+func onReceiveCannNotPlayCardBecauseTumboIsBeingDecided():
+	gameScene.cannNotPlayBecauseTumboIsBeingDecided()
 
-func onReceivedTriumphsConfiguration(triumphs: Array[Dictionary]):
-	chooseNameScene.configureTriumphs(triumphs)
+func onReceiveTeam1IsOnTumboSignal():
+	gameScene.notifyTeam1IsOnTumbo()
+
+func onReceiveTeam2IsOnTumboSignal():
+	gameScene.notifyTeam2IsOnTumbo()
+
+func onReceiveCannNotTakeThisDecisionIfNotInWaitingForTumbo():
+	gameScene.notifyCannNotTakeThisDecisionIfNotInWaitingForTumbo()
+	
+func onReceiveTumboIsAccepted():
+	gameScene.notifyTumboIsAccepted()
 
 func onReceiveOnlyLeaderCanTakeThisDecision():
 	print("Only leader can make this decision")

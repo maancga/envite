@@ -43,10 +43,10 @@ func finishHand():
 	var handWinnerTeam = gamePlayers.getTeam(handWinner)
 	playedCards.cleanCards()
 	if handWinnerTeam == "team1": 
-		team1ScoreInRound +=1
+		team1ScoreInRound += 1
 		playerInteractor.informPlayerRoundWinner(handWinner, team1ScoreInRound)
 	if handWinnerTeam == "team2": 
-		team2ScoreInRound +=1
+		team2ScoreInRound += 1
 		playerInteractor.informPlayerRoundWinner(handWinner, team2ScoreInRound)
 	if team1ScoreInRound == 2:
 		scoresManager.teamOneWinsRound()

@@ -51,11 +51,10 @@ func teamTwoRejectsTumbo():
 	team1Score.otherTeamRejectedTumbo()
 	wonRoundSignal.emit()
 
-
 func resetsVidos():
 	viradoForChico = false
 	viradoForGame = false
-	piedrasOnPlay = DEFAULT_PIEDRAS_WINS
+	setPiedrasOnPlay(DEFAULT_PIEDRAS_WINS)
 
 func playerRefusedVido(playerId: String):
 	var team = gamePlayers.getTeam(playerId)
@@ -71,7 +70,9 @@ func teamWinsRound(team: TeamScore):
 		team.winsChico()
 		resetsVidos()
 		return
+	if team1Score.teamIsOnTumbo() || team2Score.teamIsOnTumbo(): setPiedrasOnPlay(3)
 	team.winsRound(piedrasOnPlay)
+	resetsVidos()
 	wonRoundSignal.emit()
 
 func onTeamWonGame(teamName: String) -> void:
@@ -84,11 +85,9 @@ func onTeamWonChico() -> void:
 	wonChicoSignal.emit()
 
 func onTeam1IsOnTumbo() -> void:
-	piedrasOnPlay = 3
 	team1IsOnTumboSignal.emit()
 
 func onTeam2IsOnTumbo() -> void:
-	piedrasOnPlay = 3
 	team2IsOnTumboSignal.emit()
 
 func setPiedrasOnPlay(piedras: int):

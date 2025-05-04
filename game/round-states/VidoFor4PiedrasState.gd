@@ -61,11 +61,11 @@ func checkIsOtherTeamLeader(playerId: String):
 	return true
 
 func takeTumbo(_playerId: String):
-	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo()
+	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo(_playerId)
 	return
 
 func notTakeTumbo(_playerId: String):
-	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo()
+	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo(_playerId)
 	return
 
 func getStateName():

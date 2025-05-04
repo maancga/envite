@@ -1,7 +1,6 @@
 extends Node2D
 class_name GameScene
 
-
 @onready var playersDisplay: HandDisplaysScript
 
 signal vidoCalledSignal()
@@ -9,14 +8,17 @@ signal vidoAcceptedSignal()
 signal vidoRejectedSignal()
 signal vidoRaisedSignal()
 signal playedCardSignal()
-
-
+signal tumbarSignal()
+signal irseSignal()
 
 var currentPlayerTurnId: String
 var players : Dictionary
 var team1 : Array[String]
 var team2 : Array[String]
 var currentDealerId: String
+var playerId: String
+var team1Leader: String
+var team2Leader: String
 
 @onready var notificationsManager: NotificationsManager = $Notifications
 @onready var yourTurnSound = $YourTurnSound
@@ -30,13 +32,16 @@ func setCards(card1: CardData, card2: CardData, card3: CardData):
 func setTeamLabels():
 	playersDisplay.setTeamLabels()
 
-func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[String], newTeam2: Array[String], team1Leader: String, team2Leader: String, handDisplay: Node):
+func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[String], newTeam2: Array[String], _team1Leader: String, _team2Leader: String, handDisplay: Node):
+	playerId = newPlayerId
 	players = newPlayers
 	team1 = newTeam1
 	team2 = newTeam2
+	team1Leader = _team1Leader
+	team2Leader = _team2Leader
 	add_child(handDisplay)
 	playersDisplay = handDisplay
-	playersDisplay.setUp(newPlayerId, currentPlayerTurnId, newPlayers, team1Leader, team2Leader, newTeam1, newTeam2, notificationsManager)
+	playersDisplay.setUp(newPlayerId, currentPlayerTurnId, newPlayers, team1Leader, _team2Leader, newTeam1, newTeam2, notificationsManager)
 	setTeamLabels()
 	playersDisplay.connect("vidoCalledSignal", onVidoCalled)
 	playersDisplay.connect("vidoAcceptedSignal", onVidoAccepted)
@@ -44,8 +49,8 @@ func setUpScene(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 	playersDisplay.connect("vidoRaisedSignal", onVidoRaised)
 	playersDisplay.connect("droppedCardSignal", onDroppedCard)
 	playersDisplay.connect("yourTurnSignal", onYourTurn)
-
-
+	playersDisplay.connect("tumbarSignal", onTumbar)
+	playersDisplay.connect("irseSignal", onIrse)
 
 func setPlayerTurn(newPlayerId: String):
 	playersDisplay.setTurnTo(newPlayerId)
@@ -61,11 +66,9 @@ func teamWonPiedras(teamName: String, piedras: int):
 	playersDisplay.teamWonPiedras(teamName, piedras)
 	notificationsManager.showMessage("El equipo " + teamName + " ganó " + str(piedras) + " piedras")
 
-
 func teamWonChico(teamName: String, chicosScore: int):
 	playersDisplay.teamWonChico(teamName, chicosScore)
 	notificationsManager.showMessage("El equipo " + teamName + " ganó un chico")
-
 
 func teamWon(teamName: String):
 	playersDisplay.teamWon(teamName)
@@ -114,6 +117,12 @@ func onVidoRejected():
 func onVidoRaised():
 	vidoRaisedSignal.emit()
 
+func onTumbar():
+	tumbarSignal.emit()
+
+func onIrse():
+	irseSignal.emit()
+
 func onDroppedCard(cardIndex: String):
 	playedCardSignal.emit(cardIndex)
 
@@ -147,3 +156,38 @@ func onYourTurn():
 
 func muteMusic():
 	$GameMusic.stop()
+
+func cannNotPlayBecauseTumboIsBeingDecided():
+	$WrongActionSound.play()
+	notificationsManager.showMessage("No puedes jugar porque se está decidiendo el tumbo!")
+
+func notifyTeam1IsOnTumbo():
+	playersDisplay.team1OnTumboView()
+	if playerId in team2: 
+		notificationsManager.showMessage("El equipo 1 está decidiendo el tumbo")
+		return
+	if not (team1Leader == playerId):
+		notificationsManager.showMessage(players[team1Leader]["name"] + "tiene que seleccionar el tumbo")
+		return
+	if (team1Leader == playerId):
+		notificationsManager.showMessage("Tienes que seleccionar el tumbo")
+		return
+
+func notifyTeam2IsOnTumbo():
+	playersDisplay.team2OnTumboView()
+	if playerId in team1: notificationsManager.showMessage("El equipo 2 está decidiendo el tumbo")
+	if not (team2Leader == playerId):
+		notificationsManager.showMessage(players[team2Leader]["name"] + "tiene que seleccionar el tumbo")
+		return
+	if (team2Leader == playerId):
+		notificationsManager.showMessage("Tienes que seleccionar el tumbo")
+		return
+
+func notifyCannNotTakeThisDecisionIfNotInWaitingForTumbo():
+	notificationsManager.showMessage("Esta decisión no puede tomarse si no se está en tumbo")
+
+func notifyTumboIsAccepted():
+	notificationsManager.showMessage("¡Tumbo!")
+	playersDisplay.acceptedTumbo()
+
+	

@@ -109,7 +109,7 @@ func advancesGameUntilTeam2Tumbo():
 	assert_eq(game.gameIsOnTumbo(), true)
 
 
-	assert_true(spy.informGameIsOnTumboCalls == 1)
+	assert_true(spy.informTeam2IsOnTumboCalls == 1)
 	return [game, spy, deck]
 
 func test_gets_to_tumbo_takes_it_and_wins():

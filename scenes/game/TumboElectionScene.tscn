@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvc00000te4ed"]
+
+[ext_resource type="Script" uid="uid://drgmy1n4mxwhm" path="res://scenes/game/TumboElectionScene.gd" id="1_nwmm1"]
+[ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/all-scenes-assets/ButtonTheme.tres" id="2_b46cn"]
+
+[node name="TumboElectionScene" type="Node2D"]
+script = ExtResource("1_nwmm1")
+
+[node name="TumbarButton" type="Button" parent="."]
+offset_right = 116.0
+offset_bottom = 45.0
+theme = ExtResource("2_b46cn")
+text = "Tumbar"
+
+[node name="IrseButton" type="Button" parent="."]
+offset_top = 62.0
+offset_right = 116.0
+offset_bottom = 107.0
+theme = ExtResource("2_b46cn")
+text = "Irse"
+
+[connection signal="pressed" from="TumbarButton" to="." method="onTumbarButtonPressed"]
+[connection signal="pressed" from="IrseButton" to="." method="onIrseButtonPressed"]

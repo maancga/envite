@@ -39,6 +39,11 @@ signal receivePlayerCantBeAddedSinceMaxIsReachedSignal()
 signal receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal()
 signal receivePlayerIsGameOwnerSignal(playerId)
 signal receiveTriumphsConfigurationSignal(triumphs)
+signal receiveCannNotPlayCardBecauseTumboIsBeingDecidedSignal()
+signal receiveTeam1IsOnTumboSignal()
+signal receiveTeam2IsOnTumboSignal()
+signal receiveCannNotTakeThisDecisionIfNotInWaitingForTumboSignal()
+signal receiveTumboIsAcceptedSignal()
 
 var preGame: PreGame
 var game: Game
@@ -99,6 +104,11 @@ func connectPlayerInteractorSignals():
 	playerInteractor.connect("informIsGameOwnerSignal", Callable(self, "onInformIsGameOwner"))
 	playerInteractor.connect("informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal", Callable(self, "onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached"))
 	playerInteractor.connect("informTriumphsConfigurationSignal", Callable(self, "onInformTriumphsConfiguration"))
+	playerInteractor.connect("informCannNotPlayCardBecauseTumboIsBeingDecidedSignal", Callable(self, "onInformCannNotPlayCardBecauseTumboIsBeingDecided"))
+	playerInteractor.connect("informTeam1IsOnTumboSignal", Callable(self, "onInformTeam1IsOnTumbo"))
+	playerInteractor.connect("informTeam2IsOnTumboSignal", Callable(self, "onInformTeam2IsOnTumbo"))
+	playerInteractor.connect("informCannNoTakeThisDecisionIfNotInWaitingForTumboSignal", Callable(self, "onInformCannNoTakeThisDecisionIfNotInWaitingForTumbo"))
+	playerInteractor.connect("informTumboIsAcceptedSignal", Callable(self, "onInformTumboIsAccepted"))
 
 func onClientConnected(id):
 	print("🟢 Client connected with id: ", id)
@@ -235,6 +245,21 @@ func onInformTriumphsConfiguration(triumphs: Array[Dictionary]):
 		print(triumph)
 	rpc("receiveTriumphsConfiguration", triumphs)
 
+func onInformCannNotPlayCardBecauseTumboIsBeingDecided(playerId: String):
+	rpc_id(int(playerId), "receiveCannNotPlayCardBecauseTumboIsBeingDecided", playerId)
+
+func onInformTeam1IsOnTumbo():
+	rpc("receiveTeam1IsOnTumbo")
+
+func onInformTeam2IsOnTumbo():
+	rpc("receiveTeam2IsOnTumbo")
+
+func onInformCannNoTakeThisDecisionIfNotInWaitingForTumbo(playerId: String):
+	rpc_id(int(playerId), "receiveCannNotTakeThisDecisionIfNotInWaitingForTumbo")
+
+func onInformTumboIsAccepted():
+	rpc("receiveTumboIsAccepted")
+
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
 	var sender = multiplayer.get_remote_sender_id()
@@ -290,6 +315,17 @@ func onClientStartedGame():
 		for player in gamePlayers.playerIds:
 			rpc_id(int(player), "gameStarted")
 
+@rpc("any_peer")
+func onClientTumbar():
+	var sender = multiplayer.get_remote_sender_id()
+	var playerId = str(sender)
+	game.takeTumbo(playerId)
+
+@rpc("any_peer")
+func onClientIrse():
+	var sender = multiplayer.get_remote_sender_id()
+	var playerId = str(sender)
+	game.notTakeTumbo(playerId)
 
 ################ CLIENT
 
@@ -425,6 +461,26 @@ func receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached():
 func receiveTriumphsConfiguration(triumphs: Array[Dictionary]):
 	receiveTriumphsConfigurationSignal.emit(triumphs)
 
+@rpc("authority")
+func receiveCannNotPlayCardBecauseTumboIsBeingDecided():
+	receiveCannNotPlayCardBecauseTumboIsBeingDecidedSignal.emit()
+
+@rpc("authority")
+func receiveTeam1IsOnTumbo():
+	receiveTeam1IsOnTumboSignal.emit()
+
+@rpc("authority")
+func receiveTeam2IsOnTumbo():
+	receiveTeam2IsOnTumboSignal.emit()
+
+@rpc("authority")
+func receiveCannNotTakeThisDecisionIfNotInWaitingForTumbo():
+	receiveCannNotTakeThisDecisionIfNotInWaitingForTumboSignal.emit()
+
+@rpc("authority")
+func receiveTumboIsAccepted():
+	receiveTumboIsAcceptedSignal.emit()
+
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():
 		push_error("Invalid cardIndex: " + cardIndex)
@@ -448,3 +504,9 @@ func raisedVido() -> void:
 
 func startGame() -> void:
 	rpc_id(1, "onClientStartedGame")
+
+func tumbar() -> void:
+	rpc_id(1, "onClientTumbar")
+
+func irse() -> void:
+	rpc_id(1, "onClientIrse")

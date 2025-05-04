@@ -48,7 +48,8 @@ func startRound():
 	if (not gameIsOnTumbo()):
 		gameState = PlayerTurnState.new(self, roundManager.hands, playerInteractor, roundManager.playedCards, scoresManager, gamePlayers)
 	else:
-		playerInteractor.informGameIsOnTumbo()
+		if(team1IsOnTumbo): playerInteractor.informTeam1IsOnTumbo()
+		if(team2IsOnTumbo): playerInteractor.informTeam2IsOnTumbo()
 		gameState = PendingTumboState.new(self, gamePlayers.getNextPlayer(dealerManager.getCurrentDealer()), roundManager.hands, playerInteractor, roundManager.playedCards, scoresManager, gamePlayers, team1IsOnTumbo, team2IsOnTumbo)
 
 func newGame():

@@ -34,6 +34,11 @@ signal informGameCanNotStartSinceItsNotOwnerSignal(playerId: String)
 signal informIsGameOwnerSignal(playerId: String)
 signal informGameCanNotStartSinceTheMinimumOfPlayersIsNotReachedSignal()
 signal informTriumphsConfigurationSignal(triumphs: Array[Dictionary])
+signal informCannNotPlayCardBecauseTumboIsBeingDecidedSignal(_playerId: String)
+signal informTeam1IsOnTumboSignal()
+signal informTeam2IsOnTumboSignal()
+signal informCannNoTakeThisDecisionIfNotInWaitingForTumboSignal(_playerId: String)
+signal informTumboIsAcceptedSignal()
 
 func informPlayersAndTeams(players: Dictionary) -> void:
 	var team1Array: Array[String] = []
@@ -153,4 +158,16 @@ func informVidoCanOnlyBeCalledOnYourTurn(_playerId: String):
 	informVidoCanOnlyBeCalledOnYourTurnSignal.emit(_playerId)
 
 func informCannNotPlayCardBecauseTumboIsBeingDecided(_playerId: String):
-	print(_playerId)
+	informCannNotPlayCardBecauseTumboIsBeingDecidedSignal.emit(_playerId)
+
+func informTeam1IsOnTumbo():
+	informTeam1IsOnTumboSignal.emit()
+
+func informTeam2IsOnTumbo():
+	informTeam2IsOnTumboSignal.emit()
+
+func cannNotTakeThisDecisionIfNotInWaitingForTumbo(_playerId: String):
+	informCannNoTakeThisDecisionIfNotInWaitingForTumboSignal.emit(_playerId)
+
+func informTumboIsAccepted():
+	informTumboIsAcceptedSignal.emit()

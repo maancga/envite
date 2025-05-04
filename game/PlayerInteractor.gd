@@ -119,8 +119,11 @@ func informTumboIsAccepted():
 func informTumboIsRejected():
 	push_error("⚠️ informTumboIsRejected() must be implemented by subclass")
 
-func cannNotTakeThisDecisionIfNotInWaitingForTumbo():
+func cannNotTakeThisDecisionIfNotInWaitingForTumbo(_playerId: String):
 	push_error("⚠️ cannNotTakeThisDecisionIfNotInWaitingForTumbo() must be implemented by subclass")
 
-func informGameIsOnTumbo():
-	push_error("⚠️ informGameIsOnTumbo() must be implemented by subclass")
+func informTeam1IsOnTumbo():
+	push_error("⚠️ informTeam1IsOnTumbo() must be implemented by subclass")
+
+func informTeam2IsOnTumbo():
+	push_error("⚠️ informTeam2IsOnTumbo() must be implemented by subclass")

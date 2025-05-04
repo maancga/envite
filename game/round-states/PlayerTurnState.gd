@@ -44,11 +44,11 @@ func raiseVido(playerId: String):
 	return
 
 func takeTumbo(_playerId: String):
-	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo()
+	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo(_playerId)
 	return
 
 func notTakeTumbo(_playerId: String):
-	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo()
+	playerInteractor.cannNotTakeThisDecisionIfNotInWaitingForTumbo(_playerId)
 	return
 
 func getStateName():

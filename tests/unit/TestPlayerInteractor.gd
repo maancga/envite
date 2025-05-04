@@ -18,7 +18,8 @@ var vidoRaisedToChicoCalls = 0
 var vidoRaisedToGameCalls = 0
 var countInformPlayerCouldNotPlayCardBecauseItsNotTurnCalls = 0
 var informPlayerCouldNotPlayCardBecauseItsNotTurnCalls: Array[String]
-var informGameIsOnTumboCalls = 0
+var informTeam1IsOnTumboCalls = 0
+var informTeam2IsOnTumboCalls = 0
 var team1PiedrasLastUpdate = 0
 var team2PiedrasLastUpdate = 0
 var team1ChicosLastUpdate = 0
@@ -187,8 +188,11 @@ func informOnlyLeaderCanTakeThisDecision(_player: String):
 func cannNotTakeThisDecisionIfNotInWaitingForTumbo():
 	pass
 
-func informGameIsOnTumbo():
-	informGameIsOnTumboCalls += 1
+func informTeam1IsOnTumbo():
+	informTeam1IsOnTumboCalls += 1
+
+func informTeam2IsOnTumbo():
+	informTeam2IsOnTumboCalls += 1
 
 func informTumboIsAccepted():
 	pass

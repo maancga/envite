@@ -10,6 +10,7 @@ class_name HandDisplaysScript
 @onready var playerHands: Array = loadNodes(playerHandsNodePaths)
 @onready var playingButtonsDisplay: PlayingButtonsDisplay = $PlayingButtonsDisplay
 @onready var vidoElectionScene: VidoElectionScene = $VidoElectionScene
+@onready var tumboElectionScene: TumboElectionScene = $TumboElectionScene
 @onready var virado = $Virado/Card
 @onready var teamScore = $TeamScore
 var notificationsManager: NotificationsManager
@@ -19,7 +20,8 @@ signal vidoRejectedSignal()
 signal vidoRaisedSignal()
 signal droppedCardSignal(card: String)
 signal yourTurnSignal()
-
+signal tumbarSignal()
+signal irseSignal()
 
 var currentPlayerTurnId: String
 var players : Dictionary
@@ -35,6 +37,9 @@ func _ready() -> void:
 	vidoElectionScene.connect("rejectButtonPressedSignal", onVidoRejected)
 	vidoElectionScene.connect("acceptButtonPressedSignal", onVidoAccepted)
 	vidoElectionScene.connect("raisedButtonPressedSignal", onVidoRaised)
+	tumboElectionScene.visible = false
+	tumboElectionScene.connect("tumbarButtonPressedSignal", onTumbarButtonPressed)
+	tumboElectionScene.connect("irseButtonPressedSignal", onIrseButtonPressed)
 	playingButtonsDisplay.connect("callVidoButtonPressedSignal", onVidoCalledButtonPressed)
 	dropZone.connect("cardDroppedSignal", onCardDroppedSignal)
 
@@ -187,6 +192,12 @@ func onVidoAccepted():
 func onVidoRaised():
 	vidoRaisedSignal.emit()
 
+func onTumbarButtonPressed():
+	tumbarSignal.emit()
+
+func onIrseButtonPressed():
+	irseSignal.emit()
+
 func getTeam(player: String) -> String:
 	if player in team1: return "team1"
 	if player in team2: return "team2"
@@ -224,3 +235,19 @@ func resetPiedrasScore():
 func teamWon(teamName: String):
 	print("Team %s won!" % [teamName])
 	await get_tree().create_timer(2.0).timeout
+
+func team1OnTumboView():
+	playingButtonsDisplay.hide()
+	tumboElectionScene.visible = false
+	if (iAmTeam1Leader()):
+		tumboElectionScene.visible = true
+
+func team2OnTumboView():
+	playingButtonsDisplay.hide()
+	tumboElectionScene.visible = false
+	if (iAmTeam2Leader()):
+		tumboElectionScene.visible = true
+
+func acceptedTumbo():
+	tumboElectionScene.visible = false
+	paintCurrentTurn()
