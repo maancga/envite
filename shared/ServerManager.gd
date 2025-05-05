@@ -49,8 +49,39 @@ signal receiveTumboIsRejectedSignal()
 signal receiveCanNotMakeTheActionAfterTheGameEndedSignal()
 signal receivedGameAssignedSignal(gameId: String)
 
-var games := {} # game_id -> { preGame, game, interactor, players }
-var playersToGameMap := {} # peer_id -> game_id
+var sessions := {} 
+var playerToGame := {} 
+
+func getSessionByPeer(peerId):
+	var gameId = playerToGame.get(peerId, null)
+	if not gameId or not sessions.has(gameId):
+		print("❌ Partida no encontrada para jugador ", peerId)
+		return null
+	return sessions[gameId]
+
+func getPlayersFromGameId(gameId: String) -> GamePlayers:
+	return sessions[gameId].gamePlayers
+
+func sendToAllPlayers(gameId: String, rpcMethod: String, args := []):
+	var session: GameSession = sessions[gameId]
+	if not session: return
+	print("rpcMethod", rpcMethod)
+	print("args", args)
+	print("size", args.size())
+	for peerIdString in session.gamePlayers.playerIds:
+		var peerId = int(peerIdString)
+		if args.size() == 0:
+			rpc_id(peerId, rpcMethod)
+		elif args.size() == 1:
+			rpc_id(peerId, rpcMethod, args[0])
+		elif args.size() == 2:
+			rpc_id(peerId, rpcMethod, args[0], args[1])
+		elif args.size() == 3:
+			rpc_id(peerId, rpcMethod, args[0], args[1], args[2])
+		elif args.size() == 4:
+			rpc_id(peerId, rpcMethod, args[0], args[1], args[2], args[3])
+		elif args.size() == 5:
+			rpc_id(peerId, rpcMethod, args[0], args[1], args[2], args[3], args[4])
 
 ############## SERVER
 
@@ -108,29 +139,10 @@ func onClientConnected(id):
 	rpc_id(id, "receiveClientId", str(id))
 
 func onReceivedPlayersAndTeams(gameId: String, players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
-	print("Sending players and teams...")
-	print("players: ", players)
-	print("team1: ", team1)
-	print("team2: ", team2)
-	print("teamLeader1: ", team1Leader)
-	print("teamLeader2: ", team2Leader )
-	var gamePlayers = getPlayersFromGameId(gameId)
-	for currentPlayer in gamePlayers.playerIds:
-		rpc_id(int(currentPlayer), "receivePlayersAndTeams", players, team1, team2, team1Leader, team2Leader)
+	sendToAllPlayers(gameId,"receivePlayersAndTeams", [players, team1, team2, team1Leader, team2Leader])
 
 func onPlayerAdded(gameId: String, players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
-	var preGame: PreGame = games[gameId].preGame
-	for player in preGame.gamePlayers.playerIds:
-		rpc_id(int(player), "receivePlayerAdded", players, team1, team2, team1Leader, team2Leader)
-
-func getPlayersFromGameId(gameId: String) -> GamePlayers:
-	return games[gameId].players
-
-func getGameFromGameId(gameId: String) -> Game:
-	return games[gameId].game
-
-func getPreGameFromGameId(gameId: String) -> PreGame:
-	return games[gameId].preGame
+	sendToAllPlayers(gameId,"receivePlayerAdded", [players, team1, team2, team1Leader, team2Leader])
 
 func onDealtHand(gameId: String, player: String, hand: ServerHand):
 	var gamePlayers = getPlayersFromGameId(gameId)
@@ -139,15 +151,12 @@ func onDealtHand(gameId: String, player: String, hand: ServerHand):
 
 func onDealtVirado(gameId: String, card: ServerCard):
 	print("Dealt virado: ", card.getCardName())
-	var gamePlayers = getPlayersFromGameId(gameId)
-	for currentPlayer in gamePlayers.playerIds:
-		rpc_id(int(currentPlayer), "receiveVirado", card.to_dict())
+	sendToAllPlayers(gameId,"receiveVirado", [card.to_dict()])
 
 func onPlayerTurn(gameId: String, player: String):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Player ", gamePlayers.getPlayerName(player), " turn")
-	for currentPlayer in gamePlayers.playerIds:
-		rpc_id(int(currentPlayer), "receivePlayerTurn", player)
+	sendToAllPlayers(gameId,"receivePlayerTurn", [player])
 
 func onPlayerCouldNotPlayCardBecauseItsNotTurn(player: String):	
 	print("can not play since its not its turn")
@@ -164,86 +173,68 @@ func onPlayerCouldNotPlayCardBecauseItsPlayedAlready(player: String):
 func onPlayedCard(gameId: String, player: String, card: ServerCard, playedOrder: int, cardHandIndex: int):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Player ", gamePlayers.getPlayerName(player), " played its ", cardHandIndex, " card: ", card.getCardName(), " with order: ", playedOrder)
-	for currentPlayer in gamePlayers.playerIds:
-		rpc_id(int(currentPlayer), "receiveCardPlayed", player, card.to_dict(), cardHandIndex)
+	sendToAllPlayers(gameId,"receiveCardPlayed", [player, card.to_dict(), cardHandIndex])
 
 func onPlayerRoundWinner(gameId: String, player: String, roundScore: int):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Hand winner is %s" % [gamePlayers.getPlayerName(player)])
 	print("%s won the hand" % [gamePlayers.getTeam(player)])
-	for currentPlayer in gamePlayers.playerIds:
-		rpc_id(int(currentPlayer), "receivePlayerRoundWinner", player, roundScore)
+	sendToAllPlayers(gameId,"receivePlayerRoundWinner", [player, roundScore])
 
 func onTeamWonPiedras(gameId: String, teamName: String, piedras: int, piedrasOnPlay: int):
 	print("Team " + teamName + " won " + str(piedrasOnPlay) + " piedras, summing " + str(piedras) + " piedras")
-	var gamePlayers = getPlayersFromGameId(gameId)
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receiveTeamWonPiedras", teamName, piedras)
+	sendToAllPlayers(gameId,"receivePlayerRoundWinner", [receiveTeamWonPiedras, piedras])
 
 func onTeamWonChico(gameId: String, teamName: String, chicos: int):
 	print("Team " + teamName + " won a chico")
-	var gamePlayers = getPlayersFromGameId(gameId)
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receiveTeamWonChico", teamName, chicos)
+	sendToAllPlayers(gameId,"receiveTeamWonChico", [teamName, chicos])
 
 func onTeamWon(gameId: String, teamName: String):
 	print("Team " + teamName + " won the game")
-	var gamePlayers = getPlayersFromGameId(gameId)
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receiveTeamWon", teamName)
+	sendToAllPlayers(gameId,"receiveTeamWon", [teamName])
 
 func onGotDealer(gameId: String, dealer: String):
-	var gamePlayers = getPlayersFromGameId(gameId)
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receiveDealer", dealer)
+	sendToAllPlayers(gameId,"receiveDealer", [dealer])
 
 func onPlayerCalledVido(gameId: String, playerId: String):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s called vido" %  [gamePlayers.getPlayerName(playerId)])
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receivePlayerCalledVido", playerId)
+	sendToAllPlayers(gameId,"receivePlayerCalledVido", [playerId])
 
 func onVidoRaisedFor7Piedras(gameId: String, playerId):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido to 7 piedras" % [gamePlayers.getPlayerName(playerId)])
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receivePlayerRaisedVidoTo7Piedras", playerId)
+	sendToAllPlayers(gameId,"receivePlayerRaisedVidoTo7Piedras", [playerId])
 
 func onVidoRaisedFor9Piedras(gameId: String, playerId):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido to 9 piedras" % [gamePlayers.getPlayerName(playerId)])
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receivePlayerRaisedVidoTo9Piedras", playerId)
+	sendToAllPlayers(gameId,"receivePlayerRaisedVidoTo9Piedras", [playerId])
 
 func onVidoRaisedForChico(gameId: String, playerId):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido to chico" % [gamePlayers.getPlayerName(playerId)])
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player),"receivePlayerRaisedVidoToChico", playerId)
+	sendToAllPlayers(gameId,"receivePlayerRaisedVidoToChico", [playerId])
 
 func onVidoRaisedForGame(gameId: String, playerId):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido to game" % [gamePlayers.getPlayerName(playerId)])
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receivePlayerRaisedVidoToGame", playerId)
+	sendToAllPlayers(gameId,"receivePlayerRaisedVidoToGame", [playerId])
 
 func onPlayerRefusedVido(gameId: String, playerId):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s refused vido" % [gamePlayers.getPlayerName(playerId)])
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receivePlayerRefusedVido", playerId)
+	sendToAllPlayers(gameId,"receivePlayerRefusedVido", [playerId])
 
 func onPlayerAcceptedVido(gameId: String, playerId):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s accepted vido" % [gamePlayers.getPlayerName(playerId)])
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receivePlayerAcceptedVido", playerId)
+	sendToAllPlayers(gameId,"receivePlayerAcceptedVido", [playerId])
 
 func onPlayerRaisedVido(gameId: String, playerId):
 	var gamePlayers = getPlayersFromGameId(gameId)
 	print("player %s raised vido" % [gamePlayers.getPlayerName(playerId)])
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receivePlayerRaisedVido", playerId)
+	sendToAllPlayers(gameId,"receivePlayerRaisedVido", [playerId])
 
 func onPlayerFromSameTeamCanNotTakeDecision(gameId: String, playerId: String):
 	var gamePlayers = getPlayersFromGameId(gameId)
@@ -270,10 +261,9 @@ func onInformGameCanNotStartSinceItsNotOwner(gameId: String, playerId: String):
 	print("Player %s can not start the game since it is not the owner" % [gamePlayers.getPlayerName(playerId)])
 
 func onInformIsGameOwner(gameId: String, playerId: String):
-	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
+	var gamePlayers = getPlayersFromGameId(gameId)
 	print("Informing that %s is the game owner" % [gamePlayers.getPlayerName(playerId)])
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receivePlayerIsGameOwner", playerId)
+	sendToAllPlayers(gameId, "receivePlayerIsGameOwner", [playerId])
 
 func onInformGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(playerId):
 	print("Game can not start since the minimum of players is not reached")
@@ -283,9 +273,7 @@ func onInformTriumphsConfiguration(gameId: String, triumphs: Array[Dictionary]):
 	print("Informing current triumphs configuration")
 	for triumph in triumphs:
 		print(triumph)
-	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receiveTriumphsConfiguration", triumphs)
+	sendToAllPlayers(gameId, "receiveTriumphsConfiguration", [triumphs])
 
 func onInformCannNotPlayCardBecauseTumboIsBeingDecided(playerId: String):
 	rpc_id(int(playerId), "receiveCannNotPlayCardBecauseTumboIsBeingDecided")
@@ -294,27 +282,19 @@ func onInformCannNotCallVidoBecauseTumboIsBeingDecided(playerId: String):
 	rpc_id(int(playerId), "receiveCannNotCallVidoBecauseTumboIsBeingDecided")
 
 func onInformTeam1IsOnTumbo(gameId: String):
-	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receiveTeam1IsOnTumbo")
+	sessions[gameId].sendToAllPlayers("receiveTeam1IsOnTumbo")
 
 func onInformTeam2IsOnTumbo(gameId: String):
-	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receiveTeam2IsOnTumbo")
+	sessions[gameId].sendToAllPlayers("receiveTeam2IsOnTumbo")
 
 func onInformCannNoTakeThisDecisionIfNotInWaitingForTumbo(playerId: String):
 	rpc_id(int(playerId), "receiveCannNotTakeThisDecisionIfNotInWaitingForTumbo")
 
 func onInformTumboIsAccepted(gameId: String):
-	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receiveTumboIsAccepted")
+	sessions[gameId].sendToAllPlayers("receiveTumboIsAccepted")
 
 func onInformTumboIsRejected(gameId: String):
-	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
-	for player in gamePlayers.playerIds:
-		rpc_id(int(player), "receiveTumboIsRejected")
+	sessions[gameId].sendToAllPlayers("receiveTumboIsRejected")
 
 func onInformCanNotMakeTheActionAfterTheGameEnded(playerId: String):
 	rpc_id(int(playerId), "receiveCanNotMakeTheActionAfterTheGameEnded")
@@ -322,127 +302,114 @@ func onInformCanNotMakeTheActionAfterTheGameEnded(playerId: String):
 @rpc("any_peer")
 func onClientPlayedCard(cardIndex):
 	var sender = multiplayer.get_remote_sender_id()
-	var gameId = playersToGameMap.get(sender, null)
-	if not gameId or not games.has(gameId):
-		print("❌ Partida no encontrada para jugador ", sender)
-		return
-	
-	var gamePlayers: GamePlayers = getPlayersFromGameId(gameId)
-	var game = getGameFromGameId(gameId)
-	if game:
+	var session = getSessionByPeer(sender)
+	if session and session.game:
 		var playerId = str(sender)
-		print("Player ", gamePlayers.getPlayerName(playerId), " attempted to play its ", cardIndex," card.")
+		print("Player ", session.gamePlayers.getPlayerName(playerId), " attempted to play its ", cardIndex," card.")
 		match cardIndex:
-			"1": game.playFirstCard(playerId)
-			"2": game.playSecondCard(playerId)
-			"3": game.playThirdCard(playerId)
+			"1": session.game.playFirstCard(playerId)
+			"2": session.game.playSecondCard(playerId)
+			"3": session.game.playThirdCard(playerId)
+
 
 @rpc("any_peer")
 func onClientChoosesName(chosenName: String):
 	var sender = multiplayer.get_remote_sender_id()
-	var game_id = playersToGameMap.get(sender, null)
-	if not game_id or not games.has(game_id):
-		print("❌ No hay ninguna partida asociada con el jugador ", sender)
-		return
-	
-	var foundPreGame = games[game_id]["preGame"]
+	var session: GameSession = getSessionByPeer(sender)
+	if not session: return
+	var preGame = session.preGame
 	var playerId = str(sender)
-	if foundPreGame:
-		if foundPreGame.gamePlayers.playerExists(playerId): return
-		foundPreGame.addPlayer(str(sender), chosenName)
-		print("Player ", playerId, " chose name: ", chosenName)
+	if preGame.gamePlayers.playerExists(playerId): return
+	preGame.addPlayer(str(sender), chosenName)
+	print("Player ", playerId, " chose name: ", chosenName)
 
 
 @rpc("any_peer")
 func onClientCalledVido():
 	var sender = multiplayer.get_remote_sender_id()
+	var session: GameSession = getSessionByPeer(sender)
+	if not session: return
+	var gamePlayers = session.gamePlayers
 	var playerId = str(sender)
-	var gameId = playersToGameMap.get(sender)
-	var game = getGameFromGameId(gameId)
-	var gamePlayers = getPlayersFromGameId(gameId)
+	var game = session.game
 	print("player %s attempts to call vido" % [gamePlayers.getPlayerName(playerId)])
 	game.callVido(playerId)
 
 @rpc("any_peer")
 func onClientAcceptedVido():
 	var sender = multiplayer.get_remote_sender_id()
+	var session: GameSession = getSessionByPeer(sender)
+	if not session: return
+	var gamePlayers = session.gamePlayers
 	var playerId = str(sender)
-	var gameId = playersToGameMap.get(sender)
-	var game = getGameFromGameId(gameId)
-	var gamePlayers = getPlayersFromGameId(gameId)
+	var game = session.game
 	print("player %s attempts to accepts the vido" % [gamePlayers.getPlayerName(playerId)])
 	game.acceptVido(playerId)
 
 @rpc("any_peer")
 func onClientRejectedVido():
 	var sender = multiplayer.get_remote_sender_id()
+	var session: GameSession = getSessionByPeer(sender)
+	if not session: return
+	var gamePlayers = session.gamePlayers
 	var playerId = str(sender)
-	var gameId = playersToGameMap.get(sender)
-	var game = getGameFromGameId(gameId)
-	var gamePlayers = getPlayersFromGameId(gameId)
+	var game = session.game
 	print("player %s attempts to reject the vido" % [gamePlayers.getPlayerName(playerId)])
 	game.rejectVido(playerId)
 
 @rpc("any_peer")
 func onClientRaisedVido():
 	var sender = multiplayer.get_remote_sender_id()
+	var session: GameSession = getSessionByPeer(sender)
+	if not session: return
+	var gamePlayers = session.gamePlayers
 	var playerId = str(sender)
-	var gameId = playersToGameMap.get(sender)
-	var game = getGameFromGameId(gameId)
-	var gamePlayers = getPlayersFromGameId(gameId)
+	var game = session.game
 	print("player %s attempts to raise the vido" % [gamePlayers.getPlayerName(playerId)])
 	game.raiseVido(playerId)
 
 @rpc("any_peer")
 func onClientStartedGame():
 	var sender = multiplayer.get_remote_sender_id()
+	var session: GameSession = getSessionByPeer(sender)
+	if not session: return
 	var playerId = str(sender)
-	var gameId = playersToGameMap.get(sender)
-	var preGame = getPreGameFromGameId(gameId)
-	var gamePlayers = getPlayersFromGameId(gameId)
-	var game = preGame.start(playerId)
+	var game = session.preGame.start(playerId)
 	if game is Game:
 		game.newGame()
-		games[gameId]["game"] = game
-		for player in gamePlayers.playerIds:
-			rpc_id(int(player), "gameStarted")
+		sessions[session.gameId]["game"] = game
+		sendToAllPlayers(session.gameId, "gameStarted")
 
 @rpc("any_peer")
 func onClientTumbar():
 	var sender = multiplayer.get_remote_sender_id()
+	var session: GameSession = getSessionByPeer(sender)
+	if not session: return
 	var playerId = str(sender)
-	var gameId = playersToGameMap.get(sender)
-	var game = getGameFromGameId(gameId)
+	var game = session.game
 	game.takeTumbo(playerId)
 
 @rpc("any_peer")
 func onClientAchicarse():
 	var sender = multiplayer.get_remote_sender_id()
+	var session: GameSession = getSessionByPeer(sender)
+	if not session: return
 	var playerId = str(sender)
-	var gameId = playersToGameMap.get(sender)
-	var game = getGameFromGameId(gameId)
+	var game = session.game
 	game.achicarse(playerId)
 
 @rpc("any_peer")
 func onClientRequestsCreateGame():
 	var sender = multiplayer.get_remote_sender_id()
-	var gameId = str("game_" + str(games.size()))
+	var gameId = str("game_" + str(sessions.size()))
 
-	var gamePlayers = GamePlayers.new()
-	var interactor = RealPlayerInteractor.new(gameId)
-	add_child(interactor)
-
-	var preGame = PreGame.new(interactor, gamePlayers)
-	
-	games[gameId] = {
-		"preGame": preGame,
-		"game": null,
-		"interactor": interactor,
-		"players": gamePlayers
-	}
+	var interactor = RealPlayerInteractor.new(gameId)	
 	connectPlayerInteractorSignals(interactor)
-	playersToGameMap[sender] = gameId
-	
+	var session = GameSession.new(gameId, interactor)
+	sessions[gameId] = session
+	add_child(session)
+	playerToGame[sender] = gameId
+
 	print("✅ Nueva partida creada con ID:", gameId)
 	print("🟢 Jugador ", sender, " creó y se unió a la partida ",gameId)
 	rpc_id(sender, "receiveGameAssigned", gameId) 
@@ -450,12 +417,12 @@ func onClientRequestsCreateGame():
 @rpc("any_peer")
 func onClientRequestsJoinGame(gameId):
 	var sender = multiplayer.get_remote_sender_id()
-	if not games.has(gameId):
+	if not sessions.has(gameId):
 		print("❌ Partida no encontrada:", gameId)
 		rpc_id(sender, "receiveGameJoinFailed", "No existe esa partida.")
 		return
 
-	playersToGameMap[sender] = gameId
+	playerToGame[sender] = gameId
 
 	print("🟢 Jugador ", sender, " se unió a la partida ", gameId)
 	rpc_id(sender, "receiveGameAssigned", gameId)

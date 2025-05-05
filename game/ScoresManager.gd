@@ -6,7 +6,6 @@ signal wonChicoSignal()
 signal team1IsOnTumboSignal()
 signal team2IsOnTumboSignal()
 
-
 var team1Score: TeamScore
 var team2Score: TeamScore
 const DEFAULT_PIEDRAS_WINS = 2
