@@ -48,6 +48,7 @@ signal receiveTumboIsAcceptedSignal()
 signal receiveTumboIsRejectedSignal()
 signal receiveCanNotMakeTheActionAfterTheGameEndedSignal()
 signal receivedGameAssignedSignal(gameId: String)
+signal receivedGameJoinFailedSignal()
 
 var sessions := {} 
 var playerToGame := {} 
@@ -185,7 +186,7 @@ func onPlayerRoundWinner(gameId: String, player: String, roundScore: int):
 
 func onTeamWonPiedras(gameId: String, teamName: String, piedras: int, piedrasOnPlay: int):
 	print("Team " + teamName + " won " + str(piedrasOnPlay) + " piedras, summing " + str(piedras) + " piedras")
-	sendToAllPlayers(gameId,"receivePlayerRoundWinner", [receiveTeamWonPiedras, piedras])
+	sendToAllPlayers(gameId,"receiveTeamWonPiedras", [teamName, piedras])
 
 func onTeamWonChico(gameId: String, teamName: String, chicos: int):
 	print("Team " + teamName + " won a chico")
@@ -421,7 +422,7 @@ func onClientRequestsJoinGame(gameId):
 	var sender = multiplayer.get_remote_sender_id()
 	if not sessions.has(gameId):
 		print("❌ Partida no encontrada:", gameId)
-		rpc_id(sender, "receiveGameJoinFailed", "No existe esa partida.")
+		rpc_id(sender, "receiveGameJoinFailed")
 		return
 
 	playerToGame[sender] = gameId
@@ -598,6 +599,9 @@ func receiveCanNotMakeTheActionAfterTheGameEnded():
 func receiveGameAssigned(gameId: String):
 	receivedGameAssignedSignal.emit(gameId)
 
+@rpc("authority")
+func receiveGameJoinFailed():
+	receivedGameJoinFailedSignal.emit()
 
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():
