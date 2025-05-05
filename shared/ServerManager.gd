@@ -65,9 +65,6 @@ func getPlayersFromGameId(gameId: String) -> GamePlayers:
 func sendToAllPlayers(gameId: String, rpcMethod: String, args := []):
 	var session: GameSession = sessions[gameId]
 	if not session: return
-	print("rpcMethod", rpcMethod)
-	print("args", args)
-	print("size", args.size())
 	for peerIdString in session.gamePlayers.playerIds:
 		var peerId = int(peerIdString)
 		if args.size() == 0:
@@ -82,6 +79,11 @@ func sendToAllPlayers(gameId: String, rpcMethod: String, args := []):
 			rpc_id(peerId, rpcMethod, args[0], args[1], args[2], args[3])
 		elif args.size() == 5:
 			rpc_id(peerId, rpcMethod, args[0], args[1], args[2], args[3], args[4])
+		elif args.size() == 6:
+			rpc_id(peerId, rpcMethod, args[0], args[1], args[2], args[3], args[4])
+		else:
+			push_error("❌ call_rpc_id: Demasiados argumentos.")
+
 
 ############## SERVER
 
