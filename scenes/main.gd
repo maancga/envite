@@ -31,10 +31,10 @@ func _ready():
 		connectToServer()
 
 func startServer():
-	var server =  ServerManager.new()
-	server.name = "ServerManager"
-	add_child(server)
-	server.startServer()
+	serverManager = preload("res://shared/ServerController.gd").new()
+	serverManager.name = "ServerManager"
+	add_child(serverManager)
+	serverManager.startServer()
 
 func onExitGame():
 	get_tree().quit()
@@ -66,9 +66,6 @@ func setUpAndLoadChooseNameScene():
 	chooseNameScene.connect("startGameSignal", onClientCallsStartsGame)
 	add_child(chooseNameScene)
 	chooseNameScene.setId(yourId)
-	chooseNameScene.setLobbyName('123')
-
-
 
 func loadGameSceneInvisible():
 	gameScene = preload("res://scenes/game/GameScene.tscn").instantiate()
@@ -85,7 +82,7 @@ func loadGameSceneInvisible():
 
 
 func connectToServer():
-	serverManager = ServerManager.new()
+	serverManager = preload("res://shared/ClientController.gd").new()
 	serverManager.name = "ServerManager"
 	add_child(serverManager)
 	connectServerManagerSignals()
@@ -130,6 +127,7 @@ func connectServerManagerSignals() -> void:
 	serverManager.connect("receiveTumboIsRejectedSignal", Callable(self, "onReceiveTumboIsRejected"))
 	serverManager.connect("receiveCanNotMakeTheActionAfterTheGameEndedSignal", Callable(self, "onReceiveCanNotMakeTheActionAfterTheGameEnded"))
 	serverManager.connect("receivedGameAssignedSignal", Callable(self, "onReceiveGameAssigned"))
+	serverManager.connect("receivedGameJoinFailedSignal", Callable(self, "onReceiveGameJoinFailedSignal"))
 
 func onNameChosen(userName):
 	serverManager.chooseName(userName)
@@ -288,6 +286,12 @@ func onReceiveCanNotMakeTheActionAfterTheGameEnded():
 
 func onReceiveGameAssigned(gameId: String):
 	chooseNameScene.setLobbyName(gameId)
+
+func onReceiveGameJoinFailedSignal():
+	var notify = preload("res://scenes/game/notifications/Notifications.tscn").instantiate()
+	add_child(notify)
+	notify.showMessage("Esa partida no existe")
+	
 
 func onReceiveOnlyLeaderCanTakeThisDecision():
 	print("Only leader can make this decision")
