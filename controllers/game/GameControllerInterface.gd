@@ -1,6 +1,6 @@
 extends Node 
 
-class_name RPCInterface
+class_name GameControllerInterface
 
 # Server functions
 @rpc("any_peer")
@@ -31,22 +31,13 @@ func onClientTumbar(): pass
 func onClientAchicarse(): pass
 
 @rpc("any_peer")
-func onClientRequestsCreateGame(): pass
+func onClientNotifiesItJoinedGame(): pass
 
-@rpc("any_peer")
-func onClientRequestsJoinGame(_gameId): pass
-
+@rpc("authority")
+func receivePlayersAndTeams(_players: Dictionary, _team1: Array[String], _team2: Array[String], _team1Leader: String, _team2Leader: String):
+  pass
 
 #Client functions
-@rpc("authority")
-func receiveClientId(_playerId: String): pass
-
-@rpc("authority")
-func receivePlayersAndTeams(_players: Dictionary, _team1: Array[String], _team2: Array[String], _team1Leader: String, _team2Leader: String): pass
-
-@rpc("authority")
-func receivePlayerAdded(_players: Dictionary, _team1: Array[String], _team2: Array[String], _team1Leader: String, _team2Leader: String): pass
-
 @rpc("authority")
 func receiveHand(_hand: Dictionary): pass
 
@@ -120,13 +111,7 @@ func receiveVidoCanOnlyBeCalledOnYourTurn(): pass
 func receivePlayerCantBeAddedSinceMaxIsReached(): pass
 
 @rpc("authority")
-func receivePlayerIsGameOwner(_playerId: String): pass
-
-@rpc("authority")
 func receiveGameCanNotStartSinceTheMinimumOfPlayersIsNotReached(): pass
-
-@rpc("authority")
-func receiveTriumphsConfiguration(_triumphs: Array[Dictionary]): pass
 
 @rpc("authority")
 func receiveCannNotPlayCardBecauseTumboIsBeingDecided(): pass
@@ -151,9 +136,3 @@ func receiveTumboIsRejected(): pass
 
 @rpc("authority")
 func receiveCanNotMakeTheActionAfterTheGameEnded(): pass
-
-@rpc("authority")
-func receiveGameAssigned(_gameId: String): pass
-
-@rpc("authority")
-func receiveGameJoinFailed(): pass

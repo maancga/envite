@@ -1,5 +1,7 @@
 extends Control
 
+class_name ChooseName
+
 signal nameChosenSignal(name)
 signal startGameSignal()
 
@@ -51,7 +53,6 @@ func updateList(newPlayerId: String, newPlayers: Dictionary, newTeam1: Array[Str
 		if (ownerId == player): container.isGameOwner()
 
 
-
 func configureTriumphs(triumphs: Array[Dictionary]):
 	cleanTriumphs()
 	if triumphs.size() == 0:
@@ -97,7 +98,6 @@ func getSettedMarginContainer(labelText: String):
 	finalMargin.add_child(finalLabel)
 	return finalMargin
 
-	
 func cleanPlayersLists():
 	for child in team1Column.get_children():
 		child.queue_free()

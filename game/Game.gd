@@ -42,6 +42,10 @@ func setNewRound():
 	dealerManager.setNewDealer()
 	startRound()
 
+func newGame():
+	playerInteractor.informPlayersAndTeams(gamePlayers.toDictionary())
+	startRound()
+
 func startRound():
 	roundManager = RoundManager.new(cardDealer, gamePlayers, playerInteractor, scoresManager, triumphHierarchy)
 	roundManager.deal(dealerManager.getCurrentDealer())
@@ -51,10 +55,6 @@ func startRound():
 		if(team1IsOnTumbo): playerInteractor.informTeam1IsOnTumbo()
 		if(team2IsOnTumbo): playerInteractor.informTeam2IsOnTumbo()
 		gameState = PendingTumboState.new(self, gamePlayers.getNextPlayer(dealerManager.getCurrentDealer()), roundManager.hands, playerInteractor, roundManager.playedCards, scoresManager, gamePlayers, team1IsOnTumbo, team2IsOnTumbo)
-
-func newGame():
-	playerInteractor.informPlayersAndTeams(gamePlayers.toDictionary())
-	startRound()
 
 func teamWins(teamName: String):
 	gameState = GameEndedState.new(playerInteractor)
