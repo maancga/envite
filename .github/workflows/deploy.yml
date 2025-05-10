@@ -15,7 +15,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y wget unzip libgl1-mesa-dev libxi6 libxrandr2 libxcursor1 libxinerama1 libasound2 mono-complete
+          sudo apt install -y wget unzip libgl1-mesa-dev libxi6 libxrandr2 libxcursor1 libxinerama1 libasound2t64 mono-complete
 
       - name: Download Godot Mono Headless 4.4
         run: |
