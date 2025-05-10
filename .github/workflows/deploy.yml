@@ -50,7 +50,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "build/envite.x86_64"
-          target: "~/server"
+          target: "~/godot"
 
       - name: Restart server process
         uses: appleboy/ssh-action@v1.0.3
@@ -60,5 +60,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             pkill envite.x86_64 || true
-            chmod +x ~/server/envite.x86_64
-            nohup ~/server/envite.x86_64 --headless --server > ~/server/log.txt 2>&1 &
+            chmod +x ~/godot/envite.x86_64
+            nohup ~/godot/envite.x86_64 --headless --server > ~/godot/log.txt 2>&1 &
