@@ -25,10 +25,10 @@ jobs:
 
       - name: Download export templates for Mono 4.4
         run: |
-          mkdir -p ~/.local/share/godot/templates/4.4.stable.mono/
+          mkdir -p ~/.local/share/godot/export_templates/4.4.stable.mono/
           wget https://github.com/godotengine/godot-builds/releases/download/4.4-stable/Godot_v4.4-stable_mono_export_templates.tpz
           unzip Godot_v4.4-stable_mono_export_templates.tpz -d tmp_templates
-          cp tmp_templates/templates/linux_* ~/.local/share/godot/templates/4.4.stable.mono/
+          cp tmp_templates/templates/linux_* ~/.local/share/godot/export_templates/4.4.stable.mono/
 
       - name: Verify export templates
         run: ls -lh ~/.local/share/godot/templates/4.4.stable.mono/
