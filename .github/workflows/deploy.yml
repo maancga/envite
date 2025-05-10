@@ -31,7 +31,7 @@ jobs:
           cp tmp_templates/templates/linux_* ~/.local/share/godot/export_templates/4.4.stable.mono/
 
       - name: Verify export templates
-        run: ls -lh ~/.local/share/godot/templates/4.4.stable.mono/
+        run: ls -lh ~/.local/share/godot/export_templates/4.4.stable.mono/
 
       # This is added so CI does not fail cos of test library
       - name: Disable GUT plugin for CI
