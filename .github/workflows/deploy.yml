@@ -21,7 +21,7 @@ jobs:
         run: |
           wget https://github.com/godotengine/godot-builds/releases/download/4.4-stable/Godot_v4.4-stable_mono_linux_x86_64.zip
           unzip Godot_v4.4-stable_mono_linux_x86_64.zip
-          chmod +x Godot_v4.4-stable_mono_linux_x86_64
+          chmod +x Godot_v4.4-stable_mono_linux_x86_64/Godot_v4.4-stable_mono_linux.x86_64
 
       - name: Download export templates for Mono 4.4
         run: |
@@ -32,7 +32,7 @@ jobs:
       - name: Export Linux build
         run: |
           mkdir -p build
-          ./Godot_v4.4-stable_mono_linux_x86_64 --headless --export-release "Linux" build/envite.x86_64
+          ./Godot_v4.4-stable_mono_linux_x86_64/Godot_v4.4-stable_mono_linux.x86_64 --headless --export-release "Linux" build/envite.x86_64
 
       - name: Upload to EC2
         uses: appleboy/scp-action@v0.1.4
