@@ -60,5 +60,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             pkill envite.x86_64 || true
-            chmod +x ~/godot/envite.x86_64
-            nohup ~/godot/envite.x86_64 --headless --server > ~/godot/log.txt 2>&1 &
+            chmod +x ~/godot/build/envite.x86_64
+            nohup ~/godot/build/envite.x86_64 --headless --server > ~/godot/log.txt 2>&1 &
