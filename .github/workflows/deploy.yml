@@ -30,6 +30,11 @@ jobs:
           unzip Godot_v4.4-stable_mono_export_templates.tpz -d tmp_templates
           cp tmp_templates/templates/* ~/.local/share/godot/templates/4.4.stable.mono/
 
+      # This is added so CI does not fail cos of test library
+      - name: Disable GUT plugin for CI
+        run: |
+          sed -i 's|enabled=PackedStringArray("res://addons/gut/plugin.cfg")|enabled=PackedStringArray()|' project.godot
+
       - name: Export Linux build
         run: |
           mkdir -p build
