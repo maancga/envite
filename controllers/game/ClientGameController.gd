@@ -8,6 +8,7 @@ const CardIndex = {
 	CARD_3 = "3"
 }
 
+signal returnToMenuSignal()
 var gameScene: GameScene
 
 func _init(_gameScene: GameScene):
@@ -26,7 +27,6 @@ func sendToServer(method: String, args := []):
 
 @rpc("authority")
 func receivePlayersAndTeams(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
-	print("Estoy aquí!")
 	var playerId = multiplayer.get_unique_id()
 	var playerAmounts = team1.size() + team2.size()
 	var handDisplayScene = null
@@ -44,6 +44,7 @@ func receivePlayersAndTeams(players: Dictionary, team1: Array[String], team2: Ar
 	gameScene.connect("playedCardSignal", playCard)
 	gameScene.connect("tumbarSignal", tumbar)
 	gameScene.connect("achicarseSignal", achicarse)
+	gameScene.connect("returnToMenuSignal", onReturnToMenu)
 
 @rpc("authority")
 func receiveHand(hand: Dictionary):
@@ -92,11 +93,11 @@ func receivePlayerCouldNotPlayCardBecauseItsNotTurn():
 	gameScene.notifyIsNotTurn()
 
 @rpc("authority")
-func receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand(_player: String):
+func receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand():
 	gameScene.notifyHasPlayedAlreadyInHand()
 
 @rpc("authority")
-func receivePlayerCouldNotPlayCardBecauseItsPlayedAlready(_playerId: String):
+func receivePlayerCouldNotPlayCardBecauseItsPlayedAlready():
 	gameScene.notifyCardPlayedAlready()
 
 @rpc("authority")
@@ -197,3 +198,6 @@ func achicarse() -> void:
 
 func clientNotifiestItJoinedGame():
 	sendToServer("onClientNotifiesItJoinedGame")
+
+func onReturnToMenu():
+	returnToMenuSignal.emit()

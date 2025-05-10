@@ -7,6 +7,9 @@ var optionsCanvasReference
 var menuCanvasReference
 var menuSceneReference: Menu
 var serverController
+var gameScene
+var lobbyController
+var gameController
 
 func _ready():
 	var args = OS.get_cmdline_args()
@@ -26,19 +29,20 @@ func _ready():
 	serverController = StartMenuClientController.new()
 	serverController.name = "ServerController"
 	add_child(serverController)
+	serverController.connect("receivedGameAssignedSignal", setUpAndLoadChooseNameScene)
 	loadMenuScene()
 
 func setUpServerControllers():
 	var gameSessions = GameSessions.new()
 	serverController = StartMenuServerController.new(gameSessions)
 	serverController.name = "ServerController"
-	var lobbyController = ServerLobbyController.new(gameSessions)
-	lobbyController.name = "LobbyController"
-	var gameController = ServerGameController.new(gameSessions)
-	gameController.name = "GameController"
+	var serverLobbyController = ServerLobbyController.new(gameSessions)
+	serverLobbyController.name = "LobbyController"
+	var serverGameController = ServerGameController.new(gameSessions)
+	serverGameController.name = "GameController"
 	add_child(serverController)
-	add_child(lobbyController)
-	add_child(gameController)
+	add_child(serverLobbyController)
+	add_child(serverGameController)
 
 
 func receivedClientId(playerId: String):
@@ -60,11 +64,9 @@ func onExitGame():
 	get_tree().quit()
 
 func onCreateGame():
-	serverController.connect("receivedGameAssignedSignal", setUpAndLoadChooseNameScene)
 	serverController.clientRequestsCreateGame()
 
 func onJoinGame():
-	serverController.connect("receivedGameAssignedSignal", setUpAndLoadChooseNameScene)
 	serverController.clientRequestsJoinGame(menuSceneReference.inputText.text)
 	
 func onOpenOptions():
@@ -81,7 +83,7 @@ func onCloseOptions():
 func setUpAndLoadChooseNameScene(gameId: String):
 	menuCanvasReference.visible = false
 	chooseNameScene = preload("res://scenes/choose-name/ChooseName.tscn").instantiate()
-	var lobbyController = ClientLobbyController.new(chooseNameScene)
+	lobbyController = ClientLobbyController.new(chooseNameScene)
 	lobbyController.name = "LobbyController"
 	add_child(chooseNameScene)
 	add_child(lobbyController)
@@ -91,12 +93,18 @@ func setUpAndLoadChooseNameScene(gameId: String):
 
 
 func startGame():
-	menuCanvasReference.visible = false
-	var gameScene = preload("res://scenes/game/GameScene.tscn").instantiate()
-	add_child(gameScene)
-	var gameController = ClientGameController.new(gameScene)
+	gameScene = preload("res://scenes/game/GameScene.tscn").instantiate()
+	gameController = ClientGameController.new(gameScene)
 	gameController.name = "GameController"
+	add_child(gameScene)
 	add_child(gameController)
 	gameController.clientNotifiestItJoinedGame()
+	gameController.connect("returnToMenuSignal", onReturnToMenu)
 	if silence: gameScene.muteMusic()
 	chooseNameScene.queue_free()
+	lobbyController.queue_free()
+
+func onReturnToMenu():
+	menuCanvasReference.visible = true
+	gameScene.queue_free()
+	gameController.queue_free()

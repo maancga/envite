@@ -1,0 +1,55 @@
+name: Build and Deploy Godot Mono 4.4 Server
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y wget unzip libgl1-mesa-dev libxi6 libxrandr2 libxcursor1 libxinerama1 libasound2 mono-complete
+
+      - name: Download Godot Mono Headless 4.4
+        run: |
+          wget https://github.com/godotengine/godot-builds/releases/download/4.4-stable/Godot_v4.4-stable_mono_linux_x86_64.zip
+          unzip Godot_v4.4-stable_mono_linux_x86_64.zip
+          chmod +x Godot_v4.4-stable_mono_linux_x86_64
+
+      - name: Download export templates for Mono 4.4
+        run: |
+          mkdir -p ~/.local/share/godot/templates/4.4.stable.mono/
+          wget https://downloads.tuxfamily.org/godotengine/4.4/mono/Godot_v4.4-stable_mono_export_templates.tpz
+          unzip Godot_v4.4-stable_mono_export_templates.tpz -d ~/.local/share/godot/templates/4.4.stable.mono/
+
+      - name: Export Linux build
+        run: |
+          mkdir -p build
+          ./Godot_v4.4-stable_mono_linux_x86_64 --headless --export-release "Linux" build/envite.x86_64
+
+      - name: Upload to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "build/envite.x86_64"
+          target: "~/server"
+
+      - name: Restart server process
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            pkill envite.x86_64 || true
+            chmod +x ~/server/envite.x86_64
+            nohup ~/server/envite.x86_64 --headless --server > ~/server/log.txt 2>&1 &

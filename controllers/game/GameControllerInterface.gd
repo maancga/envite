@@ -72,10 +72,10 @@ func receiveDealer(_dealer: String): pass
 func receivePlayerCouldNotPlayCardBecauseItsNotTurn(): pass
 
 @rpc("authority")
-func receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand(_player: String): pass
+func receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand(): pass
 
 @rpc("authority")
-func receivePlayerCouldNotPlayCardBecauseItsPlayedAlready(_player: String): pass
+func receivePlayerCouldNotPlayCardBecauseItsPlayedAlready(): pass
 
 @rpc("authority")
 func receivePlayerCalledVido(_playerId : String): pass

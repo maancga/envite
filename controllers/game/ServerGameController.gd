@@ -116,6 +116,7 @@ func onTeamWonChico(gameId: String, teamName: String, chicos: int):
 func onTeamWon(gameId: String, teamName: String):
 	print("Team " + teamName + " won the game")
 	sendToAllPlayers(gameId,"receiveTeamWon", [teamName])
+	gameSessions.eraseGame(gameId)
 
 func onGotDealer(gameId: String, dealer: String):
 	sendToAllPlayers(gameId, "receiveDealer", [dealer])

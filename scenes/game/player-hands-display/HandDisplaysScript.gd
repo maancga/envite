@@ -234,7 +234,6 @@ func resetPiedrasScore():
 
 func teamWon(teamName: String):
 	print("Team %s won!" % [teamName])
-	await get_tree().create_timer(2.0).timeout
 
 func team1OnTumboView():
 	playingButtonsDisplay.hide()

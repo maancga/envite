@@ -10,6 +10,7 @@ signal vidoRaisedSignal()
 signal playedCardSignal()
 signal tumbarSignal()
 signal achicarseSignal()
+signal returnToMenuSignal()
 
 var currentPlayerTurnId: String
 var players : Dictionary
@@ -73,6 +74,9 @@ func teamWonChico(teamName: String, chicosScore: int):
 func teamWon(teamName: String):
 	playersDisplay.teamWon(teamName)
 	notificationsManager.showMessage("El equipo " + teamName + " ganó la partida")
+	var endGame = preload("res://scenes/game/end-game/EndGame.tscn").instantiate()
+	add_child(endGame)
+	endGame.connect("buttonPressedSignal", returnToMenu)
 
 func setDealer(dealer: String):
 	currentDealerId = dealer
@@ -199,3 +203,6 @@ func notifyTumboIsRejected():
 
 func notifyCanNotMakeTheActionAfterTheGameEnded():
 	notificationsManager.showMessage("No se puede hacer la acción porque la partida ya terminó.")
+
+func returnToMenu():
+	returnToMenuSignal.emit()
