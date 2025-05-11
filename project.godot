@@ -17,6 +17,10 @@ config/icon="uid://darjyvxtq2y8b"
 config/macos_native_icon="uid://darjyvxtq2y8b"
 config/windows_native_icon="uid://darjyvxtq2y8b"
 
+[audio]
+
+buses/default_bus_layout="uid://d161xwcukmr5l"
+
 [display]
 
 window/stretch/mode="viewport"

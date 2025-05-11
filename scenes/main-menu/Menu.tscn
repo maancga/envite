@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cns2eifhesfut" path="res://scenes/main-menu/Menu.gd" id="1_it6hg"]
 [ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://scenes/all-scenes-assets/mesa_fondo.png" id="1_s5tvt"]
 [ext_resource type="Texture2D" uid="uid://darjyvxtq2y8b" path="res://scenes/all-scenes-assets/envilatro.png" id="2_ha6o8"]
-[ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/all-scenes-assets/ButtonTheme.tres" id="3_33eh7"]
+[ext_resource type="PackedScene" uid="uid://d4cahyk88y1p4" path="res://scenes/all-scenes-assets/CustomButton.tscn" id="4_v1gbl"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -55,36 +55,32 @@ grow_vertical = 2
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 
-[node name="CrearPartidaButton" type="Button" parent="VBoxContainer"]
+[node name="CrearPartidaButton" parent="VBoxContainer" instance=ExtResource("4_v1gbl")]
 layout_mode = 2
-theme = ExtResource("3_33eh7")
 text = "Crear partida"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="UnirseAPartidaButton" type="Button" parent="VBoxContainer"]
+[node name="UnirseAPartidaButton" parent="VBoxContainer" instance=ExtResource("4_v1gbl")]
 layout_mode = 2
-theme = ExtResource("3_33eh7")
 text = "Unirse a partida"
 
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="Opciones" type="Button" parent="VBoxContainer"]
+[node name="OpcionesButton" parent="VBoxContainer" instance=ExtResource("4_v1gbl")]
 layout_mode = 2
-theme = ExtResource("3_33eh7")
 text = "Opciones"
 
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="Salir" type="Button" parent="VBoxContainer"]
+[node name="SalirButton" parent="VBoxContainer" instance=ExtResource("4_v1gbl")]
 layout_mode = 2
-theme = ExtResource("3_33eh7")
 text = "Salir"
 
 [node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer"]
@@ -95,8 +91,3 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 placeholder_text = "Lobby name"
-
-[connection signal="pressed" from="VBoxContainer/CrearPartidaButton" to="." method="onCrearPartidaButtonPressed"]
-[connection signal="pressed" from="VBoxContainer/UnirseAPartidaButton" to="." method="onUnirseAPartidaButtonPressed"]
-[connection signal="pressed" from="VBoxContainer/Opciones" to="." method="onOpcionesButtonPressed"]
-[connection signal="pressed" from="VBoxContainer/Salir" to="." method="onSalirButtonPressed"]

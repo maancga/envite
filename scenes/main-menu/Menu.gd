@@ -9,6 +9,11 @@ signal joinGameSignal()
 signal openOptionsSignal()
 signal exitGameSignal()
 
+func _ready() -> void:
+	$VBoxContainer/CrearPartidaButton.connect("buttonPressedSignal", onCrearPartidaButtonPressed)
+	$VBoxContainer/UnirseAPartidaButton.connect("buttonPressedSignal", onUnirseAPartidaButtonPressed)
+	$VBoxContainer/OpcionesButton.connect("buttonPressedSignal", onOpcionesButtonPressed)
+	$VBoxContainer/SalirButton.connect("buttonPressedSignal", onSalirButtonPressed)
 
 func onCrearPartidaButtonPressed() -> void:
 	createGameSignal.emit()

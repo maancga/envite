@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cmop5drsydews"]
+[gd_scene load_steps=4 format=3 uid="uid://cmop5drsydews"]
 
 [ext_resource type="Script" uid="uid://dfm0o4bxgnf0q" path="res://scenes/options/Options.gd" id="1_k07dm"]
-[ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/all-scenes-assets/ButtonTheme.tres" id="1_ps8qi"]
+[ext_resource type="PackedScene" uid="uid://e3jqhmurx6hh" path="res://scenes/options/VolumeBar.tscn" id="2_qw2mn"]
+[ext_resource type="PackedScene" uid="uid://d4cahyk88y1p4" path="res://scenes/all-scenes-assets/CustomButton.tscn" id="3_qw2mn"]
 
 [node name="Options" type="Control"]
 layout_mode = 3
@@ -12,60 +13,91 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_k07dm")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(400, 400)
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(300, 300)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -88.0
+offset_top = -125.5
+offset_right = 88.0
+offset_bottom = 125.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TabContainer" type="TabContainer" parent="PanelContainer"]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 current_tab = 0
 
-[node name="Sonido" type="PanelContainer" parent="PanelContainer/TabContainer"]
+[node name="Sonido" type="PanelContainer" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/TabContainer/Sonido"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Sonido"]
 layout_mode = 2
 
-[node name="Option1" type="Label" parent="PanelContainer/TabContainer/Sonido/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer"]
 layout_mode = 2
-text = "Opcion1"
+theme_override_constants/margin_top = 50
 
-[node name="Option2" type="Label" parent="PanelContainer/TabContainer/Sonido/VBoxContainer"]
+[node name="MasterMarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer"]
 layout_mode = 2
-text = "Opcion2"
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
 
-[node name="Graficos" type="PanelContainer" parent="PanelContainer/TabContainer"]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/TabContainer/Graficos"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer/MasterMarginContainer"]
 layout_mode = 2
 
-[node name="Option3" type="Label" parent="PanelContainer/TabContainer/Graficos/VBoxContainer"]
+[node name="MasterVolumeLabel" type="Label" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer/MasterMarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Opcion3"
+text = "General"
+horizontal_alignment = 1
 
-[node name="Option4" type="Label" parent="PanelContainer/TabContainer/Graficos/VBoxContainer"]
+[node name="MasterVolumeBar" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer/MasterMarginContainer/VBoxContainer" instance=ExtResource("2_qw2mn")]
 layout_mode = 2
-text = "Opcion4"
+busName = "Master"
 
-[node name="ExitButton" type="Button" parent="PanelContainer"]
+[node name="MusicMarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 8
-theme = ExtResource("1_ps8qi")
-text = "Exit"
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
 
-[connection signal="pressed" from="PanelContainer/ExitButton" to="." method="onExitButtonPressed"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer/MusicMarginContainer"]
+layout_mode = 2
+
+[node name="MusicVolumeLabel" type="Label" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer/MusicMarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Musica"
+horizontal_alignment = 1
+
+[node name="MusicVolumeBar" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer/MusicMarginContainer/VBoxContainer" instance=ExtResource("2_qw2mn")]
+layout_mode = 2
+busName = "music"
+
+[node name="SfxMarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer/SfxMarginContainer"]
+layout_mode = 2
+
+[node name="SfxVolumeLabel" type="Label" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer/SfxMarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Efectos de sonido"
+horizontal_alignment = 1
+
+[node name="SfxVolumeBar" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer/SfxMarginContainer/VBoxContainer" instance=ExtResource("2_qw2mn")]
+layout_mode = 2
+busName = "sfx"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/TabContainer/Sonido/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 50
+
+[node name="ExitButton" parent="VBoxContainer" instance=ExtResource("3_qw2mn")]
+layout_mode = 2
+text = "Salir"

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4cahyk88y1p4"]
+
+[ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/all-scenes-assets/ButtonTheme.tres" id="1_6pyfm"]
+[ext_resource type="Script" uid="uid://dyxugkaheo32c" path="res://scenes/all-scenes-assets/CustomButton.gd" id="2_vwrnh"]
+[ext_resource type="AudioStream" uid="uid://b36sqmf6x0114" path="res://audio/another_option_shorted.wav" id="3_moffd"]
+
+[node name="CustomButton" type="Button"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 118.0
+offset_bottom = 47.0
+theme = ExtResource("1_6pyfm")
+text = "Boton"
+script = ExtResource("2_vwrnh")
+
+[node name="ButtonFocusedSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_moffd")
+bus = &"sfx"
+
+[connection signal="mouse_entered" from="." to="." method="onButtonMouseEntered"]
+[connection signal="pressed" from="." to="." method="onButtonPressed"]
