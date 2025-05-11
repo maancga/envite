@@ -1,7 +1,6 @@
 extends Node
 
 var chooseNameScene
-var silence = false
 var yourId: String
 var optionsCanvasReference
 var menuCanvasReference
@@ -15,15 +14,17 @@ func _ready():
 	var args = OS.get_cmdline_args()
 	var serverAndClientConnection = ServerAndClientConnection.new()
 	serverAndClientConnection.name = "ServerOrClient"
+
 	add_child(serverAndClientConnection)
 	if "--server" in args:
 		print("🧠 Starting in SERVER mode")
-		serverAndClientConnection.start()
-		setUpServerControllers()
+		var gameSessions = GameSessions.new()
+		serverAndClientConnection.start(gameSessions)
+		setUpServerControllers(gameSessions)
 		return
 	print("🎮 Starting in CLIENT mode")
 	if "--silence" in args:
-		silence = true
+		$GameMusic.stop()
 	serverAndClientConnection.connectClient()
 	serverAndClientConnection.connect("clientConnectedSignal", receivedClientId)
 	serverController = StartMenuClientController.new()
@@ -32,8 +33,7 @@ func _ready():
 	serverController.connect("receivedGameAssignedSignal", setUpAndLoadChooseNameScene)
 	loadMenuScene()
 
-func setUpServerControllers():
-	var gameSessions = GameSessions.new()
+func setUpServerControllers(gameSessions: GameSessions):
 	serverController = StartMenuServerController.new(gameSessions)
 	serverController.name = "ServerController"
 	var serverLobbyController = ServerLobbyController.new(gameSessions)
@@ -100,7 +100,6 @@ func startGame():
 	add_child(gameController)
 	gameController.clientNotifiestItJoinedGame()
 	gameController.connect("returnToMenuSignal", onReturnToMenu)
-	if silence: gameScene.muteMusic()
 	chooseNameScene.queue_free()
 	lobbyController.queue_free()
 

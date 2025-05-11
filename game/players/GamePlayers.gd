@@ -75,10 +75,17 @@ func toDictionary():
 		"team2": team2.toDictionary()
 	}
 
-
 func getPlayerName(id: String):
 	if playerExists(id): return playerInstances[id].name
 	return "Player not found"
 
 func getFirstPlayer():
 	if playerIds.size() > 0: return playerIds[0]
+
+func removePlayer(id: String):
+	if not playerExists(id): return
+	playerIds.erase(id)
+	playersIdsMap.erase(id)
+	playerInstances.erase(id)
+	if getTeam(id) == "team1": team1.removePlayer(id)
+	if getTeam(id) == "team2": team2.removePlayer(id)

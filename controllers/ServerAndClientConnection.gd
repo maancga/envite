@@ -3,8 +3,10 @@ extends Node
 class_name ServerAndClientConnection
 
 signal clientConnectedSignal(playerId: String)
+var gameSessions: GameSessions
 
-func start():
+func start(_gameSessions: GameSessions):
+	gameSessions = _gameSessions
 	var peer = ENetMultiplayerPeer.new()
 	var port = 9000
 	var err = peer.create_server(port)
@@ -13,6 +15,7 @@ func start():
 		return
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(onClientConnected)
+	multiplayer.peer_disconnected.connect(onClientDisconnected)
 	print("🟢 Server running on port", port)
 
 func connectClient(ip = "ec2-13-53-37-187.eu-north-1.compute.amazonaws.com", port = 9000):
@@ -36,3 +39,7 @@ func onClientConnected(id):
 @rpc("authority")
 func receiveClientId(playerId: String):
 	clientConnectedSignal.emit(playerId)
+
+func onClientDisconnected(id):
+	print("🔴 Client disconnected with id: ", id)
+	gameSessions.disconnectPlayer(str(id))

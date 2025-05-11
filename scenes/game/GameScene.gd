@@ -158,9 +158,6 @@ func onYourTurn():
 	$YourTurnSound.play()
 	notificationsManager.showMessage("Es tu turno!")
 
-func muteMusic():
-	$GameMusic.stop()
-
 func cannNotPlayBecauseTumboIsBeingDecided():
 	$WrongActionSound.play()
 	notificationsManager.showMessage("No puedes jugar porque se está decidiendo el tumbo!")

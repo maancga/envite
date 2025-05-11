@@ -31,3 +31,9 @@ func toDictionary():
 		"players": playersDict,
 		"leader": leader
 	}
+
+func removePlayer(id: String):
+	if not players.has(id): return
+	players.erase(id)
+	playersIdsMap.erase(id)
+	if leader == id: leader = players[0]

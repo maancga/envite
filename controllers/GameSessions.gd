@@ -26,3 +26,25 @@ func eraseGame(gameId: String) -> void:
 
 	sessions.erase(gameId)
 	print("🗑️ Partida eliminada:", gameId)
+
+func disconnectPlayer(playerId: String) -> void:
+	print(playerToGame)
+	print(sessions)
+	var gameId = playerToGame.get(int(playerId), null)
+	print(gameId)
+	print(playerToGame.get(playerId, null))
+	if not gameId or not sessions.has(gameId):
+		print("⚠️ No session found for disconnected player: ", playerId)
+		return
+
+	var session = sessions[gameId]
+	var gamePlayers = session.gamePlayers
+	gamePlayers.removePlayer(playerId)
+	playerToGame.erase(playerId)
+	print("🔁 Player removed from session: ", playerId)
+
+	if gamePlayers.playerIds.size() == 0:
+		print("🗑️ Lobby is empty, destroying session: ", gameId)
+		eraseGame(gameId)
+	else:
+		print("ℹ️ Lobby still has players: ", gamePlayers.playerIds.size())
