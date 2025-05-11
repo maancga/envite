@@ -1,6 +1,7 @@
 class_name NormalDeck extends Deck
 
 func createAndShuffle():
+	cards.clear()
 	for suit in Suits.Suit.values():
 		for value in Values.Value.values():
 			cards.push_back(ServerCard.new(value, suit))
@@ -18,6 +19,6 @@ func shuffle():
 func getTopCard():
 	return cards.pop_front()
 
-func getAHand():
+func getAHand() -> ServerHand:
 	var hand = ServerHand.new(ServerHandCard.new(cards.pop_front(), 1), ServerHandCard.new(cards.pop_front(), 2), ServerHandCard.new(cards.pop_front(), 3))
 	return hand
