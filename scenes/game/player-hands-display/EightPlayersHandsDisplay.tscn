@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://bqmsuon32f8x" path="res://scenes/game/hands/MyHand.tscn" id="2_7xy5r"]
 [ext_resource type="PackedScene" uid="uid://btlubd0wqixut" path="res://scenes/game/PlayerNameDisplay.tscn" id="3_g3mul"]
 [ext_resource type="PackedScene" uid="uid://cjkt2y3wp6ky6" path="res://scenes/game/hands/UnknownHand.tscn" id="5_ypler"]
+[ext_resource type="PackedScene" uid="uid://d1f4urjxdog24" path="res://scenes/game/VidoButtonDisplay.tscn" id="6_8b7jw"]
 [ext_resource type="PackedScene" uid="uid://50537fdo6u8y" path="res://scenes/game/VidoElectionScene.tscn" id="6_g3mul"]
-[ext_resource type="PackedScene" uid="uid://bbhlsdn0e05ya" path="res://scenes/game/PlayingButtonsDisplay.tscn" id="7_7hu4r"]
 [ext_resource type="PackedScene" uid="uid://db1v5r22fkqey" path="res://scenes/game/TeamScoreLabels.tscn" id="8_ypler"]
 [ext_resource type="PackedScene" uid="uid://ct8jgbl27xwgu" path="res://scenes/game/drop-zone/DropZone.tscn" id="9_csr5w"]
 [ext_resource type="PackedScene" uid="uid://cjs5q57kt6swi" path="res://scenes/game/cards/Virado.tscn" id="9_jvjit"]
@@ -90,7 +90,7 @@ scale = Vector2(0.6, 0.6)
 position = Vector2(812.8, 504.2)
 scale = Vector2(0.6, 0.6)
 
-[node name="PlayingButtonsDisplay" parent="." instance=ExtResource("7_7hu4r")]
+[node name="VidoButtonDisplay" parent="." instance=ExtResource("6_8b7jw")]
 position = Vector2(813, 527)
 scale = Vector2(0.6, 0.6)
 

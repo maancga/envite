@@ -8,7 +8,7 @@ class_name HandDisplaysScript
 @export var playerHandsNodePaths = []
 @onready var playerNames: Array = loadNodes(playerNamesNodePaths)
 @onready var playerHands: Array = loadNodes(playerHandsNodePaths)
-@onready var playingButtonsDisplay: PlayingButtonsDisplay = $PlayingButtonsDisplay
+@onready var playingButtonsDisplay: VidoButtonDisplay = $VidoButtonDisplay
 @onready var vidoElectionScene: VidoElectionScene = $VidoElectionScene
 @onready var tumboElectionScene: TumboElectionScene = $TumboElectionScene
 @onready var virado = $Virado/Card
