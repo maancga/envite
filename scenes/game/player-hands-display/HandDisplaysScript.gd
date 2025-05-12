@@ -67,6 +67,7 @@ func setHands(card1: CardData, card2: CardData, card3: CardData):
 	myHand.setHand(card1, card2, card3)
 	resetOtherPlayersCards()
 	cleanPlayedCards()
+	paintCurrentTurn()
 
 func setUp(_playerId: String, _playerTurnId: String, _players: Dictionary, _team1Leader: String, _team2Leader: String, _team1: Array[String], _team2: Array[String], _notificationsManager: NotificationsManager) -> void:
 	yourId = _playerId
@@ -95,7 +96,7 @@ func setUpPlayerDisplay(playerNameDisplay: PlayerNameDisplay, currentPlayerId: S
 
 func paintCurrentTurn():
 	if (currentPlayerTurnId == yourId): 
-		playingButtonsDisplay.show()
+		if (not viradoCalledThisRound): playingButtonsDisplay.show()
 		yourTurnSignal.emit()
 	else: playingButtonsDisplay.hide()
 	for player in playersArray:
@@ -150,7 +151,6 @@ func iAmTeam2Leader():
 	return yourId == team2Leader
 
 func updateVidoView(vidoPlayerId: String):
-	if (viradoCalledThisRound): return
 	playingButtonsDisplay.hide()
 	vidoElectionScene.visible = false
 	var vidoCalledByTeam1 = isTeam1(vidoPlayerId)
