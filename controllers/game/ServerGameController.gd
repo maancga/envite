@@ -197,19 +197,19 @@ func onInformCannNotCallVidoBecauseTumboIsBeingDecided(playerId: String):
 	rpc_id(int(playerId), "receiveCannNotCallVidoBecauseTumboIsBeingDecided")
 
 func onInformTeam1IsOnTumbo(gameId: String):
-	gameSessions.sessions[gameId].sendToAllPlayers("receiveTeam1IsOnTumbo")
+	sendToAllPlayers(gameId,"receiveTeam1IsOnTumbo")
 
 func onInformTeam2IsOnTumbo(gameId: String):
-	gameSessions.sessions[gameId].sendToAllPlayers("receiveTeam2IsOnTumbo")
+	sendToAllPlayers(gameId, "receiveTeam2IsOnTumbo")
 
 func onInformCannNoTakeThisDecisionIfNotInWaitingForTumbo(playerId: String):
 	rpc_id(int(playerId), "receiveCannNotTakeThisDecisionIfNotInWaitingForTumbo")
 
 func onInformTumboIsAccepted(gameId: String):
-	gameSessions.sessions[gameId].sendToAllPlayers("receiveTumboIsAccepted")
+	sendToAllPlayers(gameId, "receiveTumboIsAccepted")
 
 func onInformTumboIsRejected(gameId: String):
-	gameSessions.sessions[gameId].sendToAllPlayers("receiveTumboIsRejected")
+	sendToAllPlayers(gameId, "receiveTumboIsRejected")
 
 func onInformCanNotMakeTheActionAfterTheGameEnded(playerId: String):
 	rpc_id(int(playerId), "receiveCanNotMakeTheActionAfterTheGameEnded")
