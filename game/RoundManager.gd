@@ -16,6 +16,7 @@ var firstPlayerPlayedCard: ServerCard
 var playedCards: PlayedCards
 
 var cardDealer: CardDealer
+var vidoCalledThisRound: bool = false
 
 func _init(_cardDealer: CardDealer, _gamePlayers: GamePlayers, _playerInteractor: PlayerInteractor, _scoresManager: ScoresManager, _triumphHierarchy: TriumphHierarchy):
 	gamePlayers = _gamePlayers
@@ -88,4 +89,5 @@ func playThirdCard(playerId: String):
 	var playedCard = hands.getThirdCard(playerId)
 	playCard(playerId, playedCard)
 
-	
+func vidoCalledAlready():
+	vidoCalledThisRound = true

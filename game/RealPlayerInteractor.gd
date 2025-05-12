@@ -42,6 +42,7 @@ signal informCannNoTakeThisDecisionIfNotInWaitingForTumboSignal(_playerId: Strin
 signal informTumboIsAcceptedSignal()
 signal informTumboIsRejectedSignal()
 signal informCanNotMakeTheActionAfterTheGameEndedSignal(playerId: String)
+signal informVidoCalledThisRoundAlreadySignal(playerId: String)
 
 var gameId: String
 
@@ -188,3 +189,6 @@ func informCannNotCallVidoBecauseTumboIsBeingDecided(playerId: String):
 
 func canNotMakeTheActionAfterTheGameEnded(playerId: String):
 	informCanNotMakeTheActionAfterTheGameEndedSignal.emit(playerId)
+
+func vidoCalledThisRoundAlready(_playerId: String):
+	informVidoCalledThisRoundAlreadySignal.emit(_playerId)

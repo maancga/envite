@@ -136,3 +136,6 @@ func receiveTumboIsRejected(): pass
 
 @rpc("authority")
 func receiveCanNotMakeTheActionAfterTheGameEnded(): pass
+
+@rpc("authority")
+func receiveVidoCalledThisRoundAlready(): pass

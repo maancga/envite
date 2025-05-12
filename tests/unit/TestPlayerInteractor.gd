@@ -205,3 +205,6 @@ func informCannNotPlayCardBecauseTumboIsBeingDecided(_playerId: String):
 
 func canNotMakeTheActionAfterTheGameEnded(_playerId: String):
 	pass
+
+func vidoCalledThisRoundAlready(_playerId: String):
+	pass

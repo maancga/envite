@@ -70,6 +70,7 @@ func playThirdCard(id: String):
 	gameState.playThirdCard(id)
 
 func callVido(id: String):
+	if roundManager.vidoCalledAlready: playerInteractor.vidoCalledThisRoundAlready(id)
 	lastPlayerState = gameState
 	gameState.callVido(id)
 

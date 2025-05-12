@@ -31,6 +31,7 @@ var team1Leader: String
 var team2Leader: String
 var team1: Array[String]
 var team2: Array[String]
+var viradoCalledThisRound = false
 
 func _ready() -> void:
 	vidoElectionScene.visible = false
@@ -62,6 +63,7 @@ func setTeamLabels():
 
 
 func setHands(card1: CardData, card2: CardData, card3: CardData):
+	viradoCalledThisRound = false
 	myHand.setHand(card1, card2, card3)
 	resetOtherPlayersCards()
 	cleanPlayedCards()
@@ -148,6 +150,7 @@ func iAmTeam2Leader():
 	return yourId == team2Leader
 
 func updateVidoView(vidoPlayerId: String):
+	if (viradoCalledThisRound): return
 	playingButtonsDisplay.hide()
 	vidoElectionScene.visible = false
 	var vidoCalledByTeam1 = isTeam1(vidoPlayerId)
@@ -176,6 +179,7 @@ func refusedVido(_playerId: String):
 	paintCurrentTurn()
 
 func acceptedVido(_playerId: String):
+	viradoCalledThisRound = true
 	vidoElectionScene.visible = false
 	paintCurrentTurn()
 

@@ -130,3 +130,6 @@ func informTeam2IsOnTumbo():
 
 func canNotMakeTheActionAfterTheGameEnded(_playerId: String):
 	push_error("⚠️ canNotMakeTheActionAfterTheGameEnded() must be implemented by subclass")
+
+func vidoCalledThisRoundAlready(_playerId: String):
+	push_error("⚠️ vidoCalledThisRoundAlready() must be implemented by subclass")

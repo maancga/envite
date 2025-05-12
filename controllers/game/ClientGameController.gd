@@ -172,6 +172,10 @@ func receiveTumboIsRejected():
 func receiveCanNotMakeTheActionAfterTheGameEnded():
 	gameScene.notifyCanNotMakeTheActionAfterTheGameEnded()
 
+@rpc("authority")
+func receiveVidoCalledThisRoundAlready():
+	gameScene.notifyVidoCalledThisRoundAlready()
+
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():
 		push_error("Invalid cardIndex: " + cardIndex)

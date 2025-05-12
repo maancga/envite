@@ -201,5 +201,8 @@ func notifyTumboIsRejected():
 func notifyCanNotMakeTheActionAfterTheGameEnded():
 	notificationsManager.showMessage("No se puede hacer la acción porque la partida ya terminó.")
 
+func notifyVidoCalledThisRoundAlready():
+	notificationsManager.showMessage("No se puede llamar al vido porque ya se ha llamado en esta ronda.")
+
 func returnToMenu():
 	returnToMenuSignal.emit()
