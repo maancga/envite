@@ -7,7 +7,7 @@ class_name HandCard
 @onready var cardImage: CardImage = $CardImage
 var cardOverDropArea: bool
 var handIndex: String = "0"
-var isHiden: bool
+var isHiden: bool = false
 
 var dragging: bool = false
 var initialPosition: Vector2 = Vector2.ZERO
@@ -151,6 +151,7 @@ func resetHover() -> void:
 func hideCard() -> void:
 	isHiden = true
 	cardImage.visible = false
+	$Area2D/CollisionShape2D.disabled = true	
 	
 func getCardName():
 	return  ValueEnum.VALUES_TRANSLATIONS[value] + " de " + str(SuitEnum.SUIT_NAMES[suit])
