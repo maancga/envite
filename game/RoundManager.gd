@@ -75,6 +75,8 @@ func playCard(playerId: String, card: ServerHandCard):
 	card.play()
 	playedCards.addCard(playerId, card)
 	playerInteractor.informPlayerPlayedCard(playerId, card, playedCards.amountOfCards())
+	var currentHandWinner = calculateHandWinner()
+	playerInteractor.informCurrentHandWinner(currentHandWinner)
 	nextTurn()
 
 func playFirstCard(playerId: String):

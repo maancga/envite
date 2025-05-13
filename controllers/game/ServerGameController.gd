@@ -65,6 +65,7 @@ func connectPlayerInteractorSignals(interactor: PlayerInteractor):
 	interactor.connect("informTumboIsRejectedSignal", Callable(self, "onInformTumboIsRejected"))
 	interactor.connect("informCanNotMakeTheActionAfterTheGameEndedSignal", Callable(self, "onInformCanNotMakeTheActionAfterTheGameEnded"))
 	interactor.connect("informVidoCalledThisRoundAlreadySignal", Callable(self, "onInformVidoCalledThisRoundAlready"))
+	interactor.connect("informCurrentHandWinnerSignal", Callable(self, "onInformCurrentHandWinner"))
 
 func onReceivedPlayersAndTeams(gameId: String, players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
 	sendToAllPlayers(gameId,"receivePlayersAndTeams", [players, team1, team2, team1Leader, team2Leader])
@@ -216,6 +217,9 @@ func onInformCanNotMakeTheActionAfterTheGameEnded(playerId: String):
 
 func onInformVidoCalledThisRoundAlready(playerId: String):
 	rpc_id(int(playerId), "receiveVidoCalledThisRoundAlready")
+
+func onInformCurrentHandWinner(gameId:String, playerId: String):
+	sendToAllPlayers(gameId, "receiveCurrentHandWinner", [playerId])
 
 
 @rpc("any_peer")

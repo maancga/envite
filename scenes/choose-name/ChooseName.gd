@@ -23,6 +23,8 @@ var ownerId: String = ""
 func _ready():
 	cleanPlayersLists()
 	configureTriumphs([])
+	addPlayerOwner("")
+
 
 func setId(newPlayerId: String):
 	yourId = newPlayerId

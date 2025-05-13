@@ -43,6 +43,7 @@ signal informTumboIsAcceptedSignal()
 signal informTumboIsRejectedSignal()
 signal informCanNotMakeTheActionAfterTheGameEndedSignal(playerId: String)
 signal informVidoCalledThisRoundAlreadySignal(playerId: String)
+signal informCurrentHandWinnerSignal(gameId: String, playerId: String)
 
 var gameId: String
 
@@ -192,3 +193,6 @@ func canNotMakeTheActionAfterTheGameEnded(playerId: String):
 
 func vidoCalledThisRoundAlready(_playerId: String):
 	informVidoCalledThisRoundAlreadySignal.emit(_playerId)
+
+func informCurrentHandWinner(playerId: String):
+	informCurrentHandWinnerSignal.emit(gameId, playerId)

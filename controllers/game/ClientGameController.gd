@@ -176,6 +176,10 @@ func receiveCanNotMakeTheActionAfterTheGameEnded():
 func receiveVidoCalledThisRoundAlready():
 	gameScene.notifyVidoCalledThisRoundAlready()
 
+@rpc("authority")
+func receiveCurrentHandWinner(playerId: String):
+	gameScene.notifyCurrentHandWinner(playerId)
+
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():
 		push_error("Invalid cardIndex: " + cardIndex)

@@ -208,3 +208,6 @@ func canNotMakeTheActionAfterTheGameEnded(_playerId: String):
 
 func vidoCalledThisRoundAlready(_playerId: String):
 	pass
+
+func informCurrentHandWinner(_playerId: String):
+	pass

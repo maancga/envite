@@ -206,3 +206,6 @@ func notifyVidoCalledThisRoundAlready():
 
 func returnToMenu():
 	returnToMenuSignal.emit()
+
+func notifyCurrentHandWinner(winnerPlayerId: String):
+	playersDisplay.updateCurrentHandWinner(winnerPlayerId)

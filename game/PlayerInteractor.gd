@@ -133,3 +133,6 @@ func canNotMakeTheActionAfterTheGameEnded(_playerId: String):
 
 func vidoCalledThisRoundAlready(_playerId: String):
 	push_error("⚠️ vidoCalledThisRoundAlready() must be implemented by subclass")
+
+func informCurrentHandWinner(_playerId: String):
+	push_error("⚠️ informCurrentHandWinner() must be implemented by subclass")

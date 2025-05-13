@@ -139,3 +139,6 @@ func receiveCanNotMakeTheActionAfterTheGameEnded(): pass
 
 @rpc("authority")
 func receiveVidoCalledThisRoundAlready(): pass
+
+@rpc("authority")
+func receiveCurrentHandWinner(_playerId: String): pass

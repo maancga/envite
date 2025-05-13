@@ -1,13 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnd2lirxxquor"]
+[gd_scene load_steps=4 format=3 uid="uid://dnd2lirxxquor"]
 
 [ext_resource type="Script" uid="uid://b32j7hjun1el2" path="res://scenes/game/drop-zone/DropZoneCard.gd" id="1_15r0n"]
 [ext_resource type="Texture2D" uid="uid://ppclvfosioyp" path="res://scenes/game/cards/images/cards/card_bastos_0.png" id="1_qkiq6"]
+[ext_resource type="Texture2D" uid="uid://c7c55c1k3yuiq" path="res://scenes/all-scenes-assets/Bordillo pixelado amarillo retro.png" id="2_l4ahj"]
 
 [node name="DropZoneCard" type="Control"]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_15r0n")
+
+[node name="GoldBorder" type="Sprite2D" parent="."]
+position = Vector2(57, 136)
+scale = Vector2(0.137207, 0.201172)
+texture = ExtResource("2_l4ahj")
 
 [node name="Overlay" type="VBoxContainer" parent="."]
 layout_mode = 0
@@ -18,6 +24,10 @@ offset_bottom = 40.0
 layout_mode = 2
 text = "Player1"
 horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Overlay"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
 
 [node name="Image" type="TextureRect" parent="Overlay"]
 layout_mode = 2

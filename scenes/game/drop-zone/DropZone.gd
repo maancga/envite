@@ -12,10 +12,16 @@ var onZoneCard: HandCard = null
 func _process(_delta: float) -> void:
 	processOnDropAreaSound()
 
-func addCard(namePlayer: String, newValue: ValueEnum.Value, givenSuit: SuitEnum.Suit):
+func updateCurrentHandWinner(playerId: String):
+	for card in cardsContainer.get_children():
+		if (card.playerId == playerId): card.paintAsWinning()
+		else: card.paintAsNormal()
+
+func addCard(playerName: String, playerId: String, newValue: ValueEnum.Value, givenSuit: SuitEnum.Suit):
 	var card = preload("res://scenes/game/drop-zone/DropZoneCard.tscn").instantiate()
 	cardsContainer.add_child(card)
-	card.setCardData(namePlayer, newValue, givenSuit)
+	card.setCardData(playerName, playerId, newValue, givenSuit)
+	updateCurrentHandWinner(playerId)
 	$PlaySoundStreamPlayer.play()
 
 func cleanPlayedCards():
@@ -48,3 +54,4 @@ func _unhandled_input(event):
 			cardDroppedSignal.emit(onZoneCard.handIndex)
 			onZoneCard = null
 			modulate = Color(1, 1, 1)
+

@@ -122,7 +122,7 @@ func resetOtherPlayersCards():
 
 	
 func addPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
-	dropZone.addCard(players[player]["name"], card["value"], card["suit"])
+	dropZone.addCard(players[player]["name"], player, card["value"], card["suit"])
 	updateHandPlayedCard(player, cardHandIndex)
 
 func cleanPlayedCards():
@@ -254,3 +254,6 @@ func team2OnTumboView():
 func acceptedTumbo():
 	tumboElectionScene.visible = false
 	paintCurrentTurn()
+
+func updateCurrentHandWinner(playerId: String):
+	dropZone.updateCurrentHandWinner(playerId)
