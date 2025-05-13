@@ -167,7 +167,6 @@ func cannNotCallVidoBecauseTumboIsBeingDecided():
 	notificationsManager.showMessage("No puedes vidar porque se está decidiendo el tumbo!")
 
 func notifyTeam1IsOnTumbo():
-	print("aquí1")
 	playersDisplay.team1OnTumboView()
 	if playerId in team2: 
 		notificationsManager.showMessage("El equipo 1 está decidiendo el tumbo")
@@ -181,7 +180,6 @@ func notifyTeam1IsOnTumbo():
 
 func notifyTeam2IsOnTumbo():
 	playersDisplay.team2OnTumboView()
-	print("aquí1")
 	if playerId in team1: notificationsManager.showMessage("El equipo 2 está decidiendo el tumbo")
 	if not (team2Leader == playerId):
 		notificationsManager.showMessage(players[team2Leader]["name"] + "tiene que seleccionar el tumbo")
