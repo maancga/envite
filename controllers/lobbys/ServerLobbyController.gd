@@ -7,7 +7,7 @@ var gameSessions: GameSessions
 func sendToAllPlayers(gameId: String, rpcMethod: String, args := []):
 	var session: GameSession = gameSessions.sessions[gameId]
 	if not session: return
-	for peerIdString in session.gamePlayers.playerIds:
+	for peerIdString in session.peerIds:
 		var peerId = int(peerIdString)
 		if args.size() == 0:
 			rpc_id(peerId, rpcMethod)
@@ -36,7 +36,8 @@ func connectPlayerInteractorSignals(interactor: PlayerInteractor):
 
 
 func onPlayerAdded(gameId: String, players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
-	sendToAllPlayers(gameId, "receivePlayerAdded", [players, team1, team2, team1Leader, team2Leader])
+	var sender = str(multiplayer.get_remote_sender_id())
+	sendToAllPlayers(gameId, "receivePlayerAdded", [sender, players, team1, team2, team1Leader, team2Leader])
 
 func onInformTriumphsConfiguration(gameId: String, triumphs: Array[Dictionary]):
 	print("Informing current triumphs configuration")

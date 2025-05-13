@@ -21,6 +21,7 @@ func onClientRequestsCreateGame():
 	gameSessions.sessions[gameId] = session
 	add_child(session)
 	gameSessions.playerToGame[sender] = gameId
+	session.peerIds.push_back(str(sender))
 
 	print("✅ Nueva partida creada con ID:", gameId)
 	print("🟢 Jugador ", sender, " creó y se unió a la partida ",gameId)
@@ -35,6 +36,8 @@ func onClientRequestsJoinGame(gameId):
 		return
 
 	gameSessions.playerToGame[sender] = gameId
+	var session = gameSessions[gameId]
+	session.peerIds.push_back(str(sender))
 
 	print("🟢 Jugador ", sender, " se unió a la partida ", gameId)
 	rpc_id(sender, "receiveGameAssigned", gameId)

@@ -23,8 +23,8 @@ func sendToServer(method: String, args := []):
 		push_error("Too many args for send_to_server")
 
 @rpc("authority")
-func receivePlayerAdded(players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
-	chooseNameScene.updateList("1", players, team1, team2, team1Leader, team2Leader)
+func receivePlayerAdded(playerId: String, players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
+	chooseNameScene.updateList(playerId, players, team1, team2, team1Leader, team2Leader)
 
 func clientCallsStartGame():
 	sendToServer("onClientCallsStartGame")
