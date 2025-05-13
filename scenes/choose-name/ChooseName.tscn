@@ -52,6 +52,12 @@ texture = ExtResource("2_acpur")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="NombreDeLaPartida" type="Label" parent="CanvasLayer/Screen/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Lobby Name:"
+
 [node name="ChooseANameBlock" type="PanelContainer" parent="CanvasLayer/Screen/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -288,12 +294,6 @@ size_flags_vertical = 8
 theme = ExtResource("4_bauhr")
 text = "Empezar 
 partida"
-
-[node name="NombreDeLaPartida" type="Label" parent="CanvasLayer/Screen"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-text = "12332131"
 
 [connection signal="mouse_entered" from="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameReadyButton" to="." method="onChooseNameButtonAreaEntered"]
 [connection signal="pressed" from="CanvasLayer/Screen/VBoxContainer/ChooseANameBlock/ChooseANameMargin/ChooseANameHBox/ChooseANameInputVBox/ChooseANameReadyButton" to="." method="_on_choose_a_name_ready_button_pressed"]

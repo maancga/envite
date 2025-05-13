@@ -14,6 +14,7 @@ signal startGameSignal()
 @onready var otherTriumphPanel =$CanvasLayer/Screen/PanelContainer/MarginContainer3/VBoxContainer2/MarginContainer/PanelContainer/MarginContainer/TriumphsBlock/OtherTriumphPanel
 @onready var team1Column = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersColumns/Team1Column
 @onready var team2Column = $CanvasLayer/Screen/VBoxContainer/ConnectedPlayersBlock/SectionVAlignment/PlayersColumns/Team2Column
+@onready var lobbyNameLabel = $CanvasLayer/Screen/VBoxContainer/NombreDeLaPartida
 
 var yourId = null
 var toDeleteTriumphsNodes = []
@@ -22,8 +23,6 @@ var ownerId: String = ""
 func _ready():
 	cleanPlayersLists()
 	configureTriumphs([])
-	addPlayerOwner("")
-
 
 func setId(newPlayerId: String):
 	yourId = newPlayerId
@@ -136,4 +135,4 @@ func onStartGameButtonAreaEntered() -> void:
 	if not $CanvasLayer/Screen/PanelContainer/MarginContainer2/StartGameButton.disabled: $ButtonFocusedSound.play()
 
 func setLobbyName(lobbyName: String):
-	$CanvasLayer/Screen/NombreDeLaPartida.text = lobbyName
+	lobbyNameLabel.text = "Nombre de la sala: " + lobbyName

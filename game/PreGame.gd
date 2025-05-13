@@ -13,7 +13,6 @@ func _init(newInteractor: PlayerInteractor, newGamePlayers: GamePlayers):
 
 func changeGameOwner(playerId: String):
 	gameOwner = playerId
-	interactor.informIsGameOwner(playerId)
 
 func addPlayer(id: String, newName: String):
 	if amountOfPlayers() == 12: 
@@ -21,9 +20,10 @@ func addPlayer(id: String, newName: String):
 		return 
 	gamePlayers.addPlayer(id, newName)
 	if gamePlayers.amountOfPlayers() >= 4 : isGameStartable = true
+	if amountOfPlayers() == 1: changeGameOwner(id)
+	interactor.informIsGameOwner(gameOwner)
 	interactor.informPlayerAdded(gamePlayers.toDictionary())
 	interactor.informTriumphsConfiguration(getTriumphsConfiguration())
-	if amountOfPlayers() == 1: changeGameOwner(id)
 
 func start(starterPlayer: String):
 	if gameOwner != starterPlayer:

@@ -12,10 +12,14 @@ func onClientChoosesName(_chosenName: String):
 func onClientCallsStartGame():
 	pass
 
+@rpc("any_peer")
+func onClientGetCurrentPlayers():
+	pass
+
 # Client code
 
 @rpc("authority")
-func receivePlayerAdded(_playerId: String,_players: Dictionary, _team1: Array[String], _team2: Array[String], _team1Leader: String, _team2Leader: String):
+func receivePlayerAdded(_playerId: String, _players: Dictionary, _team1: Array[String], _team2: Array[String], _team1Leader: String, _team2Leader: String):
 	pass
 
 @rpc("authority")

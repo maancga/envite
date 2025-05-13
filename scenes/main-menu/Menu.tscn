@@ -67,6 +67,15 @@ layout_mode = 2
 layout_mode = 2
 text = "Unirse a partida"
 
+[node name="MarginContainer5" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="LobbyName" type="TextEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Nombre de sala a unirse"
+
 [node name="MarginContainer3" type="MarginContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
@@ -86,8 +95,3 @@ text = "Salir"
 [node name="MarginContainer4" type="MarginContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
-
-[node name="LobbyName" type="TextEdit" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-placeholder_text = "Lobby name"

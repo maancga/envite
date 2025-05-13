@@ -22,7 +22,7 @@ func sendToAllPlayers(gameId: String, rpcMethod: String, args := []):
 		elif args.size() == 5:
 			rpc_id(peerId, rpcMethod, args[0], args[1], args[2], args[3], args[4])
 		elif args.size() == 6:
-			rpc_id(peerId, rpcMethod, args[0], args[1], args[2], args[3], args[4])
+			rpc_id(peerId, rpcMethod, args[0], args[1], args[2], args[3], args[4], args[5])
 		else:
 			push_error("❌ call_rpc_id: Demasiados argumentos.")
 
@@ -36,8 +36,9 @@ func connectPlayerInteractorSignals(interactor: PlayerInteractor):
 
 
 func onPlayerAdded(gameId: String, players: Dictionary, team1: Array[String], team2: Array[String], team1Leader: String, team2Leader: String):
-	var sender = str(multiplayer.get_remote_sender_id())
-	sendToAllPlayers(gameId, "receivePlayerAdded", [sender, players, team1, team2, team1Leader, team2Leader])
+	var session: GameSession = gameSessions.sessions[gameId]
+	for peerIdString in session.peerIds:
+		rpc_id(int(peerIdString), "receivePlayerAdded", peerIdString, players, team1, team2, team1Leader, team2Leader)
 
 func onInformTriumphsConfiguration(gameId: String, triumphs: Array[Dictionary]):
 	print("Informing current triumphs configuration")
@@ -82,3 +83,19 @@ func onClientCallsStartGame():
 		for id in players.team2.players:
 			team2Array.append(str(id))
 		sendToAllPlayers(session.gameId, "gameHasStarted")
+
+@rpc("any_peer")
+func onClientGetCurrentPlayers():
+	var sender = multiplayer.get_remote_sender_id()
+	var session: GameSession = gameSessions.getSessionByPeer(sender)
+	if not session: return
+	var players = session.gamePlayers.toDictionary()
+	var team1Array: Array[String] = []
+	for id in players.team1.players:
+		team1Array.append(str(id))
+
+	var team2Array: Array[String] = []
+	for id in players.team2.players:
+		team2Array.append(str(id))
+
+	rpc_id(sender, "receivePlayerAdded", str(sender), players.players, team1Array, team2Array, players.team1.leader, players.team2.leader)

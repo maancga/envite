@@ -35,6 +35,7 @@ func receivePlayerCantBeAddedSinceMaxIsReached():
 
 @rpc("authority")
 func receivePlayerIsGameOwner(playerId: String):
+	print("aaa")
 	chooseNameScene.addPlayerOwner(playerId)
 
 @rpc("authority")
@@ -51,3 +52,6 @@ func gameHasStarted():
 
 func chooseName(playerName: String) -> void:
 	sendToServer("onClientChoosesName", [playerName])
+
+func getCurrentPlayers() -> void:
+	sendToServer("onClientGetCurrentPlayers")

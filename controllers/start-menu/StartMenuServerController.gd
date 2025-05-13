@@ -36,7 +36,7 @@ func onClientRequestsJoinGame(gameId):
 		return
 
 	gameSessions.playerToGame[sender] = gameId
-	var session = gameSessions[gameId]
+	var session = gameSessions.sessions[gameId]
 	session.peerIds.push_back(str(sender))
 
 	print("🟢 Jugador ", sender, " se unió a la partida ", gameId)

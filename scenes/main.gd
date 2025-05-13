@@ -89,6 +89,7 @@ func setUpAndLoadChooseNameScene(gameId: String):
 	add_child(lobbyController)
 	chooseNameScene.setId(yourId)
 	chooseNameScene.setLobbyName(gameId)
+	lobbyController.getCurrentPlayers()
 	lobbyController.connect("gameHasStartedSignal", startGame)
 
 

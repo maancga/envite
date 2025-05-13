@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d1f4urjxdog24"]
 
-[ext_resource type="Script" path="res://scenes/game/VidoButtonDisplay.gd" id="1_6kv6x"]
+[ext_resource type="Script" uid="uid://iyrlomogo5jj" path="res://scenes/game/VidoButtonDisplay.gd" id="1_6kv6x"]
 [ext_resource type="Theme" uid="uid://8p0gerr82ggh" path="res://scenes/all-scenes-assets/ButtonTheme.tres" id="2_14gw4"]
 
 [node name="VidoButtonDisplay" type="Node2D"]

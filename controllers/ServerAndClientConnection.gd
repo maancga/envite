@@ -18,7 +18,9 @@ func start(_gameSessions: GameSessions):
 	multiplayer.peer_disconnected.connect(onClientDisconnected)
 	print("🟢 Server running on port", port)
 
-func connectClient(ip = "ec2-13-53-37-187.eu-north-1.compute.amazonaws.com", port = 9000):
+# REMOTE ip ec2-13-53-37-187.eu-north-1.compute.amazonaws.com
+# local ip 127.0.0.1
+func connectClient(ip = "127.0.0.1", port = 9000):
 	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
 		print("⚠️ Already connected — ignoring request.")
 		return
