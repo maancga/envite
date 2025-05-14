@@ -98,4 +98,5 @@ func onClientGetCurrentPlayers():
 	for id in players.team2.players:
 		team2Array.append(str(id))
 
+	rpc_id(sender, "receivePlayerIsGameOwner", session.preGame.gameOwner)
 	rpc_id(sender, "receivePlayerAdded", str(sender), players.players, team1Array, team2Array, players.team1.leader, players.team2.leader)

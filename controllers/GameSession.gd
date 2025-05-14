@@ -35,6 +35,4 @@ func addPlayerToJoinedPlayers(playerId: String):
 
 
 func allPlayersHaveJoined():
-	print("cantidad de jugadores ", gamePlayers.playerIds.size())
-	print("cantidad de jugadores loggeados ", playersJoinedToGame.size())
 	return gamePlayers.playerIds.size() == playersJoinedToGame.size()
