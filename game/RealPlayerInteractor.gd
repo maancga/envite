@@ -14,6 +14,8 @@ signal informDealerSignal(dealer: String)
 signal sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal(player: String)
 signal sendPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal(player: String)
 signal sendPlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal(player: String)
+signal sendPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastreSignal(player: String)
+signal sendInformPlayerIsArrastrandoSignal(gameId: String, playerId: String)
 signal sendPlayerCouldNotPlayCardBecauseItsVidoSignal(player: String)
 signal sendPlayerRefusedVidoSignal(player: String)
 signal sendPlayerAcceptedVidoSignal(player: String)
@@ -105,6 +107,12 @@ func informPlayerCouldNotPlayCardBacauseHasPlayedAlreadyInCurrentHand(player: St
 
 func informPlayerCouldNotPlayCardBecauseItsPlayedAlready(player: String)-> void:
 	sendPlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal.emit(player)
+
+func informPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre(player: String) -> void:
+	sendPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastreSignal.emit(player)
+
+func informPlayerIsArrastrando(playerId: String):
+	sendInformPlayerIsArrastrandoSignal.emit(gameId, playerId)
 
 func informPlayerRoundWinner(player: String, roundScore: int) -> void:
 	sendPlayerRoundWinnerSignal.emit(gameId, player, roundScore)

@@ -38,12 +38,13 @@ func advancesGameUntilTeam2Tumbo():
 	game.playFirstCard("2") # As de bastos
 	game.playFirstCard("3") # Sota de espadas
 	game.playFirstCard("4") # Sota de bastos
-	game.playSecondCard("1") # 2 de oros
+	game.playFirstCard("1") # 5 de bastos
 
 	game.playSecondCard("4") # 2 de bastos (la mala)
-	game.playFirstCard("1") # 5 de bastos
+	game.playThirdCard("1") # 12 de bastos
 	game.playSecondCard("2") # 2 de copas
-	game.playSecondCard("3") # 4 de copas
+	game.playThirdCard("3") # 12 de copas
+
 	assert_eq(spy.team2PiedrasLastUpdate == 2, true)
 	deck.setTopCards(getFixedTopCards())
 
@@ -62,12 +63,12 @@ func advancesGameUntilTeam2Tumbo():
 	game.playFirstCard("4") # As de bastos
 	game.playFirstCard("1") # Sota de espadas
 	game.playFirstCard("2") # Sota de bastos
-	game.playSecondCard("3") # 2 de oros
+	game.playFirstCard("3") # 2 de oros
 
 	game.playSecondCard("2") # 2 de bastos (la mala)
-	game.playFirstCard("3") # 5 de bastos
+	game.playThirdCard("3") # 5 de bastos
 	game.playSecondCard("4") # 2 de copas
-	game.playSecondCard("1") # 4 de copas
+	game.playThirdCard("1") # 12 de copas
 	assert_eq(spy.team2PiedrasLastUpdate == 6, true)
 	deck.setTopCards(getFixedTopCards())
 
@@ -86,12 +87,12 @@ func advancesGameUntilTeam2Tumbo():
 	game.playFirstCard("2") # As de bastos
 	game.playFirstCard("3") # Sota de espadas
 	game.playFirstCard("4") # Sota de bastos
-	game.playSecondCard("1") # 2 de oros
+	game.playFirstCard("1") # 2 de oros
 
 	game.playSecondCard("4") # 2 de bastos (la mala)
-	game.playFirstCard("1") # 5 de bastos
+	game.playThirdCard("1") # 12 de bastos
 	game.playSecondCard("2") # 2 de copas
-	game.playSecondCard("3") # 4 de copas
+	game.playThirdCard("3") # 12 de bastos
 	assert_eq(spy.team2PiedrasLastUpdate == 10, true)
 	deck.setTopCards(getFixedTopCards())
 
@@ -122,10 +123,10 @@ func test_gets_to_tumbo_takes_it_and_wins():
 	game.playFirstCard("4") # As de bastos
 	game.playFirstCard("1") # Sota de espadas
 	game.playFirstCard("2") # Sota de bastos
-	game.playSecondCard("3") # 2 de oros
+	game.playFirstCard("3") # 2 de oros
 
 	game.playSecondCard("2") # 2 de bastos (la mala)
-	game.playFirstCard("3") # 5 de bastos
+	game.playThirdCard("3") # 5 de bastos
 	game.playSecondCard("4") # 2 de copas
 	game.playSecondCard("1") # 4 de copas
 
@@ -141,10 +142,10 @@ func test_after_winning_tumbo_there_is_no_tumbo_anymore():
 	game.playFirstCard("4") # As de bastos
 	game.playFirstCard("1") # Sota de espadas
 	game.playFirstCard("2") # Sota de bastos
-	game.playSecondCard("3") # 2 de oros
+	game.playFirstCard("3") # 2 de oros
 
 	game.playSecondCard("2") # 2 de bastos (la mala)
-	game.playFirstCard("3") # 5 de bastos
+	game.playThirdCard("3") # 5 de bastos
 	game.playSecondCard("4") # 2 de copas
 	game.playSecondCard("1") # 4 de copas
 
@@ -201,10 +202,10 @@ func test_rejects_2_tumbos_and_then_accepts_and_wins():
 	game.playFirstCard("2")
 	game.playFirstCard("3")
 	game.playFirstCard("4")
-	game.playSecondCard("1")
+	game.playFirstCard("1")
 
 	game.playSecondCard("4") 
-	game.playFirstCard("1") 
+	game.playThirdCard("1") 
 	game.playSecondCard("2") 
 	game.playSecondCard("3")
 
@@ -224,10 +225,10 @@ func test_rejects_a_tumbo_and_then_accepts_and_the_other_team_wins_3_piedras():
 	game.playFirstCard("1")
 	game.playFirstCard("2")
 	game.playFirstCard("3")
-	game.playSecondCard("4")
+	game.playFirstCard("4")
 
 	game.playSecondCard("3") 
-	game.playFirstCard("4") 
+	game.playThirdCard("4") 
 	game.playSecondCard("1") 
 	game.playSecondCard("2")
 

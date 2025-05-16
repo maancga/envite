@@ -78,6 +78,9 @@ func receivePlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand(): pass
 func receivePlayerCouldNotPlayCardBecauseItsPlayedAlready(): pass
 
 @rpc("authority")
+func receivePlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre(): pass
+
+@rpc("authority")
 func receivePlayerCalledVido(_playerId : String): pass
 
 @rpc("authority")
@@ -142,3 +145,6 @@ func receiveVidoCalledThisRoundAlready(): pass
 
 @rpc("authority")
 func receiveCurrentHandWinner(_playerId: String): pass
+
+@rpc("authority")
+func receivePlayerIsArrastrando(_playerId: String): pass

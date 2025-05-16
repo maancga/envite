@@ -16,3 +16,12 @@ func isBiggerTriumph(firstCard: ServerCard, secondCard: ServerCard) -> bool:
 		if secondCard.value == triumph.value and secondCard.suit == triumph.suit:
 			return false
 	return false
+
+func getBiggestTriumph():
+	if getTriumphHierarchy().size() == 0: return false
+	return getTriumphHierarchy()[0]
+
+func isBiggestTriumph(card: ServerCard):
+	var biggestTriumph = getBiggestTriumph() 
+	if not biggestTriumph : return false
+	return biggestTriumph.value == card.value and biggestTriumph.suit == card.suit

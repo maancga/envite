@@ -150,10 +150,10 @@ func test_partial_game():
 	game.playFirstCard("2") # As de bastos
 	game.playFirstCard("3") # Sota de espadas
 	game.playFirstCard("4") # Sota de bastos
-	game.playSecondCard("1") # 2 de oros
+	game.playFirstCard("1") # 5 de bastos
 	# Gana jugador 4 - equipo 2
 	game.playSecondCard("4") # 2 de bastos (la mala)
-	game.playFirstCard("1") # 5 de bastos
+	game.playSecondCard("1") # 2 de oros
 	game.playSecondCard("2") # 2 de copas
 	game.playSecondCard("3") # 4 de copas
 	# Gana jugador 4 - equipo 2

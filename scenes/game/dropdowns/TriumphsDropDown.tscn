@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://xx1eef3j1lj6"]
+
+[node name="TriumphsDropDown" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+offset_right = 150.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Triunfos"
+horizontal_alignment = 1
+
+[node name="Items" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_top = 27.0
+offset_right = 150.0
+offset_bottom = 104.0
+size_flags_vertical = 3
+
+[node name="Label2" type="Label" parent="Items"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "3 de bastos"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="Items"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "11 de bastos"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="Items"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "10 de oros"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

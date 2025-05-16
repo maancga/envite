@@ -38,6 +38,8 @@ func connectPlayerInteractorSignals(interactor: PlayerInteractor):
 	interactor.connect("sendPlayerCouldNotPlayCardBecauseItsNotTurnSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsNotTurn"))
 	interactor.connect("sendPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHandSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand"))
 	interactor.connect("sendPlayerCouldNotPlayCardBecauseItsPlayedAlreadySignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsPlayedAlready"))
+	interactor.connect("sendPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastreSignal", Callable(self, "onPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre"))
+	interactor.connect("sendInformPlayerIsArrastrandoSignal",  Callable(self, "onPlayerIsArrastrando"))
 	interactor.connect("sendPlayerRoundWinnerSignal", Callable(self, "onPlayerRoundWinner"))
 	interactor.connect("sendTeamWonPiedrasSignal", Callable(self, "onTeamWonPiedras"))
 	interactor.connect("sendTeamWonChicoSignal", Callable(self, "onTeamWonChico"))
@@ -95,6 +97,13 @@ func onPlayerCouldNotPlayCardBecauseHasPlayedAlreadyInHand(player: String):
 func onPlayerCouldNotPlayCardBecauseItsPlayedAlready(player: String):
 	print("can not play since it has already played that card")
 	rpc_id(int(player), "receivePlayerCouldNotPlayCardBecauseItsPlayedAlready")
+
+func onPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre(player: String):
+	print("can not play since it is not serving al arrastre")
+	rpc_id(int(player), "receivePlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre")
+
+func onPlayerIsArrastrando(gameId: String, playerId: String):
+	sendToAllPlayers(gameId, "receivePlayerIsArrastrando", [playerId])
 
 func onPlayedCard(gameId: String, player: String, card: ServerCard, playedOrder: int, cardHandIndex: int):
 	var gamePlayers = gameSessions.getPlayersFromGameId(gameId)

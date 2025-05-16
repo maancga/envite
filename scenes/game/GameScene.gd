@@ -2,6 +2,7 @@ extends Node2D
 class_name GameScene
 
 @onready var playersDisplay: HandDisplaysScript
+@onready var currentBet = $CurrentBet
 
 signal vidoCalledSignal()
 signal vidoAcceptedSignal()
@@ -62,6 +63,8 @@ func addPlayedCard(player: String, card: Dictionary, cardHandIndex: int):
 func playerWonRound(player: String,  roundScore: int):
 	playersDisplay.playerWonRound(player, roundScore)
 	notificationsManager.showMessage(players[player]["name"] + " ganó la mano")
+	currentBet.resetBets()
+	currentBet.updateText()
 
 func teamWonPiedras(teamName: String, piedras: int):
 	playersDisplay.teamWonPiedras(teamName, piedras)
@@ -88,6 +91,7 @@ func setPlayerCalledVido(vidoPlayerId: String):
 	playersDisplay.setVidoCalledView(vidoPlayerId)
 	$VidoCalledFor4PiedrasSound.play()
 	notificationsManager.showMessage(players[vidoPlayerId]["name"] + " envidó por 4 piedras" )
+	currentBet.raise()
 
 func rejectedVido(rejecterPlayer: String):
 	playersDisplay.exitVidoCalled(rejecterPlayer)
@@ -96,21 +100,29 @@ func raisedVidoTo7Piedras(vidoPlayerId: String):
 	playersDisplay.raisedVidoTo7Piedras(vidoPlayerId)
 	$VidoCalledFor7PiedrasSound.play()
 	notificationsManager.showMessage(players[vidoPlayerId]["name"] + " envidó por 7 piedras" )
+	currentBet.updateText()
+	currentBet.raise()
 
 func raisedVidoTo9Piedras(vidoPlayerId: String):
 	playersDisplay.raisedVidoTo9Piedras(vidoPlayerId)
 	$VidoCalledFor9PiedrasSound.play()
-	notificationsManager.showMessage(players[vidoPlayerId]["name"] + " envidó por 9 piedras" )
+	notificationsManager.showMessage(players[vidoPlayerId]["name"] + " envidó por 9 piedras")
+	currentBet.updateText()
+	currentBet.raise()
 
 func raisedVidoToChico(vidoPlayerId: String):
 	playersDisplay.raisedVidoToChico(vidoPlayerId)
 	$VidoCalledForChicoSound.play()
 	notificationsManager.showMessage(players[vidoPlayerId]["name"] + " envidó por un chico" )
+	currentBet.updateText()
+	currentBet.raise()
 
 func raisedVidoToGame(vidoPlayerId: String):
 	playersDisplay.raisedVidoToGame(vidoPlayerId)
 	$VidoCalledForGameSound.play()
 	notificationsManager.showMessage(players[vidoPlayerId]["name"] + " envidó por LA PARTIDA" )
+	currentBet.updateText()
+	currentBet.raise()
 
 func onVidoAccepted():
 	vidoAcceptedSignal.emit()
@@ -135,6 +147,7 @@ func refusedVido(vidoPlayerId: String):
 	
 func acceptedVido(vidoPlayerId: String):
 	playersDisplay.acceptedVido(vidoPlayerId)
+	currentBet.updateText()
 
 func notifyIsNotTurn():
 	$WrongActionSound.play()
@@ -144,6 +157,9 @@ func notifyCardPlayedAlready():
 	$WrongActionSound.play()
 	notificationsManager.showMessage("Ya jugaste esa carta!")
 
+func notifyNotSirviendoAlArrastre():
+	$WrongActionSound.play()
+	notificationsManager.showMessage("Tienes que servir al arrastre")
 
 func notifyHasPlayedAlreadyInHand():
 	$WrongActionSound.play()
@@ -203,6 +219,10 @@ func notifyCanNotMakeTheActionAfterTheGameEnded():
 
 func notifyVidoCalledThisRoundAlready():
 	notificationsManager.showMessage("No se puede llamar al vido porque ya se ha llamado en esta ronda.")
+
+func notifyPlayerIsArrastrando(arrastrandoPlayerId: String):
+	notificationsManager.showMessage(players[arrastrandoPlayerId]["name"] + " está arrastrando!")
+
 
 func returnToMenu():
 	returnToMenuSignal.emit()

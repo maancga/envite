@@ -7,6 +7,7 @@ var gamePlayers: GamePlayers
 var playerInteractor: PlayerInteractor
 var scoresManager: ScoresManager
 var triumphHierarchy: TriumphHierarchy
+var isArrastrando: bool
 
 var team1ScoreInRound = 0
 var team2ScoreInRound = 0
@@ -42,6 +43,7 @@ func nextTurn():
 func finishHand():
 	var handWinner = calculateHandWinner()
 	var handWinnerTeam = gamePlayers.getTeam(handWinner)
+	isArrastrando = false
 	playedCards.cleanCards()
 	if handWinnerTeam == "team1": 
 		team1ScoreInRound += 1
@@ -72,11 +74,21 @@ func playCard(playerId: String, card: ServerHandCard):
 	if card.isPlayed():
 		playerInteractor.informPlayerCouldNotPlayCardBecauseItsPlayedAlready(playerId)
 		return
+	if isArrastrando and not playsCorrectlyElArrastre(playerId, card):
+		playerInteractor.informPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre(playerId)
+		return
+
 	card.play()
 	playedCards.addCard(playerId, card)
 	playerInteractor.informPlayerPlayedCard(playerId, card, playedCards.amountOfCards())
 	var currentHandWinner = calculateHandWinner()
 	playerInteractor.informCurrentHandWinner(currentHandWinner)
+	var isFirstCardPlayed = playedCards.amountOfCards() == 1
+	var isViradoSuit = card.card.isSuit(virado.suit)
+	var isTriumph = triumphHierarchy.isTriumph(card.card)
+	if (isFirstCardPlayed and (isViradoSuit or isTriumph)): 
+		isArrastrando = true 
+		playerInteractor.informPlayerIsArrastrando(playerId)
 	nextTurn()
 
 func playFirstCard(playerId: String):
@@ -93,3 +105,17 @@ func playThirdCard(playerId: String):
 
 func vidoCalledAlready():
 	vidoCalledThisRound = true
+
+func playsCorrectlyElArrastre(playerId: String, card: ServerHandCard):
+	var arrastreSuit = virado.suit
+	
+	var isFollowingArrastre = card.card.suit == arrastreSuit or triumphHierarchy.isTriumph(card.card)
+	if isFollowingArrastre: return true
+	
+	var playerHand = hands.getHand(playerId)
+	for handCard in playerHand.getCardsArray():
+		var hasUnplayedArrastre = not handCard.isPlayed() and (
+			handCard.card.suit == arrastreSuit or triumphHierarchy.isTriumph(handCard.card)
+		) and not triumphHierarchy.isBiggestTriumph(handCard.card)
+		if hasUnplayedArrastre: return false
+	return true

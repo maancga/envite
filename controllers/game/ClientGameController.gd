@@ -101,6 +101,10 @@ func receivePlayerCouldNotPlayCardBecauseItsPlayedAlready():
 	gameScene.notifyCardPlayedAlready()
 
 @rpc("authority")
+func receivePlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre():
+	gameScene.notifyNotSirviendoAlArrastre()
+
+@rpc("authority")
 func receivePlayerCalledVido(playerId: String):
 	gameScene.setPlayerCalledVido(playerId)
 
@@ -179,6 +183,10 @@ func receiveVidoCalledThisRoundAlready():
 @rpc("authority")
 func receiveCurrentHandWinner(playerId: String):
 	gameScene.notifyCurrentHandWinner(playerId)
+
+@rpc("authority")
+func receivePlayerIsArrastrando(playerId: String):
+	gameScene.notifyPlayerIsArrastrando(playerId)
 
 func playCard(cardIndex: String) -> void:
 	if cardIndex not in CardIndex.values():

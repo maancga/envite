@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ctjy3u3ibtlhy"]
+[gd_scene load_steps=8 format=3 uid="uid://ctjy3u3ibtlhy"]
 
 [ext_resource type="Script" uid="uid://tpq35st4dp0n" path="res://scenes/game/GameScene.gd" id="1_xs4ih"]
 [ext_resource type="Texture2D" uid="uid://dtvlvwwpp6ye4" path="res://scenes/all-scenes-assets/mesa_fondo.png" id="2_vijgj"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b07mqgsputswc" path="res://scenes/game/notifications/Notifications.tscn" id="4_vaave"]
 [ext_resource type="AudioStream" uid="uid://c6q4xqf0dtob6" path="res://audio/yourTurn.wav" id="5_gs0nk"]
 [ext_resource type="AudioStream" uid="uid://erpw3e8ox5to" path="res://audio/horn_audio_1.wav" id="6_b1len"]
+[ext_resource type="PackedScene" uid="uid://cnxh2ct1x4sgf" path="res://scenes/game/CurrentBet.tscn" id="7_ks7xl"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_xs4ih")
@@ -41,3 +42,5 @@ volume_db = 5.0
 [node name="VidoCalledForGameSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_b1len")
 volume_db = 10.0
+
+[node name="CurrentBet" parent="." instance=ExtResource("7_ks7xl")]

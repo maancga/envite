@@ -30,3 +30,6 @@ func getThirdCard(playerId: String) -> ServerHandCard:
 
 func amountOfHands() -> int:
 	return hands.size()
+	
+func getHand(playerId: String):
+	return hands[playerId]

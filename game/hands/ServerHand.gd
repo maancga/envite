@@ -37,3 +37,6 @@ func getSecondCard() -> ServerHandCard:
 
 func getThirdCard() -> ServerHandCard:
 	return thirdCard
+
+func getCardsArray() -> Array[ServerHandCard]:
+	return [firstCard, secondCard, thirdCard]

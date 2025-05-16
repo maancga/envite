@@ -25,7 +25,8 @@ var team2PiedrasLastUpdate = 0
 var team1ChicosLastUpdate = 0
 var team2ChicosLastUpdate = 0
 var lastCalledPlayerTurn = ""
-
+var couldNotPlayCardBecauseNotSirviendoAlArrastreCalled = 0
+var playerIsArrastrandoCalls = 0
 
 func dealHandToPlayer(player: String, _hand: ServerHand) -> void:
 	countDealHandToPlayerCalls += 1
@@ -173,6 +174,9 @@ func informIsGameOwner(_playerId: String):
 func informPlayerCouldNotPlayCardBecauseItsPlayedAlready(_player: String)-> void:
 	pass
 
+func informPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre(_player: String) -> void:
+	couldNotPlayCardBecauseNotSirviendoAlArrastreCalled +=1 
+
 func informCanNotRaiseVidoMoreThanGame(_player: String) -> void:
 	pass
 
@@ -211,3 +215,6 @@ func vidoCalledThisRoundAlready(_playerId: String):
 
 func informCurrentHandWinner(_playerId: String):
 	pass
+
+func informPlayerIsArrastrando(_playerId: String):
+	playerIsArrastrandoCalls += 1

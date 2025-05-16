@@ -44,6 +44,9 @@ func informPlayerCouldNotPlayCardBacauseHasPlayedAlreadyInCurrentHand(_player: S
 func informPlayerCouldNotPlayCardBecauseItsPlayedAlready(_player: String)-> void:
 	push_error("⚠️ informPlayerCouldNotPlayCardBecauseItsPlayedAlready() must be implemented by subclass")
 
+func informPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre(_player: String)-> void:
+	push_error("⚠️ informPlayerCouldNotPlayCardBecauseItsNotSirviendoAlArrastre() must be implemented by subclass")
+
 func informPlayerCouldNotPlayCardBecauseItsVido(_player: String)-> void:
 	push_error("⚠️ informPlayerCouldNotPlayCardBecauseItsVido() must be implemented by subclass")
 
@@ -136,3 +139,6 @@ func vidoCalledThisRoundAlready(_playerId: String):
 
 func informCurrentHandWinner(_playerId: String):
 	push_error("⚠️ informCurrentHandWinner() must be implemented by subclass")
+
+func informPlayerIsArrastrando(_playerId: String):
+	push_error("⚠️ informPlayerIsArrastrando() must be implemented by subclass")
